@@ -18,3 +18,5 @@ new Vue({
 
 Vue.filter('formatXp', value => Math.round(value).toLocaleString('en-US'));
 Vue.filter('formatCost', value => value.toFixed(2));
+
+window.priceCache = {};

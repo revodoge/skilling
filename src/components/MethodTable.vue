@@ -4,7 +4,7 @@
   </div>
   <div v-else>
     Input your TVC in millions of GP/hr, decimals are allowed
-    <input type="number" v-model.number="tvc">
+    <input v-model.number="tvc" type="number">
     <table>
       <thead>
       <tr>
@@ -32,7 +32,8 @@
       </tr>
       </thead>
       <tbody>
-      <method v-for="methodData in methods" :key="methodData.id" :tvc="tvc" :data="methodData"></method>
+      <method v-for="methodData in sortedMethods" :key="methodData.id" :tvc="tvc" :data="methodData"
+              :display="methodData.display" v-on:valueCalculated="updateMethodCost"></method>
       </tbody>
     </table>
   </div>
@@ -56,9 +57,43 @@
       self.$http.get('./static/skilling_methods.json', {responseType: 'json'}).then((response) => {
         self.methods = response.body;
         self.methods.forEach(method => method.id = method.skill + method.name);
+        self.methods.forEach(method => method.display = true);
       }, (response) => {
         self.error = response.statusText;
       });
+    },
+    computed: {
+      sortedMethods() {
+        const sorted = this.methods.sort((a, b) => {
+          const skillA = a.skill;
+          const skillB = b.skill;
+          const costA = a.effectiveCost;
+          const costB = b.effectiveCost;
+
+          if (skillA < skillB) return -1;
+          if (skillA > skillB) return 1;
+          if (costA < costB) return -1;
+          if (costA > costB) return 1;
+          return 0;
+        });
+        for (let i = 0; i < sorted.length; i++) {
+          const current = sorted[i];
+          current.display = true;
+          const previous = sorted[i - 1];
+          if (previous && !previous.daily && previous.skill === current.skill) {
+            current.display = false;
+          }
+        }
+        return sorted;
+      },
+    },
+    methods: {
+      updateMethodCost(method, cost) {
+        if (method.effectiveCost !== cost) {
+          method.effectiveCost = cost;
+          this.methods.splice(this.methods.indexOf(method), 1, method);
+        }
+      },
     },
   };
 </script>

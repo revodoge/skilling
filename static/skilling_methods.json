@@ -33,7 +33,7 @@
   {
     "name": "3-tick rocktails",
     "skill": "Cooking",
-    "base": "return 416250",
+    "base": "return 1850 * 225",
     "baseCost": "return (getPrice(15270) - 1.1 * getPrice(15272)) / 225;",
     "modifiers": [
       {
@@ -67,6 +67,34 @@
     ],
     "daily": false,
     "desc": "Cook rocktails at portable range",
+    "lossless": false
+  },
+  {
+    "name": "Wines",
+    "skill": "Cooking",
+    "base": "return 4500 * 201",
+    "baseCost": "return (getPrice(1937) + getPrice(1987) - getPrice(1993)) / 201;",
+    "modifiers": [
+      {
+        "name": "RaF",
+        "effect": "return {bonus: 0.1}"
+      },
+      {
+        "name": "Avatar",
+        "effect": "return {bonus: 0.06}"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "Souf Chef Outfit",
+        "effect": "return {bonus: 0.06}"
+      },
+      {
+        "name": "35 Cooking"
+      }
+    ],
+    "daily": false,
+    "desc": "Do wines with yak",
     "lossless": false
   }
 ]

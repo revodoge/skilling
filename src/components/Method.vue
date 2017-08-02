@@ -1,5 +1,5 @@
 <template>
-  <tr>
+  <tr v-if="display">
     <td>
       {{skill}}
     </td>
@@ -32,6 +32,7 @@
     name: 'method',
     props: {
       data: Object,
+      display: Boolean,
       tvc: Number,
     },
     data() {
@@ -65,9 +66,6 @@
             .map(req => new Function(req.effect)().bonus)
             .filter(bonus => bonus !== undefined).reduce((acc, cur) => acc + cur, 0);
       },
-      effectiveCost() { // cost after considering time as money
-        return this.cost + this.lossless ? 0 : (10000000 / this.xpRate);
-      },
       xpRate() {
         // `this` points to the vm instance
         return (this.base * (1 + this.baseBoost) * (1 + this.bonusBoost));
@@ -75,6 +73,16 @@
       cost() {
         // `this` points to the vm instance
         return (this.baseCost / (1 + this.baseBoost) / (1 + this.bonusBoost));
+      },
+      effectiveCost() { // cost after considering time as money
+        return this.cost + (this.lossless ? 0 : (1000000 * this.tvc / this.xpRate));
+      },
+    },
+    watch: {
+      effectiveCost(cost) {
+        if (!isNaN(cost)) {
+          this.$emit('valueCalculated', this.data, cost);
+        }
       },
     },
     mounted() {
@@ -96,10 +104,17 @@
         }
       },
       getPrice(id) {
+        if (window.priceCache[id]) {
+          return new Promise((resolve) => {
+            resolve(window.priceCache[id]);
+          });
+        }
         const api = 'https://cors-anywhere.herokuapp.com/http://services.runescape.com/m=itemdb_rs/api/graph/';
         return this.$http.get(`${api + id}.json`, {responseType: 'json'}).then((response) => {
           const i = response.body.daily;
-          return i[Object.keys(i).sort().reverse()[0]];
+          const price = i[Object.keys(i).sort().reverse()[0]];
+          window.priceCache[id] = price;
+          return price;
         }, () => NaN);
       },
     },
