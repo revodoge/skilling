@@ -64,7 +64,7 @@
     },
     computed: {
       sortedMethods() {
-        const sorted = this.methods.sort((a, b) => {
+        const sorted = this.methods.sort((a, b) => { // sort methods by skill and efficiency
           const skillA = a.skill;
           const skillB = b.skill;
           const costA = a.effectiveCost;
@@ -76,7 +76,7 @@
           if (costA > costB) return 1;
           return 0;
         });
-        for (let i = 0; i < sorted.length; i++) {
+        for (let i = 0; i < sorted.length; i++) { // only display the best non-daily for each skill
           const current = sorted[i];
           current.display = true;
           const previous = sorted[i - 1];

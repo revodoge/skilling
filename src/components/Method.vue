@@ -12,6 +12,7 @@
     <td>
       {{xpRate | formatXp}}<br/>
       ({{base | formatXp}})
+      <template v-if="daily"><br/>{{dailyXP | formatXp}} XP/day</template>
     </td>
     <td>
       {{cost | formatCost}}
@@ -37,20 +38,19 @@
     },
     data() {
       return {
-        name: this.data.name,
-        skill: this.data.skill,
-        base: new Function(this.data.base)(),
-        baseCost: NaN,
-        requirements: this.data.requirements,
-        // Add modifiers so you can specify if you have skilling outfits?
-        daily: this.data.daily,
-        desc: this.data.desc,
-        lossless: this.data.lossless,
-        modifiers: this.data.modifiers,
+        name: this.data.name, // the name of the method
+        skill: this.data.skill, // the skill this method is for
+        base: new Function(this.data.base)(), // base XP per hour
+        baseCost: NaN, // basic cost per XP
+        requirements: this.data.requirements, // requirements needed
+        daily: new Function(this.data.daily)(), // number of hours you can do the method, or false for non-daily methods
+        desc: this.data.desc, // description
+        lossless: this.data.lossless, // whether this method is lossless XP
+        modifiers: this.data.modifiers, // modifiers you can boost XP with
       };
     },
     computed: {
-      baseBoost() {
+      baseBoost() { // calculate the boosts available to base XP
         return this.modifiers.filter(modifier => !modifier.disabled)
             .map(modifier => new Function(modifier.effect)().base)
             .filter(base => base !== undefined).reduce((acc, cur) => acc + cur, 0) +
@@ -58,7 +58,7 @@
             .map(req => new Function(req.effect)().base)
             .filter(base => base !== undefined).reduce((acc, cur) => acc + cur, 0);
       },
-      bonusBoost() {
+      bonusBoost() { // calculate the reward/bonus XP boosts available
         return this.modifiers.filter(modifier => !modifier.disabled)
             .map(modifier => new Function(modifier.effect)().bonus)
             .filter(bonus => bonus !== undefined).reduce((acc, cur) => acc + cur, 0) +
@@ -66,20 +66,21 @@
             .map(req => new Function(req.effect)().bonus)
             .filter(bonus => bonus !== undefined).reduce((acc, cur) => acc + cur, 0);
       },
-      xpRate() {
-        // `this` points to the vm instance
+      xpRate() { // XP rate after all boosts
         return (this.base * (1 + this.baseBoost) * (1 + this.bonusBoost));
       },
-      cost() {
-        // `this` points to the vm instance
+      cost() { // cost per XP after all boosts
         return (this.baseCost / (1 + this.baseBoost) / (1 + this.bonusBoost));
+      },
+      dailyXP() { // how much XP a daily can give per day
+        return this.daily * this.xpRate;
       },
       effectiveCost() { // cost after considering time as money
         return this.cost + (this.lossless ? 0 : (1000000 * this.tvc / this.xpRate));
       },
     },
     watch: {
-      effectiveCost(cost) {
+      effectiveCost(cost) { // propagate the cost accounting for time to the top to reorder the method display
         if (!isNaN(cost)) {
           this.$emit('valueCalculated', this.data, cost);
         }
@@ -93,7 +94,7 @@
         modifier.disabled = !modifier.disabled;
         this.modifiers.splice(this.modifiers.indexOf(modifier), 1, modifier);
       },
-      evalCost(costString) {
+      evalCost(costString) { // evaluate cost and take prices from GE
         const unevaluatedPrice = costString.match(/getPrice\((\d+)\)/);
         if (unevaluatedPrice) {
           this.getPrice(unevaluatedPrice[1]).then((price) => {
@@ -103,7 +104,7 @@
           this.baseCost = new Function(costString)();
         }
       },
-      getPrice(id) {
+      getPrice(id) { // price from GE, consider a better API to use
         if (window.priceCache[id]) {
           return new Promise((resolve) => {
             resolve(window.priceCache[id]);

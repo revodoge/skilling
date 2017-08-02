@@ -96,5 +96,47 @@
     "daily": false,
     "desc": "Do wines with yak",
     "lossless": false
+  },
+  {
+    "name": "Goebiebands",
+    "skill": "Woodcutting",
+    "base": "return 48515 * 60 / 2",
+    "baseCost": "return 0;",
+    "modifiers": [
+    ],
+    "requirements": [
+      {
+        "name": "99 Woodcutting"
+      }
+    ],
+    "daily": "return 2 / 60;",
+    "desc": "Turn in 10 Goebieband supplies for Woodcutting XP",
+    "lossless": false
+  },
+  {
+    "name": "Test",
+    "skill": "Woodcutting",
+    "base": "return 300000",
+    "baseCost": "return 0;",
+    "modifiers": [
+    ],
+    "requirements": [
+    ],
+    "daily": false,
+    "desc": "Some repeatable method",
+    "lossless": false
+  },
+  {
+    "name": "Test2",
+    "skill": "Woodcutting",
+    "base": "return 200000",
+    "baseCost": "return 0;",
+    "modifiers": [
+    ],
+    "requirements": [
+    ],
+    "daily": false,
+    "desc": "Some worse method that won't be displayed",
+    "lossless": false
   }
 ]
