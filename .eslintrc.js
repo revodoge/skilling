@@ -26,6 +26,10 @@ module.exports = {
   'rules': {
     'no-mixed-operators': ["error", {"groups": [["&", "|", "^", "~", "<<", ">>", ">>>"], ["&&", "||"]]}],
     'max-len': ['error', 120],
+    'no-param-reassign': ["error", {"props": false}],
+    'no-unused-vars': 0,
+    'no-return-assign': 0,
+    'object-curly-spacing': 0,
     'no-new-func': 1,
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {

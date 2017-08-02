@@ -42,7 +42,7 @@
   import Method from './Method';
 
   export default {
-    components: { Method },
+    components: {Method},
     name: 'method-table',
     data() {
       return {
@@ -53,9 +53,9 @@
     },
     mounted() {
       const self = this;
-      self.$http.get('./static/skilling_methods.json', { responseType: 'json' }).then((response) => {
+      self.$http.get('./static/skilling_methods.json', {responseType: 'json'}).then((response) => {
         self.methods = response.body;
-        console.log(self.methods);
+        self.methods.forEach(method => method.id = method.skill + method.name);
       }, (response) => {
         self.error = response.statusText;
       });

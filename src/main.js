@@ -13,5 +13,8 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App },
+  components: {App},
 });
+
+Vue.filter('formatXp', value => Math.round(value).toLocaleString('en-US'));
+Vue.filter('formatCost', value => value.toFixed(2));
