@@ -18,5 +18,10 @@
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 </style>
