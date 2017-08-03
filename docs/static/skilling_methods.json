@@ -1,12 +1,31 @@
 [
   {
-    "name": "SHB",
+    "name": "Barbarian Assault",
+    "skill": "Agility",
+    "base": "return 308439 * 60 / 16",
+    "baseCost": "return 0",
+    "modifiers": [
+    ],
+    "requirements": [
+      {
+        "name": "4 other people who want to play Barbarian Assault"
+      }
+    ],
+    "desc": "get bonus XP from playing Barbarian Assault Hard Mode waves 1-9 (16 min rounds)",
+    "bonus": true
+  },
+  {
+    "name": "Silverhawk Boots",
     "skill": "Agility",
     "base": "return 68800",
-    "baseCost": "return getPrice(30915) / 860;",
+    "baseCost": "return getPrice(30915) / 860",
     "modifiers": [
       {
         "name": "RaF",
+        "effect": "return {bonus: 0.1}"
+      },
+      {
+        "name": "Pulse Core",
         "effect": "return {bonus: 0.1}"
       },
       {
@@ -26,7 +45,6 @@
         "name": "99 Agility"
       }
     ],
-    "daily": false,
     "desc": "wear boots, get XP",
     "lossless": true
   },
@@ -34,10 +52,14 @@
     "name": "3-tick rocktails",
     "skill": "Cooking",
     "base": "return 1850 * 225",
-    "baseCost": "return (getPrice(15270) - 1.1 * getPrice(15272)) / 225;",
+    "baseCost": "return (getPrice(15270) - 1.1 * getPrice(15272)) / 225",
     "modifiers": [
       {
         "name": "RaF",
+        "effect": "return {bonus: 0.1}"
+      },
+      {
+        "name": "Pulse Core",
         "effect": "return {bonus: 0.1}"
       },
       {
@@ -65,18 +87,20 @@
         "name": "94 Cooking"
       }
     ],
-    "daily": false,
-    "desc": "Cook rocktails at portable range",
-    "lossless": false
+    "desc": "Cook rocktails at portable range"
   },
   {
     "name": "Wines",
     "skill": "Cooking",
     "base": "return 4500 * 201",
-    "baseCost": "return (getPrice(1937) + getPrice(1987) - getPrice(1993)) / 201;",
+    "baseCost": "return (getPrice(1937) + getPrice(1987) - getPrice(1993)) / 201",
     "modifiers": [
       {
         "name": "RaF",
+        "effect": "return {bonus: 0.1}"
+      },
+      {
+        "name": "Pulse Core",
         "effect": "return {bonus: 0.1}"
       },
       {
@@ -93,15 +117,13 @@
         "name": "35 Cooking"
       }
     ],
-    "daily": false,
-    "desc": "Do wines with yak",
-    "lossless": false
+    "desc": "Make wines with yak"
   },
   {
     "name": "Goebiebands",
     "skill": "Woodcutting",
     "base": "return 48515 * 60 / 2",
-    "baseCost": "return 0;",
+    "baseCost": "return 0",
     "modifiers": [
     ],
     "requirements": [
@@ -109,34 +131,42 @@
         "name": "99 Woodcutting"
       }
     ],
-    "daily": "return 2 / 60;",
-    "desc": "Turn in 10 Goebieband supplies for Woodcutting XP",
-    "lossless": false
+    "daily": "return 2 / 60",
+    "desc": "Turn in 10 Goebieband supplies for Woodcutting XP"
   },
   {
-    "name": "Test",
+    "name": "Divine Yews",
     "skill": "Woodcutting",
-    "base": "return 300000",
-    "baseCost": "return 0;",
+    "base": "return 2800 * 175",
+    "baseCost": "return 40 * getPrice(32092) / (500 * 175)",
     "modifiers": [
+      {
+        "name": "RaF",
+        "effect": "return {bonus: 0.1}"
+      },
+      {
+        "name": "Pulse Core",
+        "effect": "return {bonus: 0.1}"
+      },
+      {
+        "name": "Avatar",
+        "effect": "return {bonus: 0.06}"
+      },
+      {
+        "name": "Shared Knowledge buff (Memorial to Guthix)",
+        "effect": "return {base: 0.25}"
+      },
+      {
+        "name": "Cache Boost",
+        "effect": "return {base: 0.025}"
+      }
     ],
     "requirements": [
+      {
+        "name": "60 Woodcutting"
+      }
     ],
-    "daily": false,
-    "desc": "Some repeatable method",
-    "lossless": false
-  },
-  {
-    "name": "Test2",
-    "skill": "Woodcutting",
-    "base": "return 200000",
-    "baseCost": "return 0;",
-    "modifiers": [
-    ],
-    "requirements": [
-    ],
-    "daily": false,
-    "desc": "Some worse method that won't be displayed",
-    "lossless": false
+    "daily": "return 500 / 2800",
+    "desc": "Cut divine yews with an extended divine location cap. Yews are hosted in w48 Burthorpe around reset time"
   }
 ]

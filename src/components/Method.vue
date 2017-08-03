@@ -18,12 +18,15 @@
       {{cost | formatCost}}
     </td>
     <td>
-      <span v-for="req in requirements">{{ req.name }}<br/></span>
+      <span v-for="(req, index) in requirements">
+        {{req.name}}<template v-if="index < requirements.length - 1">,</template></span>
     </td>
     <td>
-      <span v-for="modifier in modifiers" v-on:click="toggleModifier(modifier)"
-            v-bind:class="{ disabled: modifier.disabled }">
-        {{ modifier.name }}<br/></span>
+      <template v-for="(modifier, index) in modifiers">
+        <span v-on:click="toggleModifier(modifier)" v-bind:class="{ disabled: modifier.disabled }">
+          {{modifier.name}}</span>
+        <template v-if="index < modifiers.length - 1">,</template>
+      </template>
     </td>
   </tr>
 </template>

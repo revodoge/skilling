@@ -3,39 +3,49 @@
     Error getting methods: {{error}}
   </div>
   <div v-else>
-    Input your TVC in millions of GP/hr, decimals are allowed
-    <input v-model.number="tvc" type="number">
-    <table>
-      <thead>
-      <tr>
-        <td>
-          Skill
-        </td>
-        <td>
-          Method Name
-        </td>
-        <td>
-          Method Description/Guide
-        </td>
-        <td>
-          XP/HR (no boosts)
-        </td>
-        <td>
-          GP/XP
-        </td>
-        <td>
-          Requirements
-        </td>
-        <td>
-          Boosts
-        </td>
-      </tr>
-      </thead>
-      <tbody>
-      <method v-for="methodData in sortedMethods" :key="methodData.id" :tvc="tvc" :data="methodData"
-              :display="methodData.display" v-on:valueCalculated="updateMethodCost"></method>
-      </tbody>
-    </table>
+    <form class="row">
+      <div class="form-group col-xs-4">
+        <label for="tvc">TVC in MM GP/hr</label>
+        <input v-model.number="tvc" type="number" class="form-control" id="tvc">
+      </div>
+      <div class="form-group col-xs-4">
+        <label for="rsn">Runescape Username</label>
+        <input type="text" v-model="rsn" class="form-control" id="rsn">
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+          <th width="150px">
+            Skill
+          </th>
+          <th width="150px">
+            Method Name
+          </th>
+          <th width="650px">
+            Method Description/Guide
+          </th>
+          <th width="150px">
+            XP/HR (no boosts)
+          </th>
+          <th width="75px">
+            GP/XP
+          </th>
+          <th width="200px">
+            Requirements
+          </th>
+          <th width="200px">
+            Boosts
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <method v-for="methodData in sortedMethods" :key="methodData.id" :tvc="tvc" :data="methodData"
+                :display="methodData.display" v-on:valueCalculated="updateMethodCost"></method>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -47,6 +57,7 @@
     name: 'method-table',
     data() {
       return {
+        rsn: 'le me',
         tvc: 10,
         methods: [],
         error: false,
@@ -80,7 +91,7 @@
           const current = sorted[i];
           current.display = true;
           const previous = sorted[i - 1];
-          if (previous && !previous.daily && previous.skill === current.skill) {
+          if (previous && !previous.daily && !previous.bonus && previous.skill === current.skill) {
             current.display = false;
           }
         }
@@ -100,8 +111,4 @@
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-  table {
-    width: 100%;
-    padding-top: 10px;
-  }
 </style>
