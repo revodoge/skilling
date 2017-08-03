@@ -21,10 +21,10 @@
             Skill
           </th>
           <th width="150px">
-            Method Name
+            Method
           </th>
           <th width="650px">
-            Method Description/Guide
+            Description/Guide
           </th>
           <th width="150px">
             XP/HR (no boosts)
@@ -91,7 +91,8 @@
           const current = sorted[i];
           current.display = true;
           const previous = sorted[i - 1];
-          if (previous && !previous.daily && !previous.bonus && previous.skill === current.skill) {
+          if (previous && !previous.daily && !previous.bonus &&
+            previous.skill === current.skill && !isNaN(current.effectiveCost)) {
             current.display = false;
           }
         }

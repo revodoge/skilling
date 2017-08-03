@@ -17,6 +17,17 @@ new Vue({
 });
 
 Vue.filter('formatXp', value => Math.round(value).toLocaleString('en-US'));
-Vue.filter('formatCost', value => value.toFixed(2));
+Vue.filter('formatCost', value => (isNaN(value) ? 'loading cost...' : value.toFixed(2)));
 
-window.priceCache = {};
+const nuts = 'https://cors-anywhere.herokuapp.com/http://services.runescape.com/m=itemdb_rs/api/graph/12130.json';
+Vue.http.get(nuts, {responseType: 'json'}).then((response) => {
+  if (!response.body) {
+    return;
+  }
+  const i = response.body.daily;
+  const time = Object.keys(i).sort().reverse()[0];
+  if (localStorage.getItem('geTime') !== time.toString()) {
+    localStorage.clear();
+    localStorage.setItem('geTime', time);
+  }
+}, () => undefined);

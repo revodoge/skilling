@@ -108,16 +108,24 @@
         }
       },
       getPrice(id) { // price from GE, consider a better API to use
-        if (window.priceCache[id]) {
+        if (localStorage.getItem(id)) {
           return new Promise((resolve) => {
-            resolve(window.priceCache[id]);
+            resolve(parseInt(localStorage.getItem(id), 10));
           });
         }
         const api = 'https://cors-anywhere.herokuapp.com/http://services.runescape.com/m=itemdb_rs/api/graph/';
         return this.$http.get(`${api + id}.json`, {responseType: 'json'}).then((response) => {
+          if (!response.body) {
+            return NaN;
+          }
           const i = response.body.daily;
-          const price = i[Object.keys(i).sort().reverse()[0]];
-          window.priceCache[id] = price;
+          const time = Object.keys(i).sort().reverse()[0];
+          const price = i[time];
+          if (localStorage.getItem('geTime') !== time.toString()) {
+            localStorage.clear();
+            localStorage.setItem('geTime', time);
+          }
+          localStorage.setItem(id, price);
           return price;
         }, () => NaN);
       },
