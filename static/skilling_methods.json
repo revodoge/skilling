@@ -120,6 +120,56 @@
     "desc": "Make wines with yak"
   },
   {
+    "name": "Guthixian Caches",
+    "skill": "Divination",
+    "base": "return 73400 * 60 / 4",
+    "baseCost": "return 0",
+    "modifiers": [
+    ],
+    "requirements": [
+      {
+        "name": "99 Divination"
+      }
+    ],
+    "daily": "return 8 / 60",
+    "desc": "Mobile perk, Children of Mah, and bladed dive highly recommended"
+  },
+  {
+    "name": "Tree Run",
+    "skill": "Farming",
+    "base": "treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;treesThatCantDie = 15000 + 8500 + 7 * 6380.4;return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 11",
+    "baseCost": "treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;treesThatCantDie = 15000 + 8500 + 7 * 6380.4;xp = 0.86 * treesThatCanDie + treesThatCantDie;cost = 12 * getPrice(5316) + getPrice(5290) + getPrice(31437) / 3 + 7 * (getPrice(5288) + 10 * getPrice(2114) - 6 * getPrice(5972)) + 64 / 3 * (1500 + getPrice(6034));return cost/xp",
+    "modifiers": [
+      {
+        "name": "RaF",
+        "effect": "return {bonus: 0.1}"
+      },
+      {
+        "name": "Pulse Core",
+        "effect": "return {bonus: 0.1}"
+      },
+      {
+        "name": "Avatar",
+        "effect": "return {bonus: 0.06}"
+      },
+      {
+        "name": "Urns + Enhancer",
+        "effect": "return {bonus: 0.25}"
+      }
+    ],
+    "requirements": [
+      {
+        "name": "94 Farming"
+      },
+      {
+        "name": "Farming Outfit",
+        "effect": "return {bonus: 0.06}"
+      }
+    ],
+    "daily": "return 11 / 60",
+    "desc": "Full run (6 Magics, 7 Papaya, Calquat, Crystal Tree, .33 Elder, Arc Berries) + magic only run. Do spirit trees if you have them, but they are not part of the calculation"
+  },
+  {
     "name": "Dragon darts",
     "skill": "Fletching",
     "base": "return 25 * 55000",

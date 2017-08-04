@@ -1,6 +1,11 @@
 <template>
   <div id="app">
     <router-view></router-view>
+    <footer class="footer">
+      <div class="container">
+        Join the <a href="https://discord.gg/QRqRFH8">Discord</a> if you want to help
+      </div>
+    </footer>
   </div>
 </template>
 
