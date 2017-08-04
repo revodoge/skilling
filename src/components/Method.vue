@@ -22,11 +22,9 @@
         {{req.name}}<template v-if="index < requirements.length - 1">,</template></span>
     </td>
     <td>
-      <template v-for="(modifier, index) in modifiers">
-        <span v-on:click="toggleModifier(modifier)" v-bind:class="{ disabled: modifier.disabled }">
-          {{modifier.name}}</span>
-        <template v-if="index < modifiers.length - 1">,</template>
-      </template>
+      <span class="list">
+        <span v-for="(modifier, index) in modifiers" v-if="!modifier.disabled">{{modifier.name}}</span>
+      </span>
     </td>
   </tr>
 </template>
@@ -35,9 +33,22 @@
   export default {
     name: 'method',
     props: {
-      data: Object,
-      display: Boolean,
-      tvc: Number,
+      boosts: {
+        type: Object,
+        required: true,
+      },
+      data: {
+        type: Object,
+        required: true,
+      },
+      display: {
+        type: Boolean,
+        required: true,
+      },
+      tvc: {
+        type: Number,
+        required: true,
+      },
     },
     data() {
       return {
@@ -49,7 +60,6 @@
         daily: new Function(this.data.daily)(), // number of hours you can do the method, or false for non-daily methods
         desc: this.data.desc, // description
         lossless: this.data.lossless, // whether this method is lossless XP
-        modifiers: this.data.modifiers, // modifiers you can boost XP with
       };
     },
     computed: {
@@ -69,9 +79,6 @@
             .map(req => new Function(req.effect)().bonus)
             .filter(bonus => bonus !== undefined).reduce((acc, cur) => acc + cur, 0);
       },
-      xpRate() { // XP rate after all boosts
-        return (this.base * (1 + this.baseBoost) * (1 + this.bonusBoost));
-      },
       cost() { // cost per XP after all boosts
         return (this.baseCost / (1 + this.baseBoost) / (1 + this.bonusBoost));
       },
@@ -80,6 +87,13 @@
       },
       effectiveCost() { // cost after considering time as money
         return this.cost + (this.lossless ? 0 : (1000000 * this.tvc / this.xpRate));
+      },
+      modifiers() {
+        return this.data.modifiers.map(modifier =>
+          Object.assign(modifier, {disabled: !this.boosts[modifier.name]})); // modifiers you can boost XP with
+      },
+      xpRate() { // XP rate after all boosts
+        return (this.base * (1 + this.baseBoost) * (1 + this.bonusBoost));
       },
     },
     watch: {
@@ -93,10 +107,6 @@
       this.evalCost(this.data.baseCost);
     },
     methods: {
-      toggleModifier(modifier) {
-        modifier.disabled = !modifier.disabled;
-        this.modifiers.splice(this.modifiers.indexOf(modifier), 1, modifier);
-      },
       evalCost(costString) { // evaluate cost and take prices from GE
         const unevaluatedPrice = costString.match(/getPrice\((\d+)\)/);
         if (unevaluatedPrice) {
@@ -135,7 +145,4 @@
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
-  span.disabled {
-    opacity: 0.5;
-  }
 </style>

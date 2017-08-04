@@ -13,6 +13,16 @@
         <input type="text" v-model="rsn" class="form-control" id="rsn">
       </div>
     </form>
+    <div class="row" id="boosts">
+      <span>
+        Boosts (click to toggle):
+      </span>
+      <span class="list">
+      <span v-for="(value, key) in boosts" v-bind:class="{ disabled: !value }" v-on:click="toggleModifier(key)">
+        {{key}}
+      </span>
+      </span>
+    </div>
     <div class="table-responsive">
       <table class="table table-hover table-bordered">
         <thead>
@@ -41,7 +51,7 @@
         </tr>
         </thead>
         <tbody>
-        <method v-for="methodData in sortedMethods" :key="methodData.id" :tvc="tvc" :data="methodData"
+        <method v-for="methodData in sortedMethods" :key="methodData.id" :tvc="tvc" :boosts="boosts" :data="methodData"
                 :display="methodData.display" v-on:valueCalculated="updateMethodCost"></method>
         </tbody>
       </table>
@@ -59,6 +69,7 @@
       return {
         rsn: 'le me',
         tvc: 10,
+        boosts: {},
         methods: [],
         error: false,
       };
@@ -69,6 +80,7 @@
         self.methods = response.body;
         self.methods.forEach(method => method.id = method.skill + method.name);
         self.methods.forEach(method => method.display = true);
+        self.methods.forEach(method => method.modifiers.forEach(modifier => this.$set(this.boosts, modifier.name, true)));
       }, (response) => {
         self.error = response.statusText;
       });
@@ -106,10 +118,37 @@
           this.methods.splice(this.methods.indexOf(method), 1, method);
         }
       },
+      toggleModifier(modifier) {
+        this.boosts[modifier] = !this.boosts[modifier];
+      },
     },
   };
 </script>
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+  span.disabled {
+    opacity: 0.5;
+  }
+
+  .list > span:after {
+    content: ", ";
+  }
+
+  .list > span:last-child:after {
+    content: "";
+  }
+
+  th {
+    text-align: center;
+  }
+
+  .row {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  #boosts {
+    text-align: left;
+  }
 </style>
