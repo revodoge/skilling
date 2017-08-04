@@ -1,13 +1,10 @@
 <template>
-  <tr v-if="display">
+  <tr v-if="display" v-on:click="toggleDesc">
     <td>
       {{skill}}
     </td>
     <td>
       {{name}}
-    </td>
-    <td>
-      {{desc}}
     </td>
     <td>
       {{xpRate | formatXp}}<br/>
@@ -18,8 +15,9 @@
       {{cost | formatCost}}
     </td>
     <td>
-      <span v-for="(req, index) in requirements">
-        {{req.name}}<template v-if="index < requirements.length - 1">,</template></span>
+      <span class="list">
+        <span v-for="(req, index) in requirements">{{req.name}}</span>
+      </span>
     </td>
     <td>
       <span class="list">
@@ -138,6 +136,9 @@
           localStorage.setItem(id, price);
           return price;
         }, () => NaN);
+      },
+      toggleDesc() {
+        this.$emit('descriptionToggled', this.data);
       },
     },
   };
