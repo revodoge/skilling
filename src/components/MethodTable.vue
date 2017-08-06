@@ -39,26 +39,26 @@
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
       <div class="col-xs-12 col-md-10 col-lg-8">
         <div class="table-responsive">
-          <table class="table table-hover table-bordered">
+          <table class="table table-hover table-bordered" id="methods">
             <caption>Most efficient methods (click on a method for more info):</caption>
             <thead>
             <tr>
-              <th width="150px">
+              <th style="width: 150px;">
                 Skill
               </th>
-              <th width="150px">
+              <th style="width: 150px;">
                 Method
               </th>
-              <th width="150px">
+              <th style="width: 150px;">
                 XP/HR (no boosts)
               </th>
-              <th width="75px">
+              <th style="width: 75px;">
                 GP/XP
               </th>
-              <th width="150px">
+              <th style="width: 250px;">
                 Requirements
               </th>
-              <th width="150px">
+              <th style="width: 250px;">
                 Boosts
               </th>
             </tr>
@@ -192,5 +192,14 @@
 
   #boosts {
     text-align: left;
+  }
+
+  #methods {
+    width: 1026px;
+    margin: auto;
+  }
+
+  #methods.table > thead > tr > th, #methods.table > tbody > tr > td {
+    white-space: normal;
   }
 </style>
