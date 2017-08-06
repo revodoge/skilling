@@ -94,13 +94,6 @@
         return (this.base * (1 + this.baseBoost) * (1 + this.bonusBoost));
       },
     },
-    watch: {
-      effectiveCost(cost) { // propagate the cost accounting for time to the top to reorder the method display
-        if (!isNaN(cost)) {
-          this.$emit('valueCalculated', this.data, cost);
-        }
-      },
-    },
     mounted() {
       this.evalCost(this.data.baseCost);
     },
@@ -139,6 +132,13 @@
       },
       toggleDesc() {
         this.$emit('descriptionToggled', this.data);
+      },
+    },
+    watch: {
+      effectiveCost(cost) { // propagate the cost accounting for time to the top to reorder the method display
+        if (!isNaN(cost)) {
+          this.$emit('valueCalculated', this.data, cost);
+        }
       },
     },
   };
