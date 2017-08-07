@@ -1,8 +1,5 @@
 <template>
-  <div v-if="error">
-    Error getting methods: {{error}}
-  </div>
-  <div v-else>
+  <div>
     <form class="row">
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
       <div class="form-group col-xs-6 col-md-5 col-lg-4">
@@ -89,7 +86,6 @@
     data() {
       return {
         boosts: {},
-        error: false,
         methods: [],
         rsn: 'le me',
         stats: {},
@@ -123,16 +119,11 @@
       },
     },
     mounted() {
-      const self = this;
-      self.$http.get('./static/skilling_methods.json', {responseType: 'json'}).then((response) => {
-        self.methods = response.body;
-        self.methods.forEach(method => method.id = method.skill + method.name);
-        self.methods.forEach(method => method.display = true);
-        self.methods.forEach(method => method.descriptionDisplay = false);
-        self.methods.forEach(method => method.modifiers.forEach(modifier => this.$set(this.boosts, modifier.name, true)));
-      }, (response) => {
-        self.error = response.statusText;
-      });
+      this.methods = window.methods.map(o => Object.assign({}, o));
+      this.methods.forEach(method => method.id = method.skill + method.name);
+      this.methods.forEach(method => method.display = true);
+      this.methods.forEach(method => method.descriptionDisplay = false);
+      this.methods.forEach(method => method.modifiers.forEach(modifier => this.$set(this.boosts, modifier.name, true)));
     },
     methods: {
       fetchHiscore() {

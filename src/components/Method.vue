@@ -63,18 +63,18 @@
     computed: {
       baseBoost() { // calculate the boosts available to base XP
         return this.modifiers.filter(modifier => !modifier.disabled)
-            .map(modifier => new Function(modifier.effect)().base)
+            .map(modifier => modifier.effect().base)
             .filter(base => base !== undefined).reduce((acc, cur) => acc + cur, 0) +
           this.requirements.filter(req => req.effect)
-            .map(req => new Function(req.effect)().base)
+            .map(req => req.effect().base)
             .filter(base => base !== undefined).reduce((acc, cur) => acc + cur, 0);
       },
       bonusBoost() { // calculate the reward/bonus XP boosts available
         return this.modifiers.filter(modifier => !modifier.disabled)
-            .map(modifier => new Function(modifier.effect)().bonus)
+            .map(modifier => modifier.effect().bonus)
             .filter(bonus => bonus !== undefined).reduce((acc, cur) => acc + cur, 0) +
           this.requirements.filter(req => req.effect)
-            .map(req => new Function(req.effect)().bonus)
+            .map(req => req.effect().bonus)
             .filter(bonus => bonus !== undefined).reduce((acc, cur) => acc + cur, 0);
       },
       cost() { // cost per XP after all boosts
