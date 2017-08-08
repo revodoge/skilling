@@ -1,3 +1,43 @@
+/* eslint-disable max-len */
+const urns = {
+  name: 'Urns',
+  effect() {
+    return {bonus: 0.2};
+  },
+};
+const urnEnhancer = {
+  name: 'Urn Enhancer',
+  effect() {
+    return {bonus: 0.05};
+  },
+};
+const raf = {
+  name: 'RaF',
+  effect() {
+    return {bonus: 0.1};
+  },
+};
+
+const ava3 = {
+  name: 'Avatar',
+  effect() {
+    return {bonus: 0.03};
+  },
+};
+
+const ava6 = {
+  name: 'Avatar',
+  effect() {
+    return {bonus: 0.06};
+  },
+};
+const pulse = {
+  name: 'Pulse Core',
+  effect() {
+    return {bonus: 0.1};
+  },
+};
+
 window.methods = [
   {
     name: 'Barbarian Assault',
@@ -16,27 +56,17 @@ window.methods = [
   {
     name: 'Silverhawk Boots',
     skill: 'Agility',
-    base: 'return 68800',
+    base: 'return 860 * 80',
     baseCost: 'return getPrice(30915) / 860',
     modifiers: [
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
+      raf,
       {
         name: 'Nimble Outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.03};
-        },
-      },
+      ava3,
     ],
     requirements: [
       {
@@ -56,18 +86,8 @@ window.methods = [
     base: 'return 1000 * 1120',
     baseCost: 'return getPrice(8782) * (.9 * 8 + .1 * 7) / 1120',
     modifiers: [
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.03};
-        },
-      },
+      raf,
+      ava3,
       {
         name: 'God Chisel',
         effect() {
@@ -86,11 +106,12 @@ window.methods = [
         name: '73 Construction',
       },
       {
-        name: 'Monkey Butler (Can use Demon Butler too)',
+        name: 'Monkey Butler (Can use Demon Butler if feel like it)',
       },
     ],
     desc: '<a href="https://www.youtube.com/watch?v=h6hRV9RuViw" target="_blank">Create and tear down flotsam pawnbrokers</a>',
   },
+  // flatpack
   {
     name: 'Combat',
     skill: 'Constitution',
@@ -100,43 +121,22 @@ window.methods = [
     requirements: [],
     desc: 'You get this for free with 200m combat skills',
   },
-  // flatpack
   {
     name: '3-tick rocktails',
     skill: 'Cooking',
     base: 'return 1850 * 225',
-    baseCost: 'return (getPrice(15270) - 1.1 * getPrice(15272)) / 225',
+    baseCost: 'return (getPrice(554) + getPrice(20374)) / 7737.5 + (getPrice(15270) - 1.1 * getPrice(15272)) / 225',
     modifiers: [
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
+      raf,
       {
         name: 'Dwarven Army Axe',
         effect() {
           return {bonus: 3 / 225};
         },
       },
-      {
-        name: 'Pulse Core',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      {
-        name: 'Urns + Enhancer',
-        effect() {
-          return {bonus: 0.25};
-        },
-      },
+      pulse,
+      ava6,
+      urnEnhancer,
     ],
     requirements: [
       {
@@ -154,6 +154,7 @@ window.methods = [
           return {bonus: 0.06};
         },
       },
+      urns,
       {
         name: '94 Cooking',
       },
@@ -161,29 +162,54 @@ window.methods = [
     desc: '<a href="https://www.youtube.com/watch?v=OMlT6PzmEjE" target="_blank">video guide</a>',
   },
   {
+    name: '4-tick rocktails',
+    skill: 'Cooking',
+    base: 'return 1400 * 225',
+    baseCost: 'return (getPrice(554) + getPrice(20374)) / 7737.5 + (getPrice(15270) - 1.1 * getPrice(15272)) / 225',
+    modifiers: [
+      raf,
+      {
+        name: 'Dwarven Army Axe',
+        effect() {
+          return {bonus: 3 / 225};
+        },
+      },
+      pulse,
+      ava6,
+      urnEnhancer,
+    ],
+    requirements: [
+      {
+        name: 'Cooking Gauntlets',
+      },
+      {
+        name: 'Portable Ranges',
+        effect() {
+          return {base: 0.215};
+        },
+      },
+      {
+        name: 'Modified Souf Chef Outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      urns,
+      {
+        name: '94 Cooking',
+      },
+    ],
+    desc: 'afk/altscape way of cooking rocktails',
+  },
+  {
     name: 'Wines',
     skill: 'Cooking',
     base: 'return 5100 * 201',
     baseCost: 'return (getPrice(1937) + getPrice(1987) - getPrice(1993)) / 201',
     modifiers: [
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Pulse Core',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
+      raf,
+      pulse,
+      ava6,
     ],
     requirements: [
       {
@@ -223,37 +249,18 @@ window.methods = [
     return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 11`,
     baseCost: `const xp = this.base * this.daily;
     const cost = 12 * getPrice(5316) + getPrice(5290) + getPrice(31437) / 3 + 7 * (getPrice(5288) + 10 * getPrice(2114) - 6 * getPrice(5972)) + 64 / 3 * (1500 + getPrice(6034));
-    return cost/xp`,
+    return cost / xp + (getPrice(561) + getPrice(40838)) / 7000`,
     modifiers: [
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Pulse Core',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      {
-        name: 'Urns + Enhancer',
-        effect() {
-          return {bonus: 0.25};
-        },
-      },
+      raf,
+      pulse,
+      ava6,
+      urnEnhancer,
     ],
     requirements: [
       {
         name: '94 Farming',
       },
+      urns,
       {
         name: 'Farming Outfit',
         effect() {
@@ -265,8 +272,8 @@ window.methods = [
     // add updated videos with bladed dive
     desc: '<a href="https://www.youtube.com/watch?v=27gum6noa-U" target="_blank">Full run</a> (6 Magics, 7 Papaya, Calquat, Crystal Tree, .33 Elder, Arc Berries) + magic only run. Do spirit trees if you have them, but they are not part of the calculation',
   },
-  // add firemaking
-  // add fishing
+  // firemaking - BoC, curly roots, BA
+  // fishing - WF, Wobb, Wobb contract, with/without chompas
   {
     name: 'Dragon darts',
     skill: 'Fletching',
@@ -279,24 +286,9 @@ window.methods = [
           return {bonus: 0.06};
         },
       },
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Pulse Core',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
+      raf,
+      pulse,
+      ava6,
     ],
     requirements: [
       {
@@ -314,7 +306,7 @@ window.methods = [
   {
     name: 'Dragon arrows',
     skill: 'Fletching',
-    base: 'return 15 * 45000',
+    base: 'return 15 * 43000',
     baseCost: 'return (0.9 * (getPrice(11237) + getPrice(53)) - 240) / 15',
     modifiers: [
       {
@@ -323,24 +315,9 @@ window.methods = [
           return {bonus: 0.06};
         },
       },
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Pulse Core',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
+      raf,
+      pulse,
+      ava6,
     ],
     requirements: [
       {
@@ -358,7 +335,7 @@ window.methods = [
   {
     name: 'Dark arrows',
     skill: 'Fletching',
-    base: 'return 17.5 * 45000',
+    base: 'return 17.5 * 43000',
     baseCost: 'return (0.9 * (getPrice(29729) + getPrice(53)) - 30) / 17.5',
     modifiers: [
       {
@@ -367,24 +344,9 @@ window.methods = [
           return {bonus: 0.06};
         },
       },
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Pulse Core',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
+      raf,
+      pulse,
+      ava6,
     ],
     requirements: [
       {
@@ -402,7 +364,7 @@ window.methods = [
   {
     name: 'Rune arrows',
     skill: 'Fletching',
-    base: 'return 12.5 * 45000',
+    base: 'return 12.5 * 43000',
     baseCost: 'return (0.9 * (getPrice(892) + getPrice(53)) - 153) / 12.5',
     modifiers: [
       {
@@ -411,24 +373,9 @@ window.methods = [
           return {bonus: 0.06};
         },
       },
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Pulse Core',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
+      raf,
+      pulse,
+      ava6,
     ],
     requirements: [
       {
@@ -446,7 +393,7 @@ window.methods = [
   {
     name: 'Broad arrows',
     skill: 'Fletching',
-    base: 'return 15 * 45000',
+    base: 'return 15 * 43000',
     baseCost: 'return 0.9 * (getPrice(44) + getPrice(53)) / 15',
     modifiers: [
       {
@@ -455,24 +402,9 @@ window.methods = [
           return {bonus: 0.06};
         },
       },
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Pulse Core',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
+      raf,
+      pulse,
+      ava6,
     ],
     requirements: [
       {
@@ -487,31 +419,48 @@ window.methods = [
     ],
     desc: 'Make broad arrows',
   },
-  // normal ovl, 1 tick ovl
+  {
+    name: 'Overloads from supers',
+    skill: 'Herblore',
+    base: 'return 2201 * 460',
+    baseCost: `const extremes = (0.9 * (getPrice(261) + getPrice(267) + getPrice(2481) + getPrice(4698) + 5 * getPrice(12539))
+                                    + (getPrice(145) + getPrice(157) + getPrice(163) + getPrice(3042) + getPrice(169))) / 1.1;
+    const totalCost = 0.983 * (extremes + getPrice(269));
+    return totalCost / 2201`,
+    modifiers: [
+      raf,
+      pulse,
+      ava6,
+    ],
+    requirements: [
+      {
+        name: 'Modified Botanist Outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: 'Portable Wells',
+        effect() {
+          return {base: 0.1};
+        },
+      },
+      {
+        name: '96 Herblore',
+      },
+    ],
+    desc: 'Make overloads the normal way',
+  },
+  // 1 tick ovl
   {
     name: 'Ornate Tortles',
     skill: 'Hunter',
     base: 'return 204 * 1585 * 60 / 15',
-    baseCost: 'return 10000 / (getPrice(4698) + getPrice(40878))',
+    baseCost: 'return (getPrice(4698) + getPrice(40878)) / 8000',
     modifiers: [
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.03};
-        },
-      },
-      {
-        name: 'Urns + Enhancer',
-        effect() {
-          return {bonus: 0.25};
-        },
-      },
+      raf,
+      ava3,
+      urnEnhancer,
       {
         name: "Hunter's outfit",
         effect() {
@@ -529,33 +478,19 @@ window.methods = [
       {
         name: '96 Hunter',
       },
+      urns,
     ],
     desc: '<a href="https://www.youtube.com/watch?v=ocDtzwSV1jM" target="_blank">Hunt ornate tortles with Sliske\'s endgame set and tick manip trap laying</a>',
   },
   {
     name: 'Crystal Skillchompas',
     skill: 'Hunter',
-    base: 'return 2740 * 476',
-    baseCost: 'return 10000 / (getPrice(4698) + getPrice(40878)) - getPrice(40995) / 476',
+    base: 'return 3000 * 476',
+    baseCost: 'return (getPrice(4698) + getPrice(40878)) / 8000 - getPrice(40995) / 476',
     modifiers: [
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.03};
-        },
-      },
-      {
-        name: 'Urns + Enhancer',
-        effect() {
-          return {bonus: 0.25};
-        },
-      },
+      raf,
+      ava3,
+      urnEnhancer,
       {
         name: "Hunter's outfit",
         effect() {
@@ -573,6 +508,7 @@ window.methods = [
       {
         name: '97 Hunter',
       },
+      urns,
     ],
     desc: '<a href="https://www.youtube.com/watch?v=xlwBeB5sttY" target="_blank">Hunt crystal skillchompas with aggro pot, Sliske\'s endgame set, and tick manip trap laying</a>',
   },
@@ -598,25 +534,14 @@ window.methods = [
   // frosts, airuts, rune dragon, searing ashes, scatter/bury
   // ranged SW, widly aby demons, aby demons
   // soul RC, bloods
-  // add Slayer
   {
     name: 'Movran Tasks',
     skill: 'Slayer',
     base: 'return 1000000',
     baseCost: 'return -4',
     modifiers: [
-      {
-        name: 'RaF',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.03};
-        },
-      },
+      raf,
+      ava3,
     ],
     requirements: [
       {
@@ -629,7 +554,122 @@ window.methods = [
     desc: '<a href="https://docs.google.com/spreadsheets/d/1hYNMQ_2QjhebZJsMCXEGDarEekOT1uZiPGx0i26ILps/edit#gid=0" target="_blank">Slayer is situational, but this spreadsheet gives a decent view into tasks you should do</a>',
   },
   // rune ceremonial daily, r2h/pl8leg
-  // steel titan, yak, geyser, fire titan, moss titan
+  // str = att
+  {
+    name: 'Pack Yak',
+    skill: 'Summoning',
+    base: 'return 16750 * (422.4 + 4.8)',
+    baseCost: 'return (211 * 25 + getPrice(10818) - 10 * getPrice(12435)) / (422.4 + 4.8)',
+    modifiers: [
+      ava6,
+      raf,
+      pulse,
+      {
+        name: 'Shaman outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '96 Summoning',
+      },
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
+  },
+  {
+    name: 'Steel titan',
+    skill: 'Summoning',
+    base: 'return 16750 * (435.2 + 4.9)',
+    baseCost: 'return (178 * 25 + getPrice(1119) - 10 * getPrice(12825)) / (435.2 + 4.9)',
+    modifiers: [
+      ava6,
+      raf,
+      pulse,
+      {
+        name: 'Shaman outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '99 Summoning',
+      },
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
+  },
+  {
+    name: 'Fire titan',
+    skill: 'Summoning',
+    base: 'return 16750 * (695.2 + 7.9)',
+    baseCost: 'return (198 * 25 + getPrice(1442) - 10 * getPrice(12824)) / (695.2 + 7.9)',
+    modifiers: [
+      ava6,
+      raf,
+      pulse,
+      {
+        name: 'Shaman outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '79 Summoning',
+      },
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
+  },
+  {
+    name: 'Moss titan',
+    skill: 'Summoning',
+    base: 'return 16750 * (695.2 + 7.9)',
+    baseCost: 'return (202 * 25 + getPrice(1440) - 10 * getPrice(12824)) / (695.2 + 7.9)',
+    modifiers: [
+      ava6,
+      raf,
+      pulse,
+      {
+        name: 'Shaman outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '79 Summoning',
+      },
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
+  },
+  {
+    name: 'Geyser titan',
+    skill: 'Summoning',
+    base: 'return 16750 * (783.2 + 8.9)',
+    baseCost: 'return (222 * 25 + getPrice(1444) - 10 * getPrice(12833)) / (783.2 + 8.9)',
+    modifiers: [
+      ava6,
+      raf,
+      pulse,
+      {
+        name: 'Shaman outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '89 Summoning',
+      },
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
+  },
   // prifpocket, dwarf traders
   {
     name: 'Goebiebands',
@@ -651,22 +691,13 @@ window.methods = [
     base: 'return 2800 * 175',
     baseCost: 'return 40 * getPrice(32092) / (this.base * this.daily)',
     modifiers: [
+      raf,
+      pulse,
+      ava6,
       {
-        name: 'RaF',
+        name: 'Lumberjack outfit',
         effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Pulse Core',
-        effect() {
-          return {bonus: 0.1};
-        },
-      },
-      {
-        name: 'Avatar',
-        effect() {
-          return {bonus: 0.06};
+          return {bonus: 0.05};
         },
       },
       {
@@ -690,5 +721,5 @@ window.methods = [
     daily: 'return 500 / 2800',
     desc: '<a href="https://www.youtube.com/watch?v=6XvOyUn6z_c" target="_blank">Cut divine yews with an extended divine location cap. Yews are hosted in w48 Burthorpe around reset time</a>',
   },
-  // crystallize acadia
+  // crystallize acadia, golden bamboo
 ];
