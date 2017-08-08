@@ -29,6 +29,7 @@ module.exports = {
     'no-param-reassign': ["error", {"props": false}],
     'no-unused-vars': 0,
     'no-return-assign': 0,
+    'no-continue': 0,
     'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
     'object-curly-spacing': 0,
     'no-new-func': 1,

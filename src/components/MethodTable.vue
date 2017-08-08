@@ -11,7 +11,7 @@
         <span class="input-group">
           <input type="text" v-model="rsn" class="form-control" id="rsn">
           <span class="input-group-btn">
-            <button class="btn btn-default" type="button" v-on:click="fetchHiscore">Fetch stats</button>
+            <button class="btn btn-default" type="button" v-on:click="fetchHiscore">Hide my 200m skills</button>
           </span>
         </span>
       </div>
@@ -87,7 +87,7 @@
       return {
         boosts: {},
         methods: [],
-        rsn: 'le me',
+        rsn: 'Marina',
         stats: {},
         tvc: 10,
       };
@@ -110,8 +110,8 @@
           const current = sorted[i];
           current.display = true;
           const previous = sorted[i - 1];
-          if (previous && !previous.daily && !previous.bonus &&
-            previous.skill === current.skill && !isNaN(current.effectiveCost)) {
+          if (this.stats[current.skill] === 200000000 || (previous && !previous.daily && !previous.bonus &&
+            previous.skill === current.skill && !isNaN(current.effectiveCost))) {
             current.display = false;
           }
         }

@@ -1,8 +1,6 @@
 <template>
   <tr v-if="display">
-    <td colspan="6">
-      {{desc}}
-    </td>
+    <td colspan="6" v-html="desc"></td>
   </tr>
 </template>
 

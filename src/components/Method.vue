@@ -56,6 +56,7 @@
         baseCost: NaN, // basic cost per XP
         requirements: this.data.requirements, // requirements needed
         daily: new Function(this.data.daily)(), // number of hours you can do the method, or false for non-daily methods
+        modifiers: [],
         desc: this.data.desc, // description
         lossless: this.data.lossless, // whether this method is lossless XP
       };
@@ -86,16 +87,14 @@
       effectiveCost() { // cost after considering time as money
         return this.cost + (this.lossless ? 0 : (1000000 * this.tvc / this.xpRate));
       },
-      modifiers() {
-        return this.data.modifiers.map(modifier =>
-          Object.assign(modifier, {disabled: !this.boosts[modifier.name]})); // modifiers you can boost XP with
-      },
       xpRate() { // XP rate after all boosts
-        return (this.base * (1 + this.baseBoost) * (1 + this.bonusBoost));
+        return this.base * (1 + this.baseBoost) * (1 + this.bonusBoost);
       },
     },
     mounted() {
       this.evalCost(this.data.baseCost);
+      this.modifiers = this.data.modifiers.map(modifier =>
+        Object.assign({}, Object.assign(modifier, {disabled: !this.boosts[modifier.name]})));
     },
     methods: {
       evalCost(costString) { // evaluate cost and take prices from GE
@@ -135,10 +134,29 @@
       },
     },
     watch: {
-      effectiveCost(cost) { // propagate the cost accounting for time to the top to reorder the method display
-        if (!isNaN(cost)) {
-          this.$emit('valueCalculated', this.data, cost);
-        }
+      cost: {
+        handler(cost) { // propagate the gp cost after boosts
+          if (!isNaN(cost)) {
+            this.$emit('cCalculated', this.data, cost);
+          }
+        },
+        immediate: true,
+      },
+      dailyXP: {
+        handler(amount) { // propagate the XP rate after boosts
+          if (!isNaN(amount)) {
+            this.$emit('dailyCalculated', this.data, amount);
+          }
+        },
+        immediate: true,
+      },
+      effectiveCost: {
+        handler(cost) { // propagate the cost accounting for time to the top to reorder the method display
+          if (!isNaN(cost)) {
+            this.$emit('valueCalculated', this.data, cost);
+          }
+        },
+        immediate: true,
       },
     },
   };

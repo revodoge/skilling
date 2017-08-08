@@ -476,6 +476,50 @@ window.methods = [
     desc: "Hunt ornate tortles with Sliske's endgame set and tick manip trap laying",
   },
   {
+    name: 'Crystal Skillchompas',
+    skill: 'Hunter',
+    base: 'return 2740 * 476',
+    baseCost: 'return getPrice(40995) / -476',
+    modifiers: [
+      {
+        name: 'RaF',
+        effect() {
+          return {bonus: 0.1};
+        },
+      },
+      {
+        name: 'Avatar',
+        effect() {
+          return {bonus: 0.03};
+        },
+      },
+      {
+        name: 'Urns + Enhancer',
+        effect() {
+          return {bonus: 0.25};
+        },
+      },
+      {
+        name: "Hunter's outfit",
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: 'Enhanced Yaktwee stick',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '97 hunter',
+      },
+    ],
+    desc: "<a href='https://www.youtube.com/watch?v=xlwBeB5sttY' target='_blank'>Hunt crystal skillchompas with aggro pot, Sliske's endgame set, and tick manip trap laying</a> ",
+  },
+  {
     name: 'Goebiebands',
     skill: 'Woodcutting',
     base: 'return 48515 * 60 / 2',
