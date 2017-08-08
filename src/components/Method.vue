@@ -52,10 +52,10 @@
       return {
         name: this.data.name, // the name of the method
         skill: this.data.skill, // the skill this method is for
-        base: new Function(this.data.base)(), // base XP per hour
+        base: new Function(this.data.base).apply(this), // base XP per hour
         baseCost: NaN, // basic cost per XP
         requirements: this.data.requirements, // requirements needed
-        daily: new Function(this.data.daily)(), // number of hours you can do the method, or false for non-daily methods
+        daily: new Function(this.data.daily).apply(this), // number of hours you can do the method, if daily method
         modifiers: [],
         desc: this.data.desc, // description
         lossless: this.data.lossless, // whether this method is lossless XP
@@ -104,7 +104,7 @@
             this.evalCost(costString.replace(unevaluatedPrice[0], price));
           });
         } else {
-          this.baseCost = new Function(costString)();
+          this.baseCost = new Function(costString).apply(this);
         }
       },
       getPrice(id) { // price from GE, consider a better API to use
