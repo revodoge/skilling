@@ -56,7 +56,6 @@
         baseCost: NaN, // basic cost per XP
         requirements: this.data.requirements, // requirements needed
         daily: new Function(this.data.daily).apply(this), // number of hours you can do the method, if daily method
-        modifiers: [],
         desc: this.data.desc, // description
         lossless: this.data.lossless, // whether this method is lossless XP
       };
@@ -78,6 +77,10 @@
             .map(req => req.effect().bonus)
             .filter(bonus => bonus !== undefined).reduce((acc, cur) => acc + cur, 0);
       },
+      modifiers() {
+        return this.data.modifiers.map(modifier =>
+          Object.assign({}, Object.assign(modifier, {disabled: !this.boosts[modifier.name]})));
+      },
       cost() { // cost per XP after all boosts
         return (this.baseCost / (1 + this.baseBoost) / (1 + this.bonusBoost));
       },
@@ -93,8 +96,6 @@
     },
     mounted() {
       this.evalCost(this.data.baseCost);
-      this.modifiers = this.data.modifiers.map(modifier =>
-        Object.assign({}, Object.assign(modifier, {disabled: !this.boosts[modifier.name]})));
     },
     methods: {
       evalCost(costString) { // evaluate cost and take prices from GE
