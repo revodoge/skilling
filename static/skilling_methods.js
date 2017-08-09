@@ -84,7 +84,7 @@ window.methods = [
     name: 'Flotsam Pawnbrokers',
     skill: 'Construction',
     base: 'return 1000 * 1120',
-    baseCost: 'return getPrice(8782) * (.9 * 8 + .1 * 7) / 1120',
+    baseCost: 'return getPrice(8782) * 7.8 / 1120',
     modifiers: [
       raf,
       ava3,
@@ -111,7 +111,37 @@ window.methods = [
     ],
     desc: '<a href="https://www.youtube.com/watch?v=h6hRV9RuViw" target="_blank">Create and tear down flotsam pawnbrokers</a>',
   },
-  // flatpack
+  {
+    name: 'Mahogany Table Flatpack',
+    skill: 'Construction',
+    base: 'return 400 * 840',
+    baseCost: 'return getPrice(8782) * 6 / 840',
+    modifiers: [
+      raf,
+      ava3,
+      {
+        name: 'God Chisel',
+        effect() {
+          return {bonus: 0.01};
+        },
+      },
+      {
+        name: 'Construction Outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '73 Construction',
+      },
+      {
+        name: 'Monkey Butler (Can use Demon Butler if feel like it)',
+      },
+    ],
+    desc: 'zzzz',
+  },
   {
     name: 'Combat',
     skill: 'Constitution',
@@ -119,7 +149,7 @@ window.methods = [
     baseCost: 'return 0',
     modifiers: [],
     requirements: [],
-    desc: 'You get this for free with 200m combat skills',
+    desc: 'You\'d have to put in extra effort to not get this for free with 200m all combat skills',
   },
   {
     name: '3-tick rocktails',
@@ -224,6 +254,7 @@ window.methods = [
     ],
     desc: 'Make wines with yak',
   },
+  // crafting dstones, diamonds, black dhide, red dhide
   // defence - SW
   {
     name: 'Guthixian Caches',
@@ -531,7 +562,7 @@ window.methods = [
   },
   // mage SW, wildy aby demons, aby demons
   // geysers, alaea, BA, crystallize?
-  // frosts, airuts, rune dragon, searing ashes, scatter/bury
+  // frosts, airuts, rune dragon, searing ashes, scatter/bury, cleansing 5-tick and afk
   // ranged SW, widly aby demons, aby demons
   // soul RC, bloods
   {
