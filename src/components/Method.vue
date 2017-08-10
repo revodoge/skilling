@@ -52,15 +52,19 @@
       return {
         name: this.data.name, // the name of the method
         skill: this.data.skill, // the skill this method is for
-        base: new Function(this.data.base).apply(this), // base XP per hour
+        actionXP: this.data.actionXP,
+        actionsPerHour: this.data.actionsPerHour,
         baseCost: NaN, // basic cost per XP
         requirements: this.data.requirements, // requirements needed
-        daily: new Function(this.data.daily).apply(this), // number of hours you can do the method, if daily method
+        daily: this.data.daily, // number of hours you can do the method, if daily method
         desc: this.data.desc, // description
         lossless: this.data.lossless, // whether this method is lossless XP
       };
     },
     computed: {
+      base() {
+        return this.data.base ? new Function(this.data.base).apply(this) : this.actionXP * this.actionsPerHour;
+      },
       baseBoost() { // calculate the boosts available to base XP
         return this.modifiers.filter(modifier => !modifier.disabled)
             .map(modifier => modifier.effect().base)
@@ -85,7 +89,7 @@
         return (this.baseCost / (1 + this.baseBoost) / (1 + this.bonusBoost));
       },
       dailyXP() { // how much XP a daily can give per day
-        return this.daily * this.xpRate;
+        return new Function(this.daily).apply(this) * this.xpRate;
       },
       effectiveCost() { // cost after considering time as money
         return this.cost + (this.lossless ? 0 : (1000000 * this.tvc / this.xpRate));

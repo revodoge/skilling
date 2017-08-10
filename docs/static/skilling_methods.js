@@ -42,7 +42,8 @@ window.methods = [
   {
     name: 'Barbarian Assault',
     skill: 'Agility',
-    base: 'return 308439 * 60 / 16',
+    actionXP: 308439,
+    actionsPerHour: 60 / 16,
     baseCost: 'return 0',
     modifiers: [],
     requirements: [
@@ -56,8 +57,9 @@ window.methods = [
   {
     name: 'Silverhawk Boots',
     skill: 'Agility',
-    base: 'return 860 * 80',
-    baseCost: 'return getPrice(30915) / 860',
+    actionXP: 860,
+    actionsPerHour: 80,
+    baseCost: 'return getPrice(30915) / this.actionXP',
     modifiers: [
       raf,
       {
@@ -83,8 +85,9 @@ window.methods = [
   {
     name: 'Flotsam Pawnbrokers',
     skill: 'Construction',
-    base: 'return 1000 * 1120',
-    baseCost: 'return getPrice(8782) * 7.8 / 1120',
+    actionXP: 1120,
+    actionsPerHour: 1000,
+    baseCost: 'return getPrice(8782) * 7.8 / this.actionXP',
     modifiers: [
       raf,
       ava3,
@@ -114,8 +117,9 @@ window.methods = [
   {
     name: 'Mahogany Table Flatpack',
     skill: 'Construction',
-    base: 'return 400 * 840',
-    baseCost: 'return getPrice(8782) * 6 / 840',
+    actionXP: 840,
+    actionsPerHour: 400,
+    baseCost: 'return getPrice(8782) * 6 / this.actionXP',
     modifiers: [
       raf,
       ava3,
@@ -154,8 +158,9 @@ window.methods = [
   {
     name: '3-tick rocktails',
     skill: 'Cooking',
-    base: 'return 1850 * 225',
-    baseCost: 'return (getPrice(554) + getPrice(20374)) / 7737.5 + (getPrice(15270) - 1.1 * getPrice(15272)) / 225',
+    actionXP: 225,
+    actionsPerHour: 1850,
+    baseCost: 'return (getPrice(554) + getPrice(20374)) / 7737.5 + (getPrice(15270) - 1.1 * getPrice(15272)) / this.actionXP',
     modifiers: [
       raf,
       {
@@ -194,8 +199,9 @@ window.methods = [
   {
     name: '4-tick rocktails',
     skill: 'Cooking',
-    base: 'return 1400 * 225',
-    baseCost: 'return (getPrice(554) + getPrice(20374)) / 7737.5 + (getPrice(15270) - 1.1 * getPrice(15272)) / 225',
+    actionXP: 225,
+    actionsPerHour: 1400,
+    baseCost: 'return (getPrice(554) + getPrice(20374)) / 7737.5 + (getPrice(15270) - 1.1 * getPrice(15272)) / this.actionXP',
     modifiers: [
       raf,
       {
@@ -234,8 +240,9 @@ window.methods = [
   {
     name: 'Wines',
     skill: 'Cooking',
-    base: 'return 5100 * 201',
-    baseCost: 'return (getPrice(1937) + getPrice(1987) - getPrice(1993)) / 201',
+    actionXP: 201,
+    actionsPerHour: 5100,
+    baseCost: 'return (getPrice(1937) + getPrice(1987) - getPrice(1993)) / this.actionXP',
     modifiers: [
       raf,
       pulse,
@@ -259,7 +266,8 @@ window.methods = [
   {
     name: 'Guthixian Caches',
     skill: 'Divination',
-    base: 'return 73400 * 60 / 4',
+    actionXP: 73400,
+    actionsPerHour: 60 / 4,
     baseCost: 'return 0',
     modifiers: [],
     requirements: [
@@ -267,7 +275,7 @@ window.methods = [
         name: '99 Divination',
       },
     ],
-    daily: 'return 8 / 60',
+    daily: 'return 2 / this.actionsPerHour',
     desc: 'Mobile perk, Children of Mah, and bladed dive highly recommended <a href="https://www.youtube.com/watch?v=EUMy0JuW1uw" target="_blank">older guide</a>',
   },
   // ancestral contract > cursed convert > ancestral > incan
@@ -308,8 +316,9 @@ window.methods = [
   {
     name: 'Dragon darts',
     skill: 'Fletching',
-    base: 'return 25 * 55000',
-    baseCost: 'return (0.9 * (getPrice(314) + getPrice(11232)) - 150) / 25',
+    actionXP: 25,
+    actionsPerHour: 55000,
+    baseCost: 'return (0.9 * (getPrice(314) + getPrice(11232)) - 150) / this.actionXP',
     modifiers: [
       {
         name: 'Fletching Outfit',
@@ -337,8 +346,9 @@ window.methods = [
   {
     name: 'Dragon arrows',
     skill: 'Fletching',
-    base: 'return 15 * 43000',
-    baseCost: 'return (0.9 * (getPrice(11237) + getPrice(53)) - 240) / 15',
+    actionXP: 15,
+    actionsPerHour: 43000,
+    baseCost: 'return (0.9 * (getPrice(11237) + getPrice(53)) - 240) / this.actionXP',
     modifiers: [
       {
         name: 'Fletching Outfit',
@@ -366,8 +376,9 @@ window.methods = [
   {
     name: 'Dark arrows',
     skill: 'Fletching',
-    base: 'return 17.5 * 43000',
-    baseCost: 'return (0.9 * (getPrice(29729) + getPrice(53)) - 30) / 17.5',
+    actionXP: 17.5,
+    actionsPerHour: 43000,
+    baseCost: 'return (0.9 * (getPrice(29729) + getPrice(53)) - 30) / this.actionXP',
     modifiers: [
       {
         name: 'Fletching Outfit',
@@ -395,8 +406,9 @@ window.methods = [
   {
     name: 'Rune arrows',
     skill: 'Fletching',
-    base: 'return 12.5 * 43000',
-    baseCost: 'return (0.9 * (getPrice(892) + getPrice(53)) - 153) / 12.5',
+    actionXP: 12.5,
+    actionsPerHour: 43000,
+    baseCost: 'return (0.9 * (getPrice(892) + getPrice(53)) - 153) / this.actionXP',
     modifiers: [
       {
         name: 'Fletching Outfit',
@@ -424,8 +436,9 @@ window.methods = [
   {
     name: 'Broad arrows',
     skill: 'Fletching',
-    base: 'return 15 * 43000',
-    baseCost: 'return 0.9 * (getPrice(44) + getPrice(53)) / 15',
+    actionXP: 15,
+    actionsPerHour: 43000,
+    baseCost: 'return 0.9 * (getPrice(44) + getPrice(53)) / this.actionXP',
     modifiers: [
       {
         name: 'Fletching Outfit',
@@ -453,11 +466,12 @@ window.methods = [
   {
     name: 'Overloads from supers',
     skill: 'Herblore',
-    base: 'return 2201 * 460',
+    actionXP: 2201,
+    actionsPerHour: 460,
     baseCost: `const extremes = (0.9 * (getPrice(261) + getPrice(267) + getPrice(2481) + getPrice(4698) + 5 * getPrice(12539))
                                     + (getPrice(145) + getPrice(157) + getPrice(163) + getPrice(3042) + getPrice(169))) / 1.1;
     const totalCost = 0.983 * (extremes + getPrice(269));
-    return totalCost / 2201`,
+    return totalCost / this.actionXP`,
     modifiers: [
       raf,
       pulse,
@@ -486,7 +500,8 @@ window.methods = [
   {
     name: 'Ornate Tortles',
     skill: 'Hunter',
-    base: 'return 204 * 1585 * 60 / 15',
+    actionXP: 204 * 1585,
+    actionsPerHour: 60 / 15,
     baseCost: 'return (getPrice(4698) + getPrice(40878)) / 8000',
     modifiers: [
       raf,
@@ -516,8 +531,9 @@ window.methods = [
   {
     name: 'Crystal Skillchompas',
     skill: 'Hunter',
-    base: 'return 3000 * 476',
-    baseCost: 'return (getPrice(4698) + getPrice(40878)) / 8000 - getPrice(40995) / 476',
+    actionXP: 476,
+    actionsPerHour: 2400,
+    baseCost: 'return (getPrice(4698) + getPrice(40878)) / 8000 - getPrice(40995) / this.actionXP',
     modifiers: [
       raf,
       ava3,
@@ -589,8 +605,9 @@ window.methods = [
   {
     name: 'Pack Yak',
     skill: 'Summoning',
-    base: 'return 16750 * (422.4 + 4.8)',
-    baseCost: 'return (211 * 25 + getPrice(10818) - 10 * getPrice(12435)) / (422.4 + 4.8)',
+    actionXP: 422.4 + 4.8,
+    actionsPerHour: 16750,
+    baseCost: 'return (211 * 25 + getPrice(10818) - 10 * getPrice(12435)) / this.actionXP',
     modifiers: [
       ava6,
       raf,
@@ -612,8 +629,9 @@ window.methods = [
   {
     name: 'Steel titan',
     skill: 'Summoning',
-    base: 'return 16750 * (435.2 + 4.9)',
-    baseCost: 'return (178 * 25 + getPrice(1119) - 10 * getPrice(12825)) / (435.2 + 4.9)',
+    actionXP: 435.2 + 4.9,
+    actionsPerHour: 16750,
+    baseCost: 'return (178 * 25 + getPrice(1119) - 10 * getPrice(12825)) / this.actionXP',
     modifiers: [
       ava6,
       raf,
@@ -635,8 +653,9 @@ window.methods = [
   {
     name: 'Fire titan',
     skill: 'Summoning',
-    base: 'return 16750 * (695.2 + 7.9)',
-    baseCost: 'return (198 * 25 + getPrice(1442) - 10 * getPrice(12824)) / (695.2 + 7.9)',
+    actionXP: 695.2 + 7.9,
+    actionsPerHour: 16750,
+    baseCost: 'return (198 * 25 + getPrice(1442) - 10 * getPrice(12824)) / this.actionXP',
     modifiers: [
       ava6,
       raf,
@@ -658,8 +677,9 @@ window.methods = [
   {
     name: 'Moss titan',
     skill: 'Summoning',
-    base: 'return 16750 * (695.2 + 7.9)',
-    baseCost: 'return (202 * 25 + getPrice(1440) - 10 * getPrice(12824)) / (695.2 + 7.9)',
+    actionXP: 695.2 + 7.9,
+    actionsPerHour: 16750,
+    baseCost: 'return (202 * 25 + getPrice(1440) - 10 * getPrice(12824)) / this.actionXP',
     modifiers: [
       ava6,
       raf,
@@ -681,8 +701,9 @@ window.methods = [
   {
     name: 'Geyser titan',
     skill: 'Summoning',
-    base: 'return 16750 * (783.2 + 8.9)',
-    baseCost: 'return (222 * 25 + getPrice(1444) - 10 * getPrice(12833)) / (783.2 + 8.9)',
+    actionXP: 783.2 + 8.9,
+    actionsPerHour: 16750,
+    baseCost: 'return (222 * 25 + getPrice(1444) - 10 * getPrice(12833)) / this.actionXP',
     modifiers: [
       ava6,
       raf,
@@ -705,7 +726,8 @@ window.methods = [
   {
     name: 'Goebiebands',
     skill: 'Woodcutting',
-    base: 'return 48515 * 60 / 2',
+    actionXP: 48515,
+    actionsPerHour: 60 / 2,
     baseCost: 'return 0',
     modifiers: [],
     requirements: [
@@ -719,7 +741,8 @@ window.methods = [
   {
     name: 'Divine Yews',
     skill: 'Woodcutting',
-    base: 'return 2800 * 175',
+    actionXP: 175,
+    actionsPerHour: 2800,
     baseCost: 'return 40 * getPrice(32092) / (this.base * this.daily)',
     modifiers: [
       raf,
@@ -749,7 +772,7 @@ window.methods = [
         name: '60 Woodcutting',
       },
     ],
-    daily: 'return 500 / 2800',
+    daily: 'return 500 / this.actionsPerHour',
     desc: '<a href="https://www.youtube.com/watch?v=6XvOyUn6z_c" target="_blank">Cut divine yews with an extended divine location cap. Yews are hosted in w48 Burthorpe around reset time</a>',
   },
   // crystallize acadia, golden bamboo
