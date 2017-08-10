@@ -63,7 +63,7 @@
     },
     computed: {
       base() {
-        return this.data.base ? new Function(this.data.base).apply(this) : this.actionXP * this.actionsPerHour;
+        return this.data.base ? Function(this.data.base).apply(this) : this.actionXP * this.actionsPerHour;
       },
       baseBoost() { // calculate the boosts available to base XP
         return this.modifiers.filter(modifier => !modifier.disabled)
@@ -89,7 +89,7 @@
         return (this.baseCost / (1 + this.baseBoost) / (1 + this.bonusBoost));
       },
       dailyXP() { // how much XP a daily can give per day
-        return new Function(this.daily).apply(this) * this.xpRate;
+        return Function(this.daily).apply(this) * this.xpRate;
       },
       effectiveCost() { // cost after considering time as money
         return this.cost + (this.lossless ? 0 : (1000000 * this.tvc / this.xpRate));
@@ -109,7 +109,7 @@
             this.evalCost(costString.replace(unevaluatedPrice[0], price));
           });
         } else {
-          this.baseCost = new Function(costString).apply(this);
+          this.baseCost = Function(costString).apply(this);
         }
       },
       getPrice(id) { // price from GE, consider a better API to use

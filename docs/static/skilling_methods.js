@@ -348,7 +348,7 @@ window.methods = [
     base: `treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;
     treesThatCantDie = 15000 + 8500 + 7 * 6380.4;
     return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 11`,
-    baseCost: `const xp = this.base * this.daily;
+    baseCost: `const xp = this.dailyXP;
     const cost = 12 * getPrice(5316) + getPrice(5290) + getPrice(31437) / 3 + 7 * (getPrice(5288) + 10 * getPrice(2114) - 6 * getPrice(5972)) + 64 / 3 * (1500 + getPrice(6034));
     return cost / xp + (getPrice(561) + getPrice(40838)) / 7000`,
     modifiers: [
@@ -574,7 +574,7 @@ window.methods = [
     skill: 'Woodcutting',
     actionXP: 175,
     actionsPerHour: 2800,
-    baseCost: 'return 40 * getPrice(32092) / (this.base * this.daily)',
+    baseCost: 'return 40 * getPrice(32092) / this.dailyXP',
     modifiers: [
       raf,
       pulse,
