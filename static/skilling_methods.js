@@ -38,6 +38,68 @@ const pulse = {
   },
 };
 
+function arrowMethod(name, actionXP, arrowheadID, sell) {
+  return {
+    name,
+    skill: 'Fletching',
+    actionXP,
+    actionsPerHour: 43000,
+    baseCost: `return (0.9 * (getPrice(${arrowheadID}) + getPrice(53)) - ${sell}) / this.actionXP`,
+    modifiers: [
+      {
+        name: 'Fletching Outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      raf,
+      pulse,
+      ava6,
+    ],
+    requirements: [
+      {
+        name: 'Portable Fletchers',
+        effect() {
+          return {base: 0.1};
+        },
+      },
+      {
+        name: '90 Fletching',
+      },
+    ],
+    desc: 'Make dragon arrows, sell to general store',
+  };
+}
+
+
+function summoningMethod(name, actionXP, shards, primaryIngID, scrollID) {
+  return {
+    name,
+    skill: 'Summoning',
+    actionXP,
+    actionsPerHour: 16750,
+    baseCost: `return (${shards} * 25 + getPrice(${primaryIngID}) - 10 * getPrice(${scrollID})) / this.actionXP`,
+    modifiers: [
+      ava6,
+      raf,
+      pulse,
+      {
+        name: 'Shaman outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '96 Summoning',
+      },
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
+  };
+}
+
+
 window.methods = [
   {
     name: 'Barbarian Assault',
@@ -343,126 +405,10 @@ window.methods = [
     ],
     desc: 'Make dragon darts, sell to general store',
   },
-  {
-    name: 'Dragon arrows',
-    skill: 'Fletching',
-    actionXP: 15,
-    actionsPerHour: 43000,
-    baseCost: 'return (0.9 * (getPrice(11237) + getPrice(53)) - 240) / this.actionXP',
-    modifiers: [
-      {
-        name: 'Fletching Outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      raf,
-      pulse,
-      ava6,
-    ],
-    requirements: [
-      {
-        name: 'Portable Fletchers',
-        effect() {
-          return {base: 0.1};
-        },
-      },
-      {
-        name: '90 Fletching',
-      },
-    ],
-    desc: 'Make dragon arrows, sell to general store',
-  },
-  {
-    name: 'Dark arrows',
-    skill: 'Fletching',
-    actionXP: 17.5,
-    actionsPerHour: 43000,
-    baseCost: 'return (0.9 * (getPrice(29729) + getPrice(53)) - 30) / this.actionXP',
-    modifiers: [
-      {
-        name: 'Fletching Outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      raf,
-      pulse,
-      ava6,
-    ],
-    requirements: [
-      {
-        name: 'Portable Fletchers',
-        effect() {
-          return {base: 0.1};
-        },
-      },
-      {
-        name: '95 Fletching',
-      },
-    ],
-    desc: 'Make dark arrows, sell to general store',
-  },
-  {
-    name: 'Rune arrows',
-    skill: 'Fletching',
-    actionXP: 12.5,
-    actionsPerHour: 43000,
-    baseCost: 'return (0.9 * (getPrice(892) + getPrice(53)) - 153) / this.actionXP',
-    modifiers: [
-      {
-        name: 'Fletching Outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      raf,
-      pulse,
-      ava6,
-    ],
-    requirements: [
-      {
-        name: 'Portable Fletchers',
-        effect() {
-          return {base: 0.1};
-        },
-      },
-      {
-        name: '75 Fletching',
-      },
-    ],
-    desc: 'Make rune arrows, sell to general store',
-  },
-  {
-    name: 'Broad arrows',
-    skill: 'Fletching',
-    actionXP: 15,
-    actionsPerHour: 43000,
-    baseCost: 'return 0.9 * (getPrice(44) + getPrice(53)) / this.actionXP',
-    modifiers: [
-      {
-        name: 'Fletching Outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      raf,
-      pulse,
-      ava6,
-    ],
-    requirements: [
-      {
-        name: 'Portable Fletchers',
-        effect() {
-          return {base: 0.1};
-        },
-      },
-      {
-        name: '52 Fletching',
-      },
-    ],
-    desc: 'Make broad arrows',
-  },
+  arrowMethod('Dragon arrows', 15, 11237, 240),
+  arrowMethod('Dark arrows', 17.5, 29729, 30),
+  arrowMethod('Rune arrows', 12.5, 892, 153),
+  arrowMethod('Broad arrows', 15, 44, 0),
   {
     name: 'Overloads from supers',
     skill: 'Herblore',
@@ -602,126 +548,11 @@ window.methods = [
   },
   // rune ceremonial daily, r2h/pl8leg
   // str = att
-  {
-    name: 'Pack Yak',
-    skill: 'Summoning',
-    actionXP: 422.4 + 4.8,
-    actionsPerHour: 16750,
-    baseCost: 'return (211 * 25 + getPrice(10818) - 10 * getPrice(12435)) / this.actionXP',
-    modifiers: [
-      ava6,
-      raf,
-      pulse,
-      {
-        name: 'Shaman outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-    ],
-    requirements: [
-      {
-        name: '96 Summoning',
-      },
-    ],
-    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
-  },
-  {
-    name: 'Steel titan',
-    skill: 'Summoning',
-    actionXP: 435.2 + 4.9,
-    actionsPerHour: 16750,
-    baseCost: 'return (178 * 25 + getPrice(1119) - 10 * getPrice(12825)) / this.actionXP',
-    modifiers: [
-      ava6,
-      raf,
-      pulse,
-      {
-        name: 'Shaman outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-    ],
-    requirements: [
-      {
-        name: '99 Summoning',
-      },
-    ],
-    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
-  },
-  {
-    name: 'Fire titan',
-    skill: 'Summoning',
-    actionXP: 695.2 + 7.9,
-    actionsPerHour: 16750,
-    baseCost: 'return (198 * 25 + getPrice(1442) - 10 * getPrice(12824)) / this.actionXP',
-    modifiers: [
-      ava6,
-      raf,
-      pulse,
-      {
-        name: 'Shaman outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-    ],
-    requirements: [
-      {
-        name: '79 Summoning',
-      },
-    ],
-    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
-  },
-  {
-    name: 'Moss titan',
-    skill: 'Summoning',
-    actionXP: 695.2 + 7.9,
-    actionsPerHour: 16750,
-    baseCost: 'return (202 * 25 + getPrice(1440) - 10 * getPrice(12824)) / this.actionXP',
-    modifiers: [
-      ava6,
-      raf,
-      pulse,
-      {
-        name: 'Shaman outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-    ],
-    requirements: [
-      {
-        name: '79 Summoning',
-      },
-    ],
-    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
-  },
-  {
-    name: 'Geyser titan',
-    skill: 'Summoning',
-    actionXP: 783.2 + 8.9,
-    actionsPerHour: 16750,
-    baseCost: 'return (222 * 25 + getPrice(1444) - 10 * getPrice(12833)) / this.actionXP',
-    modifiers: [
-      ava6,
-      raf,
-      pulse,
-      {
-        name: 'Shaman outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-    ],
-    requirements: [
-      {
-        name: '89 Summoning',
-      },
-    ],
-    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
-  },
+  summoningMethod('Pack Yak', 422.4 + 4.8, 211, 10818, 12435),
+  summoningMethod('Steel titan', 435.2 + 4.9, 178, 1119, 12825),
+  summoningMethod('Fire titan', 695.2 + 7.9, 198, 1442, 12824),
+  summoningMethod('Moss titan', 695.2 + 7.9, 202, 1440, 12824),
+  summoningMethod('Geyser titan', 783.2 + 8.9, 222, 1444, 12833),
   // prifpocket, dwarf traders
   {
     name: 'Goebiebands',
