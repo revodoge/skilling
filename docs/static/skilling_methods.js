@@ -170,12 +170,12 @@ function cutGemMethod(name, levelRequired, actionXP, uncutID, cutID) {
   };
 }
 
-function altarMethod(name, actionXP, itemID) {
+function wildyAltarMethod(name, actionXP, itemID) {
   return {
     name,
     skill: 'Prayer',
     actionXP,
-    actionsPerHour: 1900,
+    actionsPerHour: 2000,
     baseCost: `return 0.98 * getPrice(${itemID}) / this.actionXP`,
     modifiers: [
       raf,
@@ -183,9 +183,9 @@ function altarMethod(name, actionXP, itemID) {
     ],
     requirements: [
       {
-        name: 'Gilded Altar, or Chaos Altar in Wildy',
+        name: 'Chaos Altar in Wildy',
         effect() {
-          return {bonus: 2.5};
+          return {base: 2.5};
         },
       },
       {
@@ -201,6 +201,7 @@ function altarMethod(name, actionXP, itemID) {
         },
       },
     ],
+    wildy: true,
     desc: 'Run bones with alt',
   };
 }
@@ -560,6 +561,86 @@ window.methods = [
   // firemaking - BoC, curly roots, BA
   // fishing - WF, Wobb, Wobb contract, with/without chompas
   {
+    name: 'Wobbegongs with Skillchompas',
+    skill: 'Fishing',
+    actionXP: 682.5,
+    actionsPerHour: 0.2 * 1500, // 20% success, 4 ticks per attempt
+    baseCost: 'return 5 * getPrice(31597) / this.actionXP / 1.2 + (getPrice(555) + getPrice(20344)) / 9500',
+    modifiers: [
+      raf,
+      urnEnhancer,
+      ava6,
+      {
+        name: 'Fishing outfit',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '96 Fishing',
+      },
+      {
+        name: 'T5 Call of the Seas',
+      },
+      {
+        name: 'Fury Shark Outfit',
+      },
+      {
+        name: 'Skillchompa',
+        effect() {
+          return {base: 0.2}; // the 10% XP on success doesn't work
+        },
+      },
+      {
+        name: 'Crystal Rod w/ Honed 5 + Furnace 2',
+        effect() {
+          return {base: 0.1};
+        },
+      },
+      urns,
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=Ot5nrMIYKfw" target="_blank">Shown by Marina</a>, best to have an island flagged (Price is based on azure skillchompa but any type works fine)',
+  },
+  {
+    name: 'Wobbegongs',
+    skill: 'Fishing',
+    actionXP: 682.5,
+    actionsPerHour: 0.2 * 1500, // 20% success, 4 ticks per attempt
+    baseCost: 'return (getPrice(555) + getPrice(20344)) / 9500',
+    modifiers: [
+      raf,
+      urnEnhancer,
+      ava6,
+      {
+        name: 'Fishing outfit',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '96 Fishing',
+      },
+      {
+        name: 'T5 Call of the Seas',
+      },
+      {
+        name: 'Fury Shark Outfit',
+      },
+      {
+        name: 'Crystal Rod w/ Honed 5 + Furnace 2',
+        effect() {
+          return {base: 0.1};
+        },
+      },
+      urns,
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=Ot5nrMIYKfw" target="_blank">Shown by Marina</a>, best to have an island flagged (Price is based on azure skillchompa but any type works fine)',
+  },
+  {
     name: 'Dragon darts',
     skill: 'Fletching',
     actionXP: 25,
@@ -708,11 +789,11 @@ window.methods = [
   },
   // mage SW, wildy aby demons, aby demons
   // geysers, alaea, BA, crystallize?
-  altarMethod('Dragon Bones', 72, 536),
-  altarMethod('Hardened Dragon Bones', 144, 35008),
-  altarMethod('Airut Bones', 132.5, 30209),
-  altarMethod('Frost Dragon Bones', 180, 18832),
-  altarMethod('Reinforced Dragon Bones', 190, 35010),
+  wildyAltarMethod('Dragon Bones', 72, 536),
+  wildyAltarMethod('Hardened Dragon Bones', 144, 35008),
+  wildyAltarMethod('Airut Bones', 132.5, 30209),
+  wildyAltarMethod('Frost Dragon Bones', 180, 18832),
+  wildyAltarMethod('Reinforced Dragon Bones', 190, 35010),
   {
     name: 'Scatter/Bury: Dragon Bones + Infernal Ashes',
     skill: 'Prayer',
@@ -727,13 +808,7 @@ window.methods = [
       {
         name: 'Modified First Age Outfit',
         effect() {
-          return {bonus: 0.06};
-        },
-      },
-      {
-        name: 'Perfect Juju Prayer Potion',
-        effect() {
-          return {base: 0.05};
+          return {bonus: 0.04};
         },
       },
     ],
