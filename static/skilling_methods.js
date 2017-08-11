@@ -170,27 +170,61 @@ function cutGemMethod(name, levelRequired, actionXP, uncutID, cutID) {
   };
 }
 
+function altarMethod(name, actionXP, itemID) {
+  return {
+    name,
+    skill: 'Prayer',
+    actionXP,
+    actionsPerHour: 1900,
+    baseCost: `return 0.98 * getPrice(${itemID}) / this.actionXP`,
+    modifiers: [
+      raf,
+      ava6,
+    ],
+    requirements: [
+      {
+        name: 'Gilded Altar, or Chaos Altar in Wildy',
+        effect() {
+          return {bonus: 2.5};
+        },
+      },
+      {
+        name: 'Modified First Age Outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: 'Perfect Juju Prayer Potion',
+        effect() {
+          return {base: 0.05};
+        },
+      },
+    ],
+    desc: 'Run bones with alt',
+  };
+}
+
 window.skillList = ['Attack', 'Defence', 'Strength', 'Constitution', 'Ranged', 'Prayer', 'Magic',
   'Cooking', 'Woodcutting', 'Fletching', 'Fishing', 'Firemaking', 'Crafting', 'Smithing',
   'Mining', 'Herblore', 'Agility', 'Thieving', 'Slayer', 'Farming', 'Runecrafting',
   'Hunter', 'Construction', 'Summoning', 'Dungeoneering', 'Divination', 'Invention'];
 
-const prismania = window.skillList.map(skill =>
-  ({
-    name: 'Prismania',
-    skill,
-    base: 'return 10000000',
-    baseCost: 'return 40',
-    modifiers: [],
-    requirements: [
-      {
-        name: 'Get Bond',
-      },
-    ],
-    bonus: true,
-    spinner: true,
-    desc: 'You spin me right round',
-  }));
+const prismania = window.skillList.map(skill => ({
+  name: 'Prismania',
+  skill,
+  base: 'return 10000000',
+  baseCost: 'return 40',
+  modifiers: [],
+  requirements: [
+    {
+      name: 'Get Bond',
+    },
+  ],
+  bonus: true,
+  spinner: true,
+  desc: 'You spin me right round',
+}));
 const smouldering = window.skillList.map(skill => ({
   name: 'Smouldering Lamps',
   skill,
@@ -670,7 +704,102 @@ window.methods = [
   },
   // mage SW, wildy aby demons, aby demons
   // geysers, alaea, BA, crystallize?
-  // frosts, airuts, rune dragon, searing ashes, scatter/bury, cleansing 5-tick and afk
+  altarMethod('Dragon Bones', 72, 536),
+  altarMethod('Hardened Dragon Bones', 144, 35008),
+  altarMethod('Airut Bones', 132.5, 30209),
+  altarMethod('Frost Dragon Bones', 180, 18832),
+  altarMethod('Reinforced Dragon Bones', 190, 35010),
+  {
+    name: 'Scatter/Bury: Dragon Bones + Infernal Ashes',
+    skill: 'Prayer',
+    actionXP: 2 * 72 + 62.5,
+    actionsPerHour: 5500,
+    baseCost: 'return (0.98 * getPrice(536) + getPrice(20268)) / this.actionXP',
+    modifiers: [
+      raf,
+      ava6,
+    ],
+    requirements: [
+      {
+        name: 'Modified First Age Outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: 'Perfect Juju Prayer Potion',
+        effect() {
+          return {base: 0.05};
+        },
+      },
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=wq4FA8qxAZ4" target="_blank">Video by Persiflage</a> Can also be done losslessly with other skills such as Herblore, Cooking',
+  },
+  {
+    name: '5-tick cleansing crystals',
+    skill: 'Prayer',
+    actionXP: 2100,
+    actionsPerHour: 1200,
+    baseCost: 'return 110000 / this.actionXP',
+    modifiers: [
+      raf,
+      ava6,
+      {
+        name: 'Voice of Seren',
+        effect() {
+          return {base: 0.2};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: 'Modified First Age Outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: 'Perfect Juju Prayer Potion',
+        effect() {
+          return {base: 0.05};
+        },
+      },
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=tjN34chGyR4" target="_blank">Demonstration by Crusaderr</a>',
+  },
+  {
+    name: 'Cleansing crystals',
+    skill: 'Prayer',
+    actionXP: 9800,
+    actionsPerHour: 29,
+    baseCost: 'return 110000 / this.actionXP',
+    modifiers: [
+      raf,
+      ava6,
+      {
+        name: 'Voice of Seren',
+        effect() {
+          return {base: 0.2};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: 'Modified First Age Outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: 'Perfect Juju Prayer Potion',
+        effect() {
+          return {base: 0.05};
+        },
+      },
+    ],
+    afk: true,
+    desc: 'Tirannwn quiver 3 or 4 makes it completely AFK',
+  },
   // ranged SW, widly aby demons, aby demons
   // soul RC, bloods
   {
@@ -696,7 +825,7 @@ window.methods = [
   {
     name: 'Rune Ceremonial Sword',
     skill: 'Smithing',
-    actionXP: 11000 * 1.1, // what is the baseXP of these???
+    actionXP: 10487.5 * 1.1, // you can get perfect sword about half the time
     actionsPerHour: 60,
     baseCost: 'return 50 * getPrice(32092) / this.dailyXP',
     modifiers: [
@@ -711,7 +840,7 @@ window.methods = [
       {
         name: 'Falador Shield 4',
         effect() {
-          return {bonus: 0.05};
+          return {base: 0.05};
         },
       },
       {
@@ -728,7 +857,7 @@ window.methods = [
       {
         name: 'Daily challenge',
         effect() {
-          return {bonus: 67395 / 145200}; // ???
+          return {bonus: 67395 / 145500}; // ???
         },
       },
       {
@@ -747,7 +876,82 @@ window.methods = [
   summoningMethod('Fire titan', 79, 695.2 + 7.9, 198, 1442, 12824),
   summoningMethod('Moss titan', 79, 695.2 + 7.9, 202, 1440, 12824),
   summoningMethod('Geyser titan', 89, 783.2 + 8.9, 222, 1444, 12833),
-  // prifpocket, dwarf traders
+  {
+    name: 'Dwarf Traders',
+    skill: 'Thieving',
+    actionXP: 556.5,
+    actionsPerHour: 1670,
+    baseCost: 'return -1',
+    modifiers: [
+      raf,
+      ava6,
+      {
+        name: 'Cheeky Monkey', // TODO: test the effect of this
+        effect() {
+          return {base: 0};
+        },
+      },
+      {
+        name: 'Black Ibis',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '90 Thieving',
+      },
+      {
+        name: 'T3+ Five Finger Discount',
+      },
+      {
+        name: 'Crystal Mask + Light Form',
+      },
+      {
+        name: 'Ardy Cape 4 or Thieving Cape Perk',
+      },
+      {
+        name: 'Soul-in-a-box',
+      },
+      {
+        name: 'Featherfingered Necklace',
+      },
+      {
+        name: 'Trahaern Exoskeleton (or camo outfit)',
+      },
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=-05YAUMEDPs" target="_blank">Aura makes a big difference, cheeky monkey is best but discontinued now</a>',
+  },
+  {
+    name: 'Priffdinas Elves',
+    skill: 'Thieving',
+    base: 'return 420000',
+    baseCost: 'return -3',
+    modifiers: [
+      raf,
+      ava6,
+      {
+        name: 'Black Ibis',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '98 Thieving',
+      },
+      {
+        name: 'Ardy Cape 4',
+      },
+      {
+        name: 'Trahaern Exoskeleton (or camo outfit)',
+      },
+    ],
+    afk: true,
+    desc: '<a href="https://www.youtube.com/watch?v=-05YAUMEDPs" target="_blank">Aura makes a big difference, cheeky monkey is best but discontinued now</a>',
+  },
   {
     name: 'Goebiebands',
     skill: 'Woodcutting',
