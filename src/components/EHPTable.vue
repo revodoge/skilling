@@ -106,12 +106,9 @@
           if (costA > costB) return 1;
           return 0;
         });
-        const skillList = ['Attack', 'Defence', 'Strength', 'Constitution', 'Ranged', 'Prayer', 'Magic',
-          'Cooking', 'Woodcutting', 'Fletching', 'Fishing', 'Firemaking', 'Crafting', 'Smithing',
-          'Mining', 'Herblore', 'Agility', 'Thieving', 'Slayer', 'Farming', 'Runecrafting',
-          'Hunter', 'Construction', 'Summoning', 'Dungeoneering', 'Divination', 'Invention'];
         const skillMap = {};
-        skillList.forEach((skill, index) => skillMap[skill] = {remaining: 200000000, eCost: 0, rCost: 0, bonus: false});
+        window.skillList.forEach((skill, index) =>
+          skillMap[skill] = {remaining: 200000000, eCost: 0, rCost: 0, bonus: false});
         for (let i = 0; i < sorted.length; i++) {
           const current = sorted[i];
           const previous = sorted[i - 1];
@@ -188,12 +185,8 @@
         const hiScoreUrl = 'https://cors-anywhere.herokuapp.com/http://services.runescape.com/m=hiscore/index_lite.ws';
         this.$http.get(hiScoreUrl, {params: {player: this.rsn}}).then((response) => {
           const skillXpList = response.body.split('\n').slice(1, 28).map(stats => parseInt(stats.split(',')[2], 10));
-          const skillList = ['Attack', 'Defence', 'Strength', 'Constitution', 'Ranged', 'Prayer', 'Magic',
-            'Cooking', 'Woodcutting', 'Fletching', 'Fishing', 'Firemaking', 'Crafting', 'Smithing',
-            'Mining', 'Herblore', 'Agility', 'Thieving', 'Slayer', 'Farming', 'Runecrafting',
-            'Hunter', 'Construction', 'Summoning', 'Dungeoneering', 'Divination', 'Invention'];
           const statsMap = {};
-          skillList.forEach((skill, index) => statsMap[skill] = skillXpList[index]);
+          window.skillList.forEach((skill, index) => statsMap[skill] = skillXpList[index]);
           this.stats = statsMap;
         }, (response) => {
           console.log(response.statusText);

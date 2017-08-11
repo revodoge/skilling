@@ -38,7 +38,7 @@ const pulse = {
   },
 };
 
-function arrowMethod(name, actionXP, arrowheadID, sell) {
+function arrowMethod(name, levelRequired, actionXP, arrowheadID, sell) {
   return {
     name,
     skill: 'Fletching',
@@ -64,15 +64,14 @@ function arrowMethod(name, actionXP, arrowheadID, sell) {
         },
       },
       {
-        name: '90 Fletching',
+        name: `${levelRequired} Fletching`,
       },
     ],
-    desc: 'Make dragon arrows, sell to general store',
+    desc: `Make ${name.toLowerCase()}, sell to general store`,
   };
 }
 
-
-function summoningMethod(name, actionXP, shards, primaryIngID, scrollID) {
+function summoningMethod(name, levelRequired, actionXP, shards, primaryIngID, scrollID) {
   return {
     name,
     skill: 'Summoning',
@@ -92,13 +91,120 @@ function summoningMethod(name, actionXP, shards, primaryIngID, scrollID) {
     ],
     requirements: [
       {
-        name: '96 Summoning',
+        name: `${levelRequired} Summoning`,
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>',
+    desc: `<a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Taverley Shop method</a>, ${name.toLowerCase()} pouches`,
   };
 }
 
+function dhideShieldMethod(name, levelRequired, actionXP, costPerAction) {
+  return {
+    name,
+    skill: 'Crafting',
+    actionXP,
+    actionsPerHour: 1820,
+    baseCost: `return (${costPerAction}) / this.actionXP`,
+    modifiers: [
+      raf,
+      pulse,
+      ava6,
+    ],
+    requirements: [
+      {
+        name: 'Modified Artisan outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: `${levelRequired} Crafting`,
+      },
+      {
+        name: 'Scroll of Proficiency',
+      },
+      {
+        name: 'Portable Crafters',
+        effect() {
+          return {base: 0.1};
+        },
+      },
+    ],
+    desc: `Make ${name.toLowerCase()} with yak`,
+  };
+}
+
+function cutGemMethod(name, levelRequired, actionXP, uncutID, cutID) {
+  return {
+    name,
+    skill: 'Crafting',
+    actionXP,
+    actionsPerHour: 5300,
+    baseCost: `return (0.95 * getPrice(${uncutID}) - 1.02 * getPrice(${cutID})) / this.actionXP`,
+    modifiers: [
+      raf,
+      pulse,
+      ava6,
+      {
+        name: 'Artisan outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: `${levelRequired} Crafting`,
+      },
+      {
+        name: 'Crystal Chisel',
+      },
+      {
+        name: 'Portable Crafters',
+        effect() {
+          return {base: 0.1};
+        },
+      },
+    ],
+    desc: `<a href="https://www.youtube.com/watch?v=PiwKyMAo4hA" target="_blank">Cut ${name.toLowerCase()}</a>, prices may differ if buying/selling in bulk`,
+  };
+}
+
+window.skillList = ['Attack', 'Defence', 'Strength', 'Constitution', 'Ranged', 'Prayer', 'Magic',
+  'Cooking', 'Woodcutting', 'Fletching', 'Fishing', 'Firemaking', 'Crafting', 'Smithing',
+  'Mining', 'Herblore', 'Agility', 'Thieving', 'Slayer', 'Farming', 'Runecrafting',
+  'Hunter', 'Construction', 'Summoning', 'Dungeoneering', 'Divination', 'Invention'];
+
+const prismania = window.skillList.map(skill =>
+  ({
+    name: 'Prismania',
+    skill,
+    base: 'return 10000000',
+    baseCost: 'return 40',
+    modifiers: [],
+    requirements: [
+      {
+        name: 'Get Bond',
+      },
+    ],
+    bonus: true,
+    spinner: true,
+    desc: 'You spin me right round',
+  }));
+const smouldering = window.skillList.map(skill => ({
+  name: 'Smouldering Lamps',
+  skill,
+  base: 'return 8000000',
+  baseCost: 'return 70',
+  modifiers: [],
+  requirements: [
+    {
+      name: 'Get Bond',
+    },
+  ],
+  spinner: true,
+  desc: 'You spin me right round',
+}));
 
 window.methods = [
   {
@@ -143,7 +249,40 @@ window.methods = [
     desc: 'wear boots, get XP',
     lossless: true,
   },
-  // attack - SW, aby demon wildy, PSD shapeshifters, aby demon, airut
+  // attack - SW, PSD shapeshifters, aby demon, airut
+  {
+    name: 'Abyssal Demons (wildy)',
+    skill: 'Attack',
+    actionXP: 661,
+    actionsPerHour: 1800,
+    baseCost: 'return 6000000 / this.base',
+    modifiers: [
+      raf,
+      ava6,
+    ],
+    requirements: [
+      {
+        name: 'Noxious Scythe',
+      },
+      {
+        name: '85 Slayer',
+      },
+      {
+        name: 'Demon slayer gear',
+        effect() {
+          return {bonus: 0.08};
+        },
+      },
+      {
+        name: 'Slayer contracts',
+        effect() {
+          return {bonus: 0.2};
+        },
+      },
+    ],
+    wildy: true,
+    desc: 'Loot with alt<a href="https://www.youtube.com/watch?v=RrIF_K9obQw" target="_blank">vid by Roskat</a>',
+  },
   {
     name: 'Flotsam Pawnbrokers',
     skill: 'Construction',
@@ -206,6 +345,7 @@ window.methods = [
         name: 'Monkey Butler (Can use Demon Butler if feel like it)',
       },
     ],
+    afk: true,
     desc: 'zzzz',
   },
   {
@@ -297,6 +437,7 @@ window.methods = [
         name: '94 Cooking',
       },
     ],
+    afk: true,
     desc: 'afk/altscape way of cooking rocktails',
   },
   {
@@ -323,7 +464,12 @@ window.methods = [
     ],
     desc: 'Make wines with yak',
   },
-  // crafting dstones, diamonds, black dhide, red dhide
+  dhideShieldMethod('Green d\'hide Shields', 64, 248, '(4 - 0.4) * getPrice(1745) - getPrice(25794)'),
+  dhideShieldMethod('Blue d\'hide Shields', 72, 280, '(4 - 0.35) * getPrice(2505) - getPrice(25796)'),
+  dhideShieldMethod('Red d\'hide Shields', 78, 312, '(4 - 0.3) * getPrice(2507) - getPrice(25798)'),
+  dhideShieldMethod('Black d\'hide Shields', 85, 344, '(4 - 0.25) * getPrice(2509) - getPrice(25800)'),
+  cutGemMethod('Diamonds', 43, 107.5, 1617, 1601),
+  cutGemMethod('Dragonstones', 55, 137.5, 1631, 1615),
   // defence - SW
   {
     name: 'Guthixian Caches',
@@ -405,10 +551,10 @@ window.methods = [
     ],
     desc: 'Make dragon darts, sell to general store',
   },
-  arrowMethod('Dragon arrows', 15, 11237, 240),
-  arrowMethod('Dark arrows', 17.5, 29729, 30),
-  arrowMethod('Rune arrows', 12.5, 892, 153),
-  arrowMethod('Broad arrows', 15, 44, 0),
+  arrowMethod('Dragon arrows', 90, 15, 11237, 240),
+  arrowMethod('Dark arrows', 95, 17.5, 29729, 30),
+  arrowMethod('Rune arrows', 75, 12.5, 892, 153),
+  arrowMethod('Broad arrows', 52, 15, 44, 0),
   {
     name: 'Overloads from supers',
     skill: 'Herblore',
@@ -546,13 +692,61 @@ window.methods = [
     ],
     desc: '<a href="https://docs.google.com/spreadsheets/d/1hYNMQ_2QjhebZJsMCXEGDarEekOT1uZiPGx0i26ILps/edit#gid=0" target="_blank">Slayer is situational, but this spreadsheet gives a decent view into tasks you should do</a>',
   },
-  // rune ceremonial daily, r2h/pl8leg
+  // r2h/pl8leg
+  {
+    name: 'Rune Ceremonial Sword',
+    skill: 'Smithing',
+    actionXP: 11000 * 1.1, // what is the baseXP of these???
+    actionsPerHour: 60,
+    baseCost: 'return 50 * getPrice(32092) / this.dailyXP',
+    modifiers: [
+      raf,
+      ava6,
+      {
+        name: 'Blacksmith outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: 'Falador Shield 4',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+      {
+        name: 'Tinker 3',
+        effect() {
+          return {base: 0.0375};
+        },
+      },
+    ],
+    requirements: [
+      {
+        name: '99 Smithing',
+      },
+      {
+        name: 'Daily challenge',
+        effect() {
+          return {bonus: 67395 / 145200}; // ???
+        },
+      },
+      {
+        name: 'Bonus Packs',
+        effect() {
+          return {bonus: 5 / 100}; // 50k bonus per 100 respect, 10k xp per respect
+        },
+      },
+    ],
+    daily: 'return 12 / this.actionsPerHour',
+    desc: '<a href="https://www.youtube.com/watch?v=bpvjOI3sJ6I" target="_blank">Of course, I fear no demon</a>',
+  },
   // str = att
-  summoningMethod('Pack Yak', 422.4 + 4.8, 211, 10818, 12435),
-  summoningMethod('Steel titan', 435.2 + 4.9, 178, 1119, 12825),
-  summoningMethod('Fire titan', 695.2 + 7.9, 198, 1442, 12824),
-  summoningMethod('Moss titan', 695.2 + 7.9, 202, 1440, 12824),
-  summoningMethod('Geyser titan', 783.2 + 8.9, 222, 1444, 12833),
+  summoningMethod('Pack Yak', 96, 422.4 + 4.8, 211, 10818, 12435),
+  summoningMethod('Steel titan', 99, 435.2 + 4.9, 178, 1119, 12825),
+  summoningMethod('Fire titan', 79, 695.2 + 7.9, 198, 1442, 12824),
+  summoningMethod('Moss titan', 79, 695.2 + 7.9, 202, 1440, 12824),
+  summoningMethod('Geyser titan', 89, 783.2 + 8.9, 222, 1444, 12833),
   // prifpocket, dwarf traders
   {
     name: 'Goebiebands',
@@ -607,4 +801,4 @@ window.methods = [
     desc: '<a href="https://www.youtube.com/watch?v=6XvOyUn6z_c" target="_blank">Cut divine yews with an extended divine location cap. Yews are hosted in w48 Burthorpe around reset time</a>',
   },
   // crystallize acadia, golden bamboo
-];
+].concat(prismania, smouldering);

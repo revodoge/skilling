@@ -17,6 +17,31 @@
       </div>
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
     </form>
+    <form class="row">
+      <div class="col-xs-0 col-md-3"></div>
+      <div class="form-group col-xs-4 col-md-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" v-model="spinner"> I ߷ my XP
+          </label>
+        </div>
+      </div>
+      <div class="form-group col-xs-4 col-md-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" v-model="afk"> I like to AFK
+          </label>
+        </div>
+      </div>
+      <div class="form-group col-xs-4 col-md-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" v-model="noWildy"> I'm scared of CPK
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-0 col-md-3"></div>
+    </form>
     <div class="row" id="boosts">
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
       <div class="col-xs-12 col-md-10 col-lg-8">
@@ -87,14 +112,19 @@
       return {
         boosts: {},
         methods: [],
-        rsn: 'Marina',
+        rsn: 'couchy',
         stats: {},
-        tvc: 10,
+        tvc: 50,
+        spinner: true,
+        afk: false,
+        noWildy: false,
       };
     },
     computed: {
       sortedMethods() {
-        const sorted = this.methods.sort((a, b) => { // sort methods by skill and efficiency
+        const sorted = this.methods.filter(a =>
+          (!a.spinner || this.spinner) && (a.afk || !this.afk) && (!a.wildy || !this.noWildy),
+        ).sort((a, b) => { // sort methods by skill and efficiency
           const skillA = a.skill;
           const skillB = b.skill;
           const costA = a.effectiveCost;
@@ -110,8 +140,8 @@
           const current = sorted[i];
           current.display = true;
           const previous = sorted[i - 1];
-          if (this.stats[current.skill] === 200000000 || (previous && !previous.daily && !previous.bonus &&
-            previous.skill === current.skill && !isNaN(current.effectiveCost))) {
+          if (this.stats[current.skill] === 200000000 || (previous && previous.skill === current.skill &&
+              ((!previous.daily && !previous.bonus) || !previous.display) && !isNaN(current.effectiveCost))) {
             current.display = false;
           }
         }
@@ -130,12 +160,8 @@
         const hiScoreUrl = 'https://cors-anywhere.herokuapp.com/http://services.runescape.com/m=hiscore/index_lite.ws';
         this.$http.get(hiScoreUrl, {params: {player: this.rsn}}).then((response) => {
           const skillXpList = response.body.split('\n').slice(1, 28).map(stats => parseInt(stats.split(',')[2], 10));
-          const skillList = ['Attack', 'Defence', 'Strength', 'Constitution', 'Ranged', 'Prayer', 'Magic',
-            'Cooking', 'Woodcutting', 'Fletching', 'Fishing', 'Firemaking', 'Crafting', 'Smithing',
-            'Mining', 'Herblore', 'Agility', 'Thieving', 'Slayer', 'Farming', 'Runecrafting',
-            'Hunter', 'Construction', 'Summoning', 'Dungeoneering', 'Divination', 'Invention'];
           const statsMap = {};
-          skillList.forEach((skill, index) => statsMap[skill] = skillXpList[index]);
+          window.skillList.forEach((skill, index) => statsMap[skill] = skillXpList[index]);
           this.stats = statsMap;
         }, (response) => {
           console.log(response.statusText);
