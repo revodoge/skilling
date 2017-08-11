@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len,prefer-arrow-callback */
 const urns = {
   name: 'Urns',
   effect() {
@@ -210,35 +210,39 @@ window.skillList = ['Attack', 'Defence', 'Strength', 'Constitution', 'Ranged', '
   'Mining', 'Herblore', 'Agility', 'Thieving', 'Slayer', 'Farming', 'Runecrafting',
   'Hunter', 'Construction', 'Summoning', 'Dungeoneering', 'Divination', 'Invention'];
 
-const prismania = window.skillList.map(skill => ({
-  name: 'Prismania',
-  skill,
-  base: 'return 10000000',
-  baseCost: 'return 40',
-  modifiers: [],
-  requirements: [
-    {
-      name: 'Get Bond',
-    },
-  ],
-  bonus: true,
-  spinner: true,
-  desc: 'You spin me right round',
-}));
-const smouldering = window.skillList.map(skill => ({
-  name: 'Smouldering Lamps',
-  skill,
-  base: 'return 8000000',
-  baseCost: 'return 70',
-  modifiers: [],
-  requirements: [
-    {
-      name: 'Get Bond',
-    },
-  ],
-  spinner: true,
-  desc: 'You spin me right round',
-}));
+const prismania = window.skillList.map(function (skill) {
+  return {
+    name: 'Prismania',
+    skill,
+    base: 'return 10000000',
+    baseCost: 'return 40',
+    modifiers: [],
+    requirements: [
+      {
+        name: 'Get Bond',
+      },
+    ],
+    bonus: true,
+    spinner: true,
+    desc: 'You spin me right round',
+  };
+});
+const smouldering = window.skillList.map(function (skill) {
+  return {
+    name: 'Smouldering Lamps',
+    skill,
+    base: 'return 8000000',
+    baseCost: 'return 70',
+    modifiers: [],
+    requirements: [
+      {
+        name: 'Get Bond',
+      },
+    ],
+    spinner: true,
+    desc: 'You spin me right round',
+  };
+});
 
 window.methods = [
   {
