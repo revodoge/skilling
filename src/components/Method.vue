@@ -47,6 +47,10 @@
         type: Number,
         required: true,
       },
+      alt: {
+        type: Number,
+        required: true,
+      },
     },
     data() {
       return {
@@ -86,16 +90,17 @@
           Object.assign({}, Object.assign(modifier, {disabled: !this.boosts[modifier.name]})));
       },
       cost() { // cost per XP after all boosts
-        return (this.baseCost / (1 + this.baseBoost) / (1 + this.bonusBoost));
+        return this.baseCost * (this.base === Infinity ? 1 : (this.base / this.xpRate));
       },
       dailyXP() { // how much XP a daily can give per day
         return Function(this.daily).apply(this) * this.xpRate;
       },
       effectiveCost() { // cost after considering time as money
-        return this.cost + (this.lossless ? 0 : (1000000 * this.tvc / this.xpRate));
+        const alt = this.data.alt ? this.data.alt : 0;
+        return this.cost + (this.lossless ? 0 : (1000000 * (this.tvc - this.alt * alt) / this.xpRate));
       },
       xpRate() { // XP rate after all boosts
-        return this.base * this.baseBoost * (1 + this.bonusBoost);
+        return this.base * (this.baseBoost * (1 + this.bonusBoost));
       },
     },
     mounted() {
@@ -139,14 +144,6 @@
       },
     },
     watch: {
-      cost: {
-        handler(cost) { // propagate the gp cost after boosts
-          if (!isNaN(cost)) {
-            this.$emit('cCalculated', this.data, cost);
-          }
-        },
-        immediate: true,
-      },
       dailyXP: {
         handler(amount) { // propagate the XP rate after boosts
           if (!isNaN(amount)) {
@@ -156,9 +153,9 @@
         immediate: true,
       },
       effectiveCost: {
-        handler(cost) { // propagate the cost accounting for time to the top to reorder the method display
-          if (!isNaN(cost)) {
-            this.$emit('valueCalculated', this.data, cost);
+        handler(eCost) { // propagate the cost accounting for time to the top to reorder the method display
+          if (!isNaN(eCost)) {
+            this.$emit('valueCalculated', this.data, eCost, this.cost);
           }
         },
         immediate: true,

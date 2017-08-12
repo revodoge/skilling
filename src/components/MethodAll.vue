@@ -96,11 +96,11 @@
             </thead>
             <tbody>
             <template v-for="methodData in sortedMethods">
-              <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :data="methodData" :display="methodData.display"
+              <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :data="methodData" :display="true"
                       :alt="alt" v-on:valueCalculated="updateMethodCost"
                       v-on:descriptionToggled="toggleDescription"></method>
               <method-desc :desc="methodData.desc"
-                           :display="methodData.display && methodData.descriptionDisplay"></method-desc>
+                           :display="true"></method-desc>
             </template>
             </tbody>
           </table>
@@ -117,7 +117,7 @@
 
   export default {
     components: {Method, MethodDesc},
-    name: 'method-table',
+    name: 'method-all',
     data() {
       return {
         boosts: {},
@@ -133,7 +133,7 @@
     },
     computed: {
       sortedMethods() {
-        const sorted = this.methods.filter(a =>
+        return this.methods.filter(a =>
           (!a.spinner || this.spinner) && (a.afk || !this.afk) && (!a.wildy || !this.noWildy),
         ).sort((a, b) => { // sort methods by skill and efficiency
           const skillA = a.skill;
@@ -147,16 +147,6 @@
           if (costA > costB) return 1;
           return 0;
         });
-        for (let i = 0; i < sorted.length; i++) { // only display the best non-daily for each skill
-          const current = sorted[i];
-          current.display = true;
-          const previous = sorted[i - 1];
-          if (this.stats[current.skill] === 200000000 || (previous && previous.skill === current.skill &&
-              ((!previous.daily && !previous.bonus) || !previous.display) && !isNaN(current.effectiveCost))) {
-            current.display = false;
-          }
-        }
-        return sorted;
       },
     },
     mounted() {

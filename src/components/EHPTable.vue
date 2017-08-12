@@ -1,13 +1,13 @@
 <template>
   <div>
-    <form class="row">
+    <form class="row" v-on:submit.prevent="onSubmit" v-on:submit.capture="fetchHiscore">
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
       <div class="col-xs-12 col-md-10 col-lg-8">
         <label for="rsn">Runescape Username</label>
         <span class="input-group">
           <input type="text" v-model="rsn" class="form-control" id="rsn">
           <span class="input-group-btn">
-            <button class="btn btn-default" type="button" v-on:click="fetchHiscore">Fetch stats</button>
+            <button class="btn btn-default" type="submit">Fetch stats</button>
           </span>
         </span>
       </div>
@@ -17,15 +17,16 @@
     <!--load all the methods with a 15M EHP to get the relative efficiency-->
     <template v-for="methodData in methods">
       <method :key="methodData.id" :tvc="15" :boosts="boosts" :data="methodData" :display="false"
-              v-on:dailyCalculated="updateMethodDaily" v-on:valueCalculated="updateMethodCost"
-              v-on:cCalculated="updateMethodC"></method>
+              :alt="9" v-on:dailyCalculated="updateMethodDaily" v-on:valueCalculated="updateMethodCost"></method>
     </template>
     <div class="row">
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
       <div class="col-xs-12 col-md-10 col-lg-8">
         <div class="table-responsive">
           <table class="table table-hover table-bordered" id="methods">
-            <caption>Player EHP (15M gp/hr TVC, counting in time needed to fund skills):</caption>
+            <caption>
+              Player EHP (15MM gp/hr TVC, counting in time needed to fund skills, 9MM gp/hr on alts for AFK skills):
+            </caption>
             <thead>
             <tr>
               <th style="width: 150px;">
@@ -156,7 +157,7 @@
         return skillRates;
       },
       userEHP() {
-        const ehpTable = {};
+        const ehpTable = {Overall: {current: 0, hoursDone: 0, remaining: 0, hoursLeft: 0, gpLeft: 0}};
         Object.keys(this.skillRates).forEach((skill) => {
           const current = this.stats[skill];
           const hours = this.skillRates[skill].hours;
@@ -168,6 +169,11 @@
           const hoursLeft = remainingPct * hours;
           const gpLeft = remainingPct * cost;
           ehpTable[skill] = {current, hoursDone, remaining, hoursLeft, gpLeft};
+          ehpTable.Overall.current += current;
+          ehpTable.Overall.hoursDone += hoursDone;
+          ehpTable.Overall.remaining += remaining;
+          ehpTable.Overall.hoursLeft += hoursLeft;
+          ehpTable.Overall.gpLeft += gpLeft;
         });
         return ehpTable;
       },
@@ -192,15 +198,10 @@
           console.log(response.statusText);
         });
       },
-      updateMethodCost(method, cost) {
-        if (method.effectiveCost !== cost) {
-          method.effectiveCost = cost;
-          this.methods.splice(this.methods.indexOf(method), 1, method);
-        }
-      },
-      updateMethodC(method, cost) {
-        if (method.realCost !== cost) {
-          method.realCost = cost;
+      updateMethodCost(method, eCost, rCost) {
+        if (method.effectiveCost !== eCost) {
+          method.effectiveCost = eCost;
+          method.realCost = rCost;
           this.methods.splice(this.methods.indexOf(method), 1, method);
         }
       },
