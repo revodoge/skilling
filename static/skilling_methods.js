@@ -65,7 +65,7 @@ function arrowMethod(name, levelRequired, actionXP, arrowheadID, sell) {
       },
       {name: `${levelRequired} Fletching`},
     ],
-    desc: `Make ${name.toLowerCase()}, sell to general store`,
+    desc: `Make ${name.toLowerCase()}${sell > 0 ? ', sell to general store' : ''}`,
   };
 }
 
@@ -255,6 +255,66 @@ const smouldering = window.skillList.map(function (skill) {
   };
 });
 
+const meleeMethods = [
+  // TODO: PSD shapeshifters, aby demon, airut
+  {
+    name: 'Abyssal Demons (wildy)',
+    actionXP: 661,
+    actionsPerHour: 1800,
+    baseCost: 'return -6000000 / this.base',
+    modifiers: [
+      raf,
+      ava6,
+    ],
+    requirements: [
+      {name: 'Noxious Scythe'},
+      {name: '85 Slayer'},
+      {name: 'Spring Cleaner'},
+      {
+        name: 'Demon slayer gear',
+        effect() {
+          return {bonus: 0.08};
+        },
+      },
+      {
+        name: 'Slayer contracts',
+        effect() {
+          return {bonus: 0.33};
+        },
+      },
+    ],
+    wildy: true,
+    desc: '<a href="https://www.youtube.com/watch?v=RrIF_K9obQw" target="_blank">Video by Roskat</a>, looting with alt highly recommended. + 130k ranged/def xp/hr from cannon and 145k prayer xp/hr from attuned ectoplasmator',
+  },
+  {
+    name: 'Shattered Worlds (melee)',
+    base: 'return 1610000',
+    baseCost: 'return 2500000 / this.base',
+    modifiers: [
+      raf,
+      ava6,
+    ],
+    requirements: [
+      {name: 'Noxious Scythe'},
+      {name: 'Vamp Scrim'},
+      {name: 'Combat Gear'},
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=GWAetPN8dZ0" target="_blank">Video by Jona</a>',
+  },
+];
+
+const attack = meleeMethods.map(function (m) {
+  return Object.assign({skill: 'Attack'}, m);
+});
+
+const strength = meleeMethods.map(function (m) {
+  return Object.assign({skill: 'Strength'}, m);
+});
+
+const defMelee = meleeMethods.map(function (m) {
+  return Object.assign({skill: 'Defence'}, m);
+});
+
 window.methods = [
   {
     name: 'Barbarian Assault',
@@ -291,53 +351,6 @@ window.methods = [
     afk: true,
     desc: 'wear boots, get XP',
   },
-  // TODO: attack - PSD shapeshifters, aby demon, airut
-  {
-    name: 'Abyssal Demons (wildy)',
-    skill: 'Attack',
-    actionXP: 661,
-    actionsPerHour: 1800,
-    baseCost: 'return -6000000 / this.base',
-    modifiers: [
-      raf,
-      ava6,
-    ],
-    requirements: [
-      {name: 'Noxious Scythe'},
-      {name: '85 Slayer'},
-      {name: 'Spring Cleaner'},
-      {
-        name: 'Demon slayer gear',
-        effect() {
-          return {bonus: 0.08};
-        },
-      },
-      {
-        name: 'Slayer contracts',
-        effect() {
-          return {bonus: 0.33};
-        },
-      },
-    ],
-    wildy: true,
-    desc: '<a href="https://www.youtube.com/watch?v=RrIF_K9obQw" target="_blank">Video by Roskat</a>, looting with alt highly recommended. + 130k ranged/def xp/hr from cannon and 145k prayer xp/hr from attuned ectoplasmator',
-  },
-  {
-    name: 'Shattered Worlds (melee)',
-    skill: 'Attack',
-    base: 'return 1610000',
-    baseCost: 'return 2500000 / this.base',
-    modifiers: [
-      raf,
-      ava6,
-    ],
-    requirements: [
-      {name: 'Noxious Scythe'},
-      {name: 'Vamp Scrim'},
-      {name: 'Combat Gear'},
-    ],
-    desc: '<a href="https://www.youtube.com/watch?v=GWAetPN8dZ0" target="_blank">Video by Jona</a>',
-  },
   {
     name: 'Flotsam Pawnbrokers',
     skill: 'Construction',
@@ -365,7 +378,7 @@ window.methods = [
       {name: 'Scroll of proficiency'},
       {name: 'Monkey Butler (Can use Demon Butler if you feel like it)'},
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=h6hRV9RuViw" target="_blank">Video by NRiver</a>, don\'t use AHK or you\'ll face the same fate as Damp Cat',
+    desc: '<a href="https://www.youtube.com/watch?v=h6hRV9RuViw" target="_blank">Video by NRiver</a>, don\'t use AHK or you\'ll face the same fate as Damp Cat v1',
   },
   {
     name: 'Mahogany Table Flatpack',
@@ -552,7 +565,7 @@ window.methods = [
       {
         name: 'Arc contract',
         effect() {
-          return {bonus: 0.427 * 360 / 53.5};
+          return {bonus: 0.25 * 360 / 53.5};
         },
       },
       {
@@ -566,7 +579,7 @@ window.methods = [
     daily: 'return 0.5',
     afk: true,
     alt: 1,
-    desc: 'Do a flagged ancestral energy plot with contracts',
+    desc: 'Do a flagged ancestral energy plot with contracts, Energy-gathering scrimshaw and Elder Divination Outfit will speed this up a bit',
   },
   {
     name: 'Ancestral Energy',
@@ -626,6 +639,17 @@ window.methods = [
     requirements: [{name: '120 Dungeoneering'}],
     daily: 'return 2 / this.actionsPerHour',
     desc: '<a href="https://www.youtube.com/watch?v=4zKvqL7zmJs" target="_blank">adrenaline91 exposed</a>',
+  },
+  {
+    name: '5:5 Larges',
+    skill: 'Dungeoneering',
+    actionXP: 200000, // need to test
+    actionsPerHour: 8.5,
+    baseCost: 'return 0',
+    modifiers: [],
+    requirements: [{name: '120 Dungeoneering'}],
+    desc: `<a href="https://docs.google.com/document/d/1Kluwf-R4wPAwRxC4vXcyIfrTVrzWaVzuu2BzJUXihYI" target="_blank">Guide by DG Service FC</a>, rates depend on team ability<br>
+<a href="https://www.youtube.com/watch?v=LbLiwr1f4Uw" target="_blank">What not to do ;)</a>`,
   },
   {
     name: 'Tree Run',
@@ -701,9 +725,43 @@ window.methods = [
     desc: '<a href="https://www.youtube.com/watch?v=Ff5Dgq8lZnA" target="_blank">Video by Dreyri the #1 Ironman</a>',
   },
   {
+    name: 'Wobbegongs with Skillchompas and Scrimshaw',
+    skill: 'Fishing',
+    actionXP: (0.205 * (0.85 * 1.1 + 0.15 * (922.5 / 682.5)) + 0.785 * 0.05) * 682.5, // 20.5% success, 15% scrimshaw, 10% furnace proc on remaining
+    actionsPerHour: 1500,
+    baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(555) + getPrice(20344)) / 9500 + getPrice(33896) / 3 / this.base',
+    modifiers: [
+      raf,
+      urnEnhancer,
+      ava6,
+    ],
+    requirements: [
+      {name: '96 Fishing'},
+      {
+        name: 'Fishing outfit',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+      {name: 'T5 Call of the Seas'},
+      {name: 'Fury Shark Outfit'},
+      {
+        name: 'Skillchompa',
+      },
+      {
+        name: 'Crystal Rod w/ Honed 5 + Furnace 2',
+      },
+      urns,
+    ],
+    afk: true,
+    alt: 1,
+    desc: `<a href="https://www.youtube.com/watch?v=9ixyY9Wfzns" target="_blank">Video by Revodoge</a>, Whopper-baiting scrimshaw also makes spots last longer<br>
+ Scrim makes xp/hr worse for doing contracts (Price is based on azure skillchompa but any type works fine)`,
+  },
+  {
     name: 'Wobbegongs with Skillchompas',
     skill: 'Fishing',
-    actionXP: (0.21 * 1.1 + 0.79 * 0.05) * 682.5, // 21% success, 10% furnace proc on success
+    actionXP: (0.205 * 1.1 + 0.785 * 0.05) * 682.5, // 20.5% success, 10% furnace proc on success
     actionsPerHour: 1500,
     baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(555) + getPrice(20344)) / 9500',
     modifiers: [
@@ -731,13 +789,13 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: '<a href="https://www.youtube.com/watch?v=Ot5nrMIYKfw" target="_blank">Video by Marina</a>, best to have a double wobb island flagged as a daily<br/>(Price is based on azure skillchompa but any type works fine)',
+    desc: `<a href="https://www.youtube.com/watch?v=Ot5nrMIYKfw" target="_blank">Video by Marina</a> (Price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Wobbegongs',
     skill: 'Fishing',
     actionXP: 682.5,
-    actionsPerHour: 0.21 * 1500, // 21% success, 4 ticks per attempt
+    actionsPerHour: 0.205 * 1500, // 20.5% success, 4 ticks per attempt
     baseCost: 'return (getPrice(555) + getPrice(20344)) / 9500',
     modifiers: [
       raf,
@@ -999,7 +1057,8 @@ window.methods = [
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=wq4FA8qxAZ4" target="_blank">Video by Persiflage</a>, use a BoB<br>Can also be done losslessly with other skills such as Herblore, Cooking',
+    desc: `<a href="https://www.youtube.com/watch?v=wq4FA8qxAZ4" target="_blank">Video by Persiflage</a>, use a BoB<br>
+Can also be done losslessly with other skills such as Herblore, Cooking`,
   },
   {
     name: '5-tick cleansing crystals',
@@ -1225,7 +1284,6 @@ window.methods = [
     ],
     desc: 'Make Rune 2h/platelegs/plateskirts with a Mammoth, can sell in bulk to alchers',
   },
-  // TODO: str = att
   summoningMethod('Pack Yak', 96, 422.4 + 4.8, 211, 10818, 12435),
   summoningMethod('Steel titan', 99, 435.2 + 4.9, 178, 1119, 12825),
   summoningMethod('Fire titan', 79, 695.2 + 7.9, 198, 1442, 12824),
@@ -1369,4 +1427,4 @@ window.methods = [
     ],
     desc: '<a href="https://www.youtube.com/watch?v=PCf8KBDuS04">Video by Maikeru</a>',
   }, // TODO: bamboo for AFK?
-].concat(prismania, smouldering);
+].concat(prismania, smouldering, attack, strength, defMelee);
