@@ -190,7 +190,7 @@ function wildyAltarMethod(name, actionXP, itemID) {
       },
     ],
     wildy: true,
-    desc: 'Run bones with alt',
+    desc: '<a href="https://www.youtube.com/watch?v=7IO5E2Lzggo" target="_blank">Run bones with alt</a>',
   };
 }
 
@@ -395,7 +395,7 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: '',
+    desc: 'Don\'t do it unless you have nothing else to AFK',
   },
   {
     name: 'Combat',
@@ -480,7 +480,7 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: '',
+    desc: '<a href="https://clips.twitch.tv/FlirtyZealousNoodleGivePLZ" target="_blank">Video by Dragonseance</a>',
   },
   {
     name: 'Wines',
@@ -703,9 +703,9 @@ window.methods = [
   {
     name: 'Wobbegongs with Skillchompas',
     skill: 'Fishing',
-    actionXP: 682.5,
-    actionsPerHour: 0.21 * 1500, // 21% success, 4 ticks per attempt
-    baseCost: 'return  getPrice(31597) / this.actionXP / (0.21 + 0.79 * .05) + (getPrice(555) + getPrice(20344)) / 9500',
+    actionXP: (0.21 * 1.1 + 0.79 * 0.05) * 682.5, // 21% success, 10% furnace proc on success
+    actionsPerHour: 1500,
+    baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(555) + getPrice(20344)) / 9500',
     modifiers: [
       raf,
       urnEnhancer,
@@ -723,15 +723,9 @@ window.methods = [
       {name: 'Fury Shark Outfit'},
       {
         name: 'Skillchompa',
-        effect() {
-          return {base: 0.79 / 0.21 * 0.05}; // the 10% XP on success doesn't work
-        },
       },
       {
         name: 'Crystal Rod w/ Honed 5 + Furnace 2',
-        effect() {
-          return {base: 0.1};
-        },
       },
       urns,
     ],
@@ -1350,12 +1344,6 @@ window.methods = [
       raf,
       urnEnhancer,
       ava6,
-      {
-        name: 'Furnace 2',
-        effect() {
-          return {base: 0.1};
-        },
-      },
     ],
     requirements: [
       {name: '47 Woodcutting'},
@@ -1363,6 +1351,12 @@ window.methods = [
         name: 'Lumberjack clothing',
         effect() {
           return {bonus: 0.05};
+        },
+      },
+      {
+        name: 'Crystal Hatchet w/ Honed 5 + Furnace 2',
+        effect() {
+          return {base: 0.1};
         },
       },
       {

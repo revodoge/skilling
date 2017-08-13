@@ -1,16 +1,14 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-static-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand">
-            ⚽
-          </a>
+          <span class="navbar-brand">⚽</span>
         </div>
         <ul class="nav navbar-nav">
-          <li><router-link to="/methods">Efficient Skilling Methods</router-link></li>
-          <li><router-link to="/ehp">EHP</router-link></li>
-          <li><router-link to="/all">All Skilling Methods</router-link></li>
+          <li><a href="#/methods">Efficient Skilling Methods</a></li>
+          <li><a href="#/ehp">EHP</a></li>
+          <li><a href="#/all">All Skilling Methods</a></li>
         </ul>
       </div>
     </nav>
@@ -31,12 +29,15 @@
 </script>
 
 <style>
+  nav {
+    font-family: 'Comic Sans MS', sans-serif;
+  }
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    margin-top: 60px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
