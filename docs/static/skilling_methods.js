@@ -69,13 +69,13 @@ function arrowMethod(name, levelRequired, actionXP, arrowheadID, sell) {
   };
 }
 
-function summoningMethod(name, levelRequired, actionXP, shards, primaryIngID, scrollID) {
+function summoningMethod(name, levelRequired, actionXP, shards, storeCost, primaryIngID, scrollID) {
   return {
     name,
     skill: 'Summoning',
     actionXP,
     actionsPerHour: 16750,
-    baseCost: `return (${shards} * 25 + getPrice(${primaryIngID}) - 10 * getPrice(${scrollID})) / this.actionXP`,
+    baseCost: `return (${shards} * 25 + ${storeCost} + getPrice(${primaryIngID}) - 10 * getPrice(${scrollID})) / this.actionXP`,
     modifiers: [
       ava6,
       raf,
@@ -1284,11 +1284,11 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     ],
     desc: 'Make Rune 2h/platelegs/plateskirts with a Mammoth, can sell in bulk to alchers',
   },
-  summoningMethod('Pack Yak', 96, 422.4 + 4.8, 211, 10818, 12435),
-  summoningMethod('Steel titan', 99, 435.2 + 4.9, 178, 1119, 12825),
-  summoningMethod('Fire titan', 79, 695.2 + 7.9, 198, 1442, 12824),
-  summoningMethod('Moss titan', 79, 695.2 + 7.9, 202, 1440, 12824),
-  summoningMethod('Geyser titan', 89, 783.2 + 8.9, 222, 1444, 12833),
+  summoningMethod('Pack Yak', 96, 422.4 + 4.8, 211, 50 - 15, 10818, 12435),
+  summoningMethod('Steel titan', 99, 435.2 + 4.9, 178, 2000 - 600, 1119, 12825),
+  summoningMethod('Fire titan', 79, 695.2 + 7.9, 198, 4 - 1, 1442, 12824),
+  summoningMethod('Moss titan', 79, 695.2 + 7.9, 202, 4 - 1, 1440, 12824),
+  summoningMethod('Geyser titan', 89, 783.2 + 8.9, 222, 4 - 1, 1444, 12833),
   {
     name: 'Dwarf Traders',
     skill: 'Thieving',
