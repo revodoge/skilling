@@ -3,11 +3,11 @@
     <form class="row">
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
       <div class="form-group col-xs-6 col-md-5 col-lg-4">
-        <label for="tvc">MM GP/hr my Time is Worth</label>
+        <label for="tvc">MM GP/hr my time is worth</label>
         <input v-model.number="tvc" type="number" class="form-control" id="tvc">
       </div>
       <div class="form-group col-xs-6 col-md-5 col-lg-4">
-        <label for="alt" id="altLabel">MM GP/hr My Alt Makes (0 = no alt)*
+        <label for="alt" id="altLabel">MM GP/hr my alt makes (0 = no alt)*
           <span>alt is assumed to only be used for AFK skills, make a copy if you want to customize it to your usage</span></label>
         <input v-model.number="alt" type="number" class="form-control" id="alt">
       </div>

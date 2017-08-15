@@ -25,7 +25,7 @@
         <div class="table-responsive">
           <table class="table table-hover table-bordered" id="methods">
             <caption>
-              Player EHP (15MM gp/hr TVC, counting in time needed to fund skills, 9MM gp/hr on alts for AFK skills):
+              Player EHP (15MM gp/hr TVC, counting in time needed to fund skills, 9MM gp/hr on alts for AFK skills, 800 days max of dailies):
             </caption>
             <thead>
             <tr>
