@@ -27,29 +27,36 @@
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
     </form>
     <form class="row">
-      <div class="col-xs-0 col-md-3"></div>
-      <div class="form-group col-xs-4 col-md-2">
+      <div class="col-xs-0 col-md-2"></div>
+      <div class="form-group col-xs-3 col-md-2">
         <div class="checkbox">
           <label>
-            <input type="checkbox" v-model="spinner"> I ߷ my XP
+            <input type="checkbox" v-model="spinner"> You ߷ me right 'round
           </label>
         </div>
       </div>
-      <div class="form-group col-xs-4 col-md-2">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" v-model="afk"> I like to AFK
-          </label>
-        </div>
-      </div>
-      <div class="form-group col-xs-4 col-md-2">
+      <div class="form-group col-xs-3 col-md-2">
         <div class="checkbox">
           <label>
             <input type="checkbox" v-model="noWildy"> I'm scared of CPK
           </label>
         </div>
       </div>
-      <div class="col-xs-0 col-md-3"></div>
+      <div class="form-group col-xs-3 col-md-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" v-model="afk"> I like to AFK
+          </label>
+        </div>
+      </div>
+      <div class="form-group col-xs-3 col-md-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" v-model="triHard"> I'm a TriHard
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-0 col-md-2"></div>
     </form>
     <div class="row" id="boosts">
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
@@ -128,13 +135,15 @@
         alt: 0,
         spinner: true,
         afk: false,
+        triHard: true,
         noWildy: false,
       };
     },
     computed: {
       sortedMethods() {
         const sorted = this.methods.filter(a =>
-          (!a.spinner || this.spinner) && (a.afk || !this.afk) && (!a.wildy || !this.noWildy),
+          (!a.spinner || this.spinner) && (!a.triHard || this.triHard)
+          && (a.afk || !this.afk) && (!a.wildy || !this.noWildy),
         ).sort((a, b) => { // sort methods by skill and efficiency
           const skillA = a.skill;
           const skillB = b.skill;
@@ -189,6 +198,18 @@
         if (method.effectiveCost !== cost) {
           method.effectiveCost = cost;
           this.methods.splice(this.methods.indexOf(method), 1, method);
+        }
+      },
+    },
+    watch: {
+      afk(afk) {
+        if (afk) {
+          this.triHard = false;
+        }
+      },
+      triHard(triHard) {
+        if (triHard) {
+          this.afk = false;
         }
       },
     },

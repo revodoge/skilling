@@ -1,12 +1,12 @@
 /* eslint-disable max-len,prefer-arrow-callback */
 const urns = {
-  name: 'Urns',
+  name: 'Decorated urns',
   effect() {
     return {bonus: 0.2};
   },
 };
 const urnEnhancer = {
-  name: 'Urn Enhancer',
+  name: 'Urn enhancer',
   effect() {
     return {bonus: 0.05};
   },
@@ -19,20 +19,20 @@ const raf = {
 };
 
 const ava3 = {
-  name: 'Avatar',
+  name: 'Avatar (3%)',
   effect() {
     return {bonus: 0.03};
   },
 };
 
 const ava6 = {
-  name: 'Avatar',
+  name: 'Avatar (6%)',
   effect() {
     return {bonus: 0.06};
   },
 };
 const pulse = {
-  name: 'Pulse Core',
+  name: 'Pulse core',
   effect() {
     return {bonus: 0.1};
   },
@@ -57,13 +57,13 @@ function arrowMethod(name, levelRequired, actionXP, arrowheadID, sell) {
       ava6,
     ],
     requirements: [
+      {name: `${levelRequired} Fletching`},
       {
-        name: 'Portable Fletchers',
+        name: 'Portable fletcher',
         effect() {
           return {base: 0.1};
         },
       },
-      {name: `${levelRequired} Fletching`},
     ],
     desc: `Make ${name.toLowerCase()}${sell > 0 ? ', sell to general store' : ''}`,
   };
@@ -107,22 +107,22 @@ function dhideShieldMethod(name, levelRequired, actionXP, costPerAction) {
       ava6,
     ],
     requirements: [
-      {
-        name: 'Modified Artisan\'s outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
       {name: `${levelRequired} Crafting`},
-      {name: 'Scroll of Proficiency'},
+      {name: 'Scroll of dexterity'},
       {
-        name: 'Portable Crafters',
+        name: 'Portable crafter',
         effect() {
           return {base: 0.1};
         },
       },
+      {
+        name: 'Modified artisan\'s outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
     ],
-    desc: `Make ${name.toLowerCase()} with a Mammoth`,
+    desc: `Make ${name.toLowerCase()} with a mammoth, sell in bulk on forums`,
   };
 }
 
@@ -140,29 +140,29 @@ function cutGemMethod(name, levelRequired, actionXP, uncutID, cutID) {
     ],
     requirements: [
       {name: `${levelRequired} Crafting`},
+      {name: 'Crystal chisel'},
+      {
+        name: 'Portable crafter',
+        effect() {
+          return {base: 0.1};
+        },
+      },
       {
         name: 'Artisan\'s outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
-      {name: 'Crystal Chisel'},
-      {
-        name: 'Portable Crafters',
-        effect() {
-          return {base: 0.1};
-        },
-      },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=PiwKyMAo4hA" target="_blank">Video by Persiflage</a>, prices may differ if buying/selling in bulk',
+    desc: '<a href="https://www.youtube.com/watch?v=PiwKyMAo4hA" target="_blank">Video by Persiflage</a>, prices will differ if buying/selling in bulk on forums',
   };
 }
 
-function wildyAltarMethod(name, actionXP, itemID) {
+function wildyAltarMethod(name, boneXP, itemID) {
   return {
     name: `${name} in wilderness`,
     skill: 'Prayer',
-    actionXP,
+    actionXP: boneXP * 3.5,
     actionsPerHour: 2000,
     baseCost: `return 0.98 * getPrice(${itemID}) / this.actionXP`,
     modifiers: [
@@ -170,20 +170,15 @@ function wildyAltarMethod(name, actionXP, itemID) {
       ava6,
     ],
     requirements: [
+      {name: 'Chaos Temple (Wilderness)'},
       {
-        name: 'Chaos Altar in Wildy',
-        effect() {
-          return {base: 2.5};
-        },
-      },
-      {
-        name: 'Modified First Age Outfit',
+        name: 'Modified first age outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
       {
-        name: 'Perfect Juju Prayer Potion',
+        name: 'Perfect juju prayer potion',
         effect() {
           return {base: 0.05};
         },
@@ -208,13 +203,13 @@ function altarMethod(name, boneXP, itemID) {
     requirements: [
       {name: 'Gilded Altar'},
       {
-        name: 'Modified First Age Outfit',
+        name: 'Modified first age outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
       {
-        name: 'Perfect Juju Prayer Potion',
+        name: 'Perfect juju prayer potion',
         effect() {
           return {base: 0.05};
         },
@@ -267,9 +262,9 @@ const meleeMethods = [
       ava6,
     ],
     requirements: [
-      {name: 'Noxious Scythe'},
       {name: '85 Slayer'},
-      {name: 'Spring Cleaner'},
+      {name: 'Noxious scythe'},
+      {name: 'Spring cleaner'},
       {
         name: 'Demon slayer gear',
         effect() {
@@ -277,7 +272,7 @@ const meleeMethods = [
         },
       },
       {
-        name: 'Slayer contracts',
+        name: 'Slayer contract',
         effect() {
           return {bonus: 0.33};
         },
@@ -295,9 +290,9 @@ const meleeMethods = [
       ava6,
     ],
     requirements: [
-      {name: 'Noxious Scythe'},
-      {name: 'Vamp Scrim'},
-      {name: 'Combat Gear'},
+      {name: 'Noxious scythe'},
+      {name: 'Vamp scrim'},
+      {name: 'Combat gear'},
     ],
     desc: '<a href="https://www.youtube.com/watch?v=GWAetPN8dZ0" target="_blank">Video by Jona</a>',
   },
@@ -335,17 +330,17 @@ window.methods = [
     baseCost: 'return getPrice(30915) / this.actionXP',
     modifiers: [
       raf,
-      {
-        name: 'Nimble Outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
       ava3,
     ],
     requirements: [
-      {name: 'Silverhawk boots'},
       {name: '99 Agility'},
+      {name: 'Silverhawk boots'},
+      {
+        name: 'Nimble boots',
+        effect() {
+          return {bonus: 0.01};
+        },
+      },
     ],
     lossless: true,
     afk: true,
@@ -363,20 +358,20 @@ window.methods = [
     ],
     requirements: [
       {name: '73 Construction'},
-      {
-        name: 'God Chisel',
-        effect() {
-          return {bonus: 0.01};
-        },
-      },
+      {name: 'Monkey butler (or demon butler)'},
+      {name: 'Scroll of proficiency'},
       {
         name: 'Constructor\'s outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
-      {name: 'Scroll of proficiency'},
-      {name: 'Monkey Butler (Can use Demon Butler if you feel like it)'},
+      {
+        name: 'God chisel',
+        effect() {
+          return {bonus: 0.01};
+        },
+      },
     ],
     desc: '<a href="https://www.youtube.com/watch?v=h6hRV9RuViw" target="_blank">Video by NRiver</a>, don\'t use AHK or you\'ll face the same fate as Damp Cat v1',
   },
@@ -392,23 +387,23 @@ window.methods = [
     ],
     requirements: [
       {name: '52 Construction'},
-      {
-        name: 'God Chisel',
-        effect() {
-          return {bonus: 0.01};
-        },
-      },
+      {name: 'Monkey butler (or demon butler)'},
       {
         name: 'Constructor\'s outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
-      {name: 'Monkey Butler (Can use Demon Butler if you feel like it)'},
+      {
+        name: 'God chisel',
+        effect() {
+          return {bonus: 0.01};
+        },
+      },
     ],
     afk: true,
     alt: 1,
-    desc: 'Don\'t do it unless you have nothing else to AFK',
+    desc: 'Not recommended',
   },
   {
     name: 'Combat',
@@ -432,27 +427,27 @@ window.methods = [
       urnEnhancer,
     ],
     requirements: [
-      {name: 'Cooking Gauntlets/Cooking Skillcape'},
+      {name: '94 Cooking'},
+      {name: 'Cooking gauntlets/skillcape'},
       {
-        name: 'Dwarven Army Axe',
-        effect() {
-          return {bonus: 3 / 225 / 1.215};
-        },
-      },
-      {
-        name: 'Portable Ranges',
+        name: 'Portable range',
         effect() {
           return {base: 0.215};
         },
       },
+      urns,
       {
-        name: 'Modified Sous chef\'s outfit',
+        name: 'Modified sous chef\'s outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
-      urns,
-      {name: '94 Cooking'},
+      {
+        name: 'Dwarven army axe',
+        effect() {
+          return {bonus: 3 / 225 / 1.215};
+        },
+      },
     ],
     desc: '<a href="https://www.youtube.com/watch?v=OMlT6PzmEjE" target="_blank">Video by Efficiency Experts Youtube</a>',
   },
@@ -469,27 +464,27 @@ window.methods = [
       urnEnhancer,
     ],
     requirements: [
-      {name: 'Cooking Gauntlets/Cooking Skillcape'},
+      {name: '94 Cooking'},
+      {name: 'Cooking gauntlets/skillcape'},
       {
-        name: 'Dwarven Army Axe',
-        effect() {
-          return {bonus: 3 / 225 / 1.215};
-        },
-      },
-      {
-        name: 'Portable Ranges',
+        name: 'Portable range',
         effect() {
           return {base: 0.215};
         },
       },
+      urns,
       {
-        name: 'Modified Sous chef\'s outfit',
+        name: 'Modified sous chef\'s outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
-      urns,
-      {name: '94 Cooking'},
+      {
+        name: 'Dwarven army axe',
+        effect() {
+          return {bonus: 3 / 225 / 1.215};
+        },
+      },
     ],
     afk: true,
     alt: 1,
@@ -507,13 +502,13 @@ window.methods = [
       ava6,
     ],
     requirements: [
+      {name: '35 Cooking'},
       {
-        name: 'Souf Chef Outfit',
+        name: 'Sous chef\'s outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
-      {name: '35 Cooking'},
     ],
     desc: '<a href="https://www.youtube.com/watch?v=9fAn3R76aUA" target="_blank">Video by Persiflage</a>, use a BoB',
   },
@@ -533,8 +528,8 @@ window.methods = [
       ava3,
     ],
     requirements: [
-      {name: 'Mechanized Chins'},
-      {name: 'Combat Gear'},
+      {name: 'Mechanized chins'},
+      {name: 'Combat gear'},
     ],
     desc: '<a href="https://www.youtube.com/watch?v=x4Yo8gN1dME&t=119" target="_blank">Video by Jona</a>',
   },
@@ -568,17 +563,18 @@ window.methods = [
           return {bonus: 0.25 * 360 / 53.5};
         },
       },
+      urns,
       {
         name: 'Diviner\'s outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
-      urns,
     ],
     daily: 'return 0.5',
     afk: true,
     alt: 1,
+    // TODO: add video
     desc: 'Do a flagged ancestral energy plot with contracts, Energy-gathering scrimshaw and Elder Divination Outfit will speed this up a bit',
   },
   {
@@ -594,13 +590,13 @@ window.methods = [
     ],
     requirements: [
       {name: '95 Divination'},
+      urns,
       {
         name: 'Diviner\'s outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
-      urns,
     ],
     afk: true,
     alt: 1,
@@ -618,15 +614,15 @@ window.methods = [
       ava6,
     ],
     requirements: [
-      {name: 'Divination Skillcape'},
+      {name: 'Divination skillcape'},
       {
-        name: 'Modified Diviner\'s outfit',
+        name: 'Modified diviner\'s outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
     ],
-    desc: 'Buy from forums. Cost here is assumed at buying for 400 each',
+    desc: 'Buy from forums. Cost here is assumed at buying for 400 each <a href="https://www.youtube.com/watch?v=IPQPW8vgL4o" target="_blank">RIP 2-ticking</a>',
   },
   // TODO: real dg, challenge
   {
@@ -657,24 +653,24 @@ window.methods = [
     base: `treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;
     treesThatCantDie = 15000 + 8500 + 7 * 6380.4;
     return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10`,
-    baseCost: `const xp = this.dailyXP;
-    const cost = 12 * getPrice(5316) + getPrice(5290) + getPrice(31437) / 3 + 7 * (getPrice(5288) + 10 * getPrice(2114) - 6 * getPrice(5972)) + 64 / 3 * (1500 + getPrice(6034));
-    return cost / xp + (getPrice(561) + getPrice(40838)) / 7000`,
+    baseCost: `
+    const cost = 12 * 0.9 * getPrice(5316) + 0.9 * getPrice(5290) + 0.9 * getPrice(31437) / 3 + 7 * (0.9 * getPrice(5288) + 10 * getPrice(2114) - 6 * getPrice(5972)) + 64 / 3 * (1500 + getPrice(6034));
+    return cost / this.dailyXP + (getPrice(561) + getPrice(40838)) / 7000`,
     modifiers: [
       raf,
       pulse,
       ava6,
       urnEnhancer,
+    ],
+    requirements: [
+      {name: '94 Farming'},
+      urns,
       {
         name: 'Farmer\'s outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
-    ],
-    requirements: [
-      {name: '94 Farming'},
-      urns,
     ],
     daily: 'return 10 / 60',
     // TODO: add updated videos with bladed dive
@@ -687,7 +683,7 @@ window.methods = [
     actionsPerHour: 384 * 60 / 4, // 4 mins including set up
     baseCost: 'return getPrice(1513) / this.actionXP',
     modifiers: [],
-    requirements: [{name: 'Book of Char'}],
+    requirements: [{name: 'Book of char'}],
     daily: 'return 384 / this.actionsPerHour',
     desc: '<a href="https://www.reddit.com/r/NRiver/comments/3z99jl/book_of_char/" target="_blank">Guide by NRiver</a>, use Elder logs if limiting factor',
   },
@@ -714,7 +710,7 @@ window.methods = [
     ],
     requirements: [
       {name: '83 Woodcutting'},
-      {name: 'Superheat Form'},
+      {name: 'Superheat form'},
       {
         name: 'Ring of fire + Flame gloves',
         effect() {
@@ -727,7 +723,7 @@ window.methods = [
   {
     name: 'Wobbegongs with Skillchompas and Scrimshaw',
     skill: 'Fishing',
-    actionXP: (0.205 * (0.85 * 1.1 + 0.15 * (922.5 / 682.5)) + 0.785 * 0.05) * 682.5, // 20.5% success, 15% scrimshaw, 10% furnace proc on remaining
+    actionXP: (0.205 * (0.85 * 1.1 + 0.15 * (922.5 / 682.5)) + 0.795 * 0.05) * 682.5, // 20.5% success, 15% scrimshaw, 10% furnace proc on remaining
     actionsPerHour: 1500,
     baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(555) + getPrice(20344)) / 9500 + getPrice(33896) / 3 / this.base',
     modifiers: [
@@ -737,21 +733,18 @@ window.methods = [
     ],
     requirements: [
       {name: '96 Fishing'},
+      {name: 'T5 Call of the seas aura'},
+      {name: 'Perfect juju fishing potion'},
+      {name: 'Crystal rod w/ Honed 5 + Furnace 2'},
+      urns,
+      {name: 'Fury shark outfit'},
+      {name: 'Skillchompas'},
       {
         name: 'Fishing outfit',
         effect() {
           return {bonus: 0.05};
         },
       },
-      {name: 'T5 Call of the Seas'},
-      {name: 'Fury Shark Outfit'},
-      {
-        name: 'Skillchompa',
-      },
-      {
-        name: 'Crystal Rod w/ Honed 5 + Furnace 2',
-      },
-      urns,
     ],
     afk: true,
     alt: 1,
@@ -761,7 +754,7 @@ window.methods = [
   {
     name: 'Wobbegongs with Skillchompas',
     skill: 'Fishing',
-    actionXP: (0.205 * 1.1 + 0.785 * 0.05) * 682.5, // 20.5% success, 10% furnace proc on success
+    actionXP: (0.205 * 1.1 + 0.795 * 0.05) * 682.5, // 20.5% success, 10% furnace proc on success
     actionsPerHour: 1500,
     baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(555) + getPrice(20344)) / 9500',
     modifiers: [
@@ -771,30 +764,27 @@ window.methods = [
     ],
     requirements: [
       {name: '96 Fishing'},
+      {name: 'T5 Call of the seas aura'},
+      {name: 'Perfect juju fishing potion'},
+      {name: 'Crystal rod w/ Honed 5 + Furnace 2'},
+      urns,
+      {name: 'Fury shark outfit'},
+      {name: 'Skillchompas'},
       {
         name: 'Fishing outfit',
         effect() {
           return {bonus: 0.05};
         },
       },
-      {name: 'T5 Call of the Seas'},
-      {name: 'Fury Shark Outfit'},
-      {
-        name: 'Skillchompa',
-      },
-      {
-        name: 'Crystal Rod w/ Honed 5 + Furnace 2',
-      },
-      urns,
     ],
     afk: true,
     alt: 1,
-    desc: `<a href="https://www.youtube.com/watch?v=Ot5nrMIYKfw" target="_blank">Video by Marina</a> (Price is based on azure skillchompa but any type works fine)`,
+    desc: '<a href="https://www.youtube.com/watch?v=Ot5nrMIYKfw" target="_blank">Video by Marina</a> (Price is based on azure skillchompa but any type works fine)',
   },
   {
     name: 'Wobbegongs',
     skill: 'Fishing',
-    actionXP: 682.5,
+    actionXP: 1.1 * 682.5,
     actionsPerHour: 0.205 * 1500, // 20.5% success, 4 ticks per attempt
     baseCost: 'return (getPrice(555) + getPrice(20344)) / 9500',
     modifiers: [
@@ -804,21 +794,17 @@ window.methods = [
     ],
     requirements: [
       {name: '96 Fishing'},
-      {name: 'T5 Call of the Seas'},
+      {name: 'T5 Call of the seas aura'},
+      {name: 'Perfect juju fishing potion'},
+      {name: 'Crystal rod w/ Honed 5 + Furnace 2'},
+      urns,
+      {name: 'Fury shark outfit'},
       {
         name: 'Fishing outfit',
         effect() {
           return {bonus: 0.05};
         },
       },
-      {name: 'Fury Shark Outfit'},
-      {
-        name: 'Crystal Rod w/ Honed 5 + Furnace 2',
-        effect() {
-          return {base: 0.1};
-        },
-      },
-      urns,
     ],
     afk: true,
     alt: 1,
@@ -842,13 +828,13 @@ window.methods = [
       ava6,
     ],
     requirements: [
+      {name: '95 Fletching'},
       {
-        name: 'Portable Fletchers',
+        name: 'Portable fletcher',
         effect() {
           return {base: 0.1};
         },
       },
-      {name: '95 Fletching'},
     ],
     desc: 'Make dragon darts, sell to general store',
   },
@@ -871,23 +857,54 @@ window.methods = [
       ava6,
     ],
     requirements: [
+      {name: '96 Herblore'},
       {
-        name: 'Modified Botanist\'s outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      {
-        name: 'Portable Wells',
+        name: 'Portable well',
         effect() {
           return {base: 0.1};
         },
       },
-      {name: '96 Herblore'},
+      {
+        name: 'Modified botanist\'s outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
     ],
-    desc: 'Use a Mammoth for the overloads',
+    desc: 'Use a mammoth for the overloads',
   },
-  // TODO: 1 tick ovl
+  {
+    name: '1-tick Overloads',
+    skill: 'Herblore',
+    actionXP: 2201,
+    actionsPerHour: 575,
+    baseCost: `const extremes = (0.9 * (getPrice(261) + getPrice(267) + getPrice(2481) + getPrice(4698) + 5 * getPrice(12539))
+                                    + (getPrice(145) + getPrice(157) + getPrice(163) + getPrice(3042) + getPrice(169))) / 1.1;
+    const totalCost = 0.983 * (extremes + getPrice(269));
+    return totalCost / this.actionXP`,
+    modifiers: [
+      raf,
+      pulse,
+      ava6,
+    ],
+    requirements: [
+      {name: '96 Herblore'},
+      {
+        name: 'Portable well',
+        effect() {
+          return {base: 0.1};
+        },
+      },
+      {
+        name: 'Modified botanist\'s outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    triHard: true,
+    desc: '<a href="https://www.youtube.com/watch?v=Ixf14YZlsWc" target="_blank">Video by Marina</a>',
+  },
   {
     name: 'Ornate Tortles',
     skill: 'Hunter',
@@ -902,6 +919,7 @@ window.methods = [
     requirements: [
       {name: '96 Hunter'},
       {name: 'Sliske\'s Endgame'},
+      urns,
       {
         name: "Hunter's outfit",
         effect() {
@@ -909,12 +927,11 @@ window.methods = [
         },
       },
       {
-        name: 'Enhanced Yaktwee stick',
+        name: 'Enhanced yaktwee stick',
         effect() {
           return {bonus: 0.05};
         },
       },
-      urns,
     ],
     desc: '<a href="https://www.youtube.com/watch?v=ocDtzwSV1jM" target="_blank">Video by Revodoge</a>',
   },
@@ -933,6 +950,7 @@ window.methods = [
       {name: '97 Hunter'},
       {name: '99 Agility'},
       {name: 'Sliske\'s Endgame'},
+      urns,
       {
         name: "Hunter's outfit",
         effect() {
@@ -940,12 +958,11 @@ window.methods = [
         },
       },
       {
-        name: 'Enhanced Yaktwee stick',
+        name: 'Enhanced yaktwee stick',
         effect() {
           return {bonus: 0.05};
         },
       },
-      urns,
     ],
     desc: '<a href="https://www.youtube.com/watch?v=6ETexKA64ok" target="_blank">Video by Jona</a>',
   },
@@ -956,11 +973,11 @@ window.methods = [
     baseCost: 'return getPrice(36730) / 621000',
     modifiers: [],
     requirements: [
-      {name: 'T90 gear'},
       {name: '60 Invention (for lv 12 items)'},
+      {name: 'T90 gear'},
     ],
-    desc: 'Siphon T90 weapons/armour (and crystal tools).',
     lossless: true,
+    desc: 'Siphon T90 weapons/armour (and crystal tools).',
   },
   // TODO: wildy aby demons, aby demons
   {
@@ -973,12 +990,11 @@ window.methods = [
       ava3,
     ],
     requirements: [
-      {name: 'Noxious Staff'},
-      {name: 'Combat Gear'},
+      {name: 'Noxious staff'},
+      {name: 'Combat gear'},
     ],
     desc: '<a href="https://www.youtube.com/watch?v=x4Yo8gN1dME&t=119" target="_blank">Video by Jona</a>',
   },
-  // TODO: alaea?
   {
     name: 'Warbands',
     skill: 'Mining',
@@ -986,7 +1002,7 @@ window.methods = [
     actionsPerHour: 60 / 10,
     baseCost: 'return 0',
     modifiers: [],
-    requirements: [{name: 'Warbands FC or yolo'}],
+    requirements: [{name: 'Warbanding FC or yolo'}],
     daily: 'return 1 / this.actionsPerHour',
     wildy: true,
     desc: '<a href="https://www.youtube.com/watch?v=Q8cIBTd3hCY" target="_blank">Sexy Mining Exp! Warbands OP As Balls Gf Spins</a>',
@@ -1015,19 +1031,77 @@ window.methods = [
     requirements: [
       {name: 'Birthright of the Dwarves'},
       {
-        name: 'Golden mining suit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      {
         name: 'Skillchompas',
         effect() {
           return {base: 0.1};
         },
       },
+      {
+        name: 'Golden mining suit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
     ],
+    triHard: true,
     desc: '<a href="https://www.youtube.com/watch?v=vvaFDMd_Wo4" target="_blank">Video by Marina</a>, XP drops without alt due to hopping limit. Skillchompa bonus XP works here',
+  },
+  {
+    name: 'Alaea Crabs with Skillchompas',
+    skill: 'Mining',
+    actionXP: (0.158 * 1.1 + 0.842 * 0.05) * 692.5, // 15.8% success, 10% furnace proc on success
+    actionsPerHour: 2000,
+    baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(557) + getPrice(20404)) / 3125',
+    modifiers: [
+      raf,
+      urnEnhancer,
+      ava6,
+    ],
+    requirements: [
+      {name: '97 Mining'},
+      {name: 'T4 Quarrymaster aura'}, // TODO: perfect juju??
+      {name: 'Skillchompas'},
+      {name: 'Crystal pickaxe w/ Honed 5 + Furnace 2'},
+      urns,
+      {name: 'Magic golem outfit'},
+      {
+        name: 'Golden mining suit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    afk: true,
+    alt: 1,
+    desc: '(Price is based on azure skillchompa but any type works fine)',
+  },
+  {
+    name: 'Alaea Crabs',
+    skill: 'Mining',
+    actionXP: 0.158 * 1.1 * 692.5, // 15.8% success, 3 ticks per attempt
+    actionsPerHour: 2000,
+    baseCost: 'return (getPrice(557) + getPrice(20404)) / 3125',
+    modifiers: [
+      raf,
+      urnEnhancer,
+      ava6,
+    ],
+    requirements: [
+      {name: '97 Mining'},
+      {name: 'T4 Quarrymaster aura'},
+      {name: 'Crystal pickaxe w/ Honed 5 + Furnace 2'},
+      urns,
+      {name: 'Magic golem outfit'},
+      {
+        name: 'Golden mining suit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    afk: true,
+    alt: 1,
+    desc: 'TFW can\'t afford skillchompas after update :(',
   },
   wildyAltarMethod('Dragon Bones', 72, 536),
   wildyAltarMethod('Hardened Dragon Bones', 144, 35008),
@@ -1051,7 +1125,7 @@ window.methods = [
     ],
     requirements: [
       {
-        name: 'Modified First Age Outfit',
+        name: 'Modified first age outfit',
         effect() {
           return {bonus: 0.04};
         },
@@ -1078,13 +1152,13 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     ],
     requirements: [
       {
-        name: 'First Age Outfit',
+        name: 'First age outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
       {
-        name: 'Perfect Juju Prayer Potion',
+        name: 'Perfect juju prayer potion',
         effect() {
           return {base: 0.05};
         },
@@ -1110,13 +1184,13 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     ],
     requirements: [
       {
-        name: 'First Age Outfit',
+        name: 'First age outfit',
         effect() {
           return {bonus: 0.06};
         },
       },
       {
-        name: 'Perfect Juju Prayer Potion',
+        name: 'Perfect juju prayer potion',
         effect() {
           return {base: 0.05};
         },
@@ -1137,8 +1211,8 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
       ava3,
     ],
     requirements: [
-      {name: 'Mechanized Chinchompas'},
-      {name: 'Combat Gear'},
+      {name: 'Mechanized chinchompas'},
+      {name: 'Combat gear'},
     ],
     desc: '<a href="https://www.youtube.com/watch?v=x4Yo8gN1dME&t=119" target="_blank">Video by Jona</a>',
   },
@@ -1151,7 +1225,7 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     modifiers: [
       raf,
       {
-        name: 'Urn Enhancer',
+        name: 'Urn enhancer',
         effect() {
           return {bonus: 0.05 * 3.5};
         },
@@ -1160,26 +1234,26 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     ],
     requirements: [
       {name: '90 Runecrafting'},
-      {name: 'Massive Pouches'},
-      {name: 'Phite Club'},
+      {name: '\'Phite Club'},
+      {name: 'Massive pouches'},
+      {name: 'Infinity ethereal outfit'},
       {name: 'Tokkul-zo or Max Cape'},
       {
-        name: 'Abyss w/ Demonic Skull',
+        name: 'Abyss w/ Demonic skull',
         effect() {
           return {bonus: 2.5};
+        },
+      },
+      {
+        name: 'Urns',
+        effect() {
+          return {bonus: 0.2 * 3.5};
         },
       },
       {
         name: 'Master runecrafter robes',
         effect() {
           return {bonus: 0.05};
-        },
-      },
-      {name: 'Infinity Ethereal Outfit'},
-      {
-        name: 'Urns',
-        effect() {
-          return {bonus: 0.2 * 3.5};
         },
       },
     ],
@@ -1197,8 +1271,8 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
       ava3,
     ],
     requirements: [
-      {name: 'Combat gear'},
       {name: '117 Slayer'},
+      {name: 'Combat gear'},
     ],
     desc: '<a href="https://docs.google.com/spreadsheets/d/1hYNMQ_2QjhebZJsMCXEGDarEekOT1uZiPGx0i26ILps/edit#gid=0" target="_blank">Jona\'s spreadsheet</a>, tweak to match your needs',
   },
@@ -1211,18 +1285,6 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     modifiers: [
       raf,
       ava6,
-      {
-        name: 'Blacksmith\'s outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      {
-        name: 'Falador Shield 4',
-        effect() {
-          return {base: 0.05};
-        },
-      },
     ],
     requirements: [
       {name: '99 Smithing'},
@@ -1233,7 +1295,13 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
         },
       },
       {
-        name: 'Bonus Packs',
+        name: 'Falador shield 4',
+        effect() {
+          return {base: 0.05};
+        },
+      },
+      {
+        name: 'Bonus packs',
         effect() {
           return {bonus: 0.05}; // 50k bonus per 100 respect, 10k xp per respect
         },
@@ -1255,34 +1323,34 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     actionsPerHour: 1580,
     baseCost: 'return (2.6 * getPrice(2363) - getPrice(1319)) / this.actionXP',
     modifiers: [
-      {
-        name: 'Blacksmith\'s outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
       raf,
       pulse,
       ava6,
     ],
     requirements: [
-      {
-        name: 'Portable Forge',
-        effect() {
-          return {base: 0.1};
-        },
-      },
       {name: '99 Smithing'},
-      {name: 'Scroll of Proficiency'},
-      {name: 'Varrock Armour 4'},
+      {name: 'Scroll of efficiency'},
+      {name: 'Varrock armour 4'},
       {
         name: 'Crystal hammer w/ Tinker 3 + Rapid 3',
         effect() {
           return {base: 0.0375};
         },
       },
+      {
+        name: 'Portable Forge',
+        effect() {
+          return {base: 0.1};
+        },
+      },
+      {
+        name: 'Blacksmith\'s outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
     ],
-    desc: 'Make Rune 2h/platelegs/plateskirts with a Mammoth, can sell in bulk to alchers',
+    desc: 'Make Rune 2h/platelegs/plateskirts with a mammoth, sell in bulk on forums',
   },
   summoningMethod('Pack Yak', 96, 422.4 + 4.8, 211, 50 - 15, 10818, 12435),
   summoningMethod('Steel titan', 99, 435.2 + 4.9, 178, 2000 - 600, 1119, 12825),
@@ -1299,7 +1367,7 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
       raf,
       ava6,
       {
-        name: 'Cheeky Monkey', // TODO: quantify the effect of this
+        name: 'Cheeky monkey', // TODO: quantify the effect of this
         effect() {
           return {base: 0};
         },
@@ -1313,12 +1381,12 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     ],
     requirements: [
       {name: '90 Thieving'},
-      {name: 'T3+ Five Finger Discount'},
-      {name: 'Crystal Mask + Light Form'},
-      {name: 'Ardy Cape 4 or Thieving Cape Perk'},
+      {name: 'T3+ Five finger discount aura'},
+      {name: 'Trahaern exoskeleton / Master camouflage outfit)'},
+      {name: 'Crystal mask + Light form'},
+      {name: 'Ardy cape 4 and/or Thieving skillcape'},
+      {name: 'Featherfingered necklace'},
       {name: 'Soul-in-a-box'},
-      {name: 'Featherfingered Necklace'},
-      {name: 'Trahaern Exoskeleton / Master Camouflage Outfit)'},
     ],
     desc: '<a href="https://www.youtube.com/watch?v=-05YAUMEDPs" target="_blank">Video by Spudy</a> Aura makes a big difference, cheeky monkey is best but discontinued now, hold ava with alt',
   },
@@ -1339,8 +1407,8 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     ],
     requirements: [
       {name: '98 Thieving'},
-      {name: 'Ardy Cape 4'},
-      {name: 'Trahaern Exoskeleton / Master Camouflage Outfit)'},
+      {name: 'Trahaern exoskeleton / Master camouflage outfit)'},
+      {name: 'Ardy cape 4'},
     ],
     afk: true,
     alt: 1,
@@ -1368,13 +1436,13 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
       pulse,
       ava6,
       {
-        name: 'Shared Knowledge buff (Memorial to Guthix)',
+        name: 'Shared knowledge buff (Memorial to Guthix)',
         effect() {
           return {base: 0.25};
         },
       },
       {
-        name: 'Cache Boost',
+        name: 'Cache boost',
         effect() {
           return {base: 0.025};
         },
@@ -1392,7 +1460,7 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     daily: 'return 500 / this.actionsPerHour',
     desc: 'Yews are hosted on w48 at reset. <a href="https://www.youtube.com/watch?v=6XvOyUn6z_c" target="_blank">Video by Alkan</a>',
   },
-  {
+  { // TODO: better testing
     name: 'Crystallize Acadia',
     skill: 'Woodcutting',
     actionXP: 92,
@@ -1406,24 +1474,26 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     requirements: [
       {name: '47 Woodcutting'},
       {
+        name: 'Crystal hatchet w/ Honed 5 + Furnace 2',
+        effect() {
+          return {base: 0.1};
+        },
+      },
+      urns,
+      {name: 'Perfect juju woodcutting potion'},
+      {name: 'T2 Lumberjack aura'},
+      {
+        name: 'Crystallize + Light form',
+        effect() {
+          return {base: 0.875};
+        },
+      },
+      {
         name: 'Lumberjack clothing',
         effect() {
           return {bonus: 0.05};
         },
       },
-      {
-        name: 'Crystal Hatchet w/ Honed 5 + Furnace 2',
-        effect() {
-          return {base: 0.1};
-        },
-      },
-      {
-        name: 'Crystallize + Light Form',
-        effect() {
-          return {base: 0.875};
-        },
-      },
-      urns,
     ],
     desc: '<a href="https://www.youtube.com/watch?v=PCf8KBDuS04">Video by Maikeru</a>',
   }, // TODO: bamboo for AFK?
