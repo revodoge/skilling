@@ -1460,34 +1460,103 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     daily: 'return 500 / this.actionsPerHour',
     desc: 'Yews are hosted on w48 at reset. <a href="https://www.youtube.com/watch?v=6XvOyUn6z_c" target="_blank">Video by Alkan</a>',
   },
-  { // TODO: better testing
-    name: 'Crystallize Acadia',
+  { // TODO: better testing on success rate, add cost of runes
+    name: 'Crystallize Acadia with Skillchompas',
     skill: 'Woodcutting',
     actionXP: 92,
-    actionsPerHour: 0.9 * 1500,
-    baseCost: 'return (getPrice(557) + getPrice(39010)) / 9500',
+    actionsPerHour: 1450, // 1500 max, give some wiggle room
+    baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(557) + getPrice(39010)) / 9500',
     modifiers: [
       raf,
       urnEnhancer,
+      {
+        name: 'Urn enhancer',
+        effect() {
+          return {bonus: 0.05 / 1.875};
+        },
+      },
       ava6,
     ],
     requirements: [
       {name: '47 Woodcutting'},
       {
-        name: 'Crystal hatchet w/ Honed 5 + Furnace 2',
+        name: 'Crystal hatchet w/ Honed 5',
+      },
+      {
+        name: 'Urns',
         effect() {
-          return {base: 0.1};
+          return {bonus: 0.2 / 1.875};
         },
       },
-      urns,
-      {name: 'Perfect juju woodcutting potion'},
-      {name: 'T2 Lumberjack aura'},
       {
         name: 'Crystallize + Light form',
         effect() {
           return {base: 0.875};
         },
       },
+      {
+        name: 'Skillchompa',
+        effect() {
+          return {base: 0.05};
+        },
+      },
+      {
+        name: 'Perfect juju woodcutting potion',
+        effect() {
+          return {base: 0.05};
+        },
+      },
+      {name: 'T2+ Lumberjack aura'},
+      {
+        name: 'Lumberjack clothing',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+    ],
+    desc: '<a href="https://www.youtube.com/watch?v=PCf8KBDuS04">Video by Maikeru</a> (Price is based on azure skillchompa but any type works fine)',
+  },
+  {
+    name: 'Crystallize Acadia',
+    skill: 'Woodcutting',
+    actionXP: 92,
+    actionsPerHour: 1450, // 1500 max, give some wiggle room
+    baseCost: 'return (getPrice(557) + getPrice(39010)) / 9500',
+    modifiers: [
+      raf,
+      urnEnhancer,
+      {
+        name: 'Urn enhancer',
+        effect() {
+          return {bonus: 0.05 / 1.875};
+        },
+      },
+      ava6,
+    ],
+    requirements: [
+      {name: '47 Woodcutting'},
+      {
+        name: 'Crystal hatchet w/ Honed 5',
+      },
+      {
+        name: 'Urns',
+        effect() {
+          return {bonus: 0.2 / 1.875};
+        },
+      },
+      {
+        name: 'Crystallize + Light form',
+        effect() {
+          return {base: 0.875};
+        },
+      },
+      {
+        name: 'Perfect juju woodcutting potion',
+        effect() {
+          return {base: 0.05};
+        },
+      },
+      {name: 'T2+ Lumberjack aura'},
       {
         name: 'Lumberjack clothing',
         effect() {
@@ -1496,5 +1565,5 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
       },
     ],
     desc: '<a href="https://www.youtube.com/watch?v=PCf8KBDuS04">Video by Maikeru</a>',
-  }, // TODO: bamboo for AFK?
+  },
 ].concat(prismania, smouldering, attack, strength, defMelee);
