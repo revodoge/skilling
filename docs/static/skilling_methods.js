@@ -1498,7 +1498,7 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Woodcutting',
     actionXP: 92,
     actionsPerHour: 1450, // 1500 max, give some wiggle room
-    baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(557) + getPrice(39010)) / 9500',
+    baseCost: 'return 120 * 6 * (getPrice(566) + getPrice(562) + getPrice(554) + getPrice(555)) / this.base + getPrice(31597) / this.actionXP + (getPrice(557) + getPrice(39010)) / 9500',
     modifiers: [
       raf,
       urnEnhancer,
@@ -1512,9 +1512,7 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     ],
     requirements: [
       {name: '47 Woodcutting'},
-      {
-        name: 'Crystal hatchet w/ Honed 5',
-      },
+      {name: 'Crystal hatchet w/ Honed 5'},
       {
         name: 'Urns',
         effect() {
@@ -1554,7 +1552,7 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Woodcutting',
     actionXP: 92,
     actionsPerHour: 1450, // 1500 max, give some wiggle room
-    baseCost: 'return (getPrice(557) + getPrice(39010)) / 9500',
+    baseCost: 'return 120 * 6 * (getPrice(566) + getPrice(562) + getPrice(554) + getPrice(555)) / this.base + (getPrice(557) + getPrice(39010)) / 9500',
     modifiers: [
       raf,
       urnEnhancer,
@@ -1568,9 +1566,7 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     ],
     requirements: [
       {name: '47 Woodcutting'},
-      {
-        name: 'Crystal hatchet w/ Honed 5',
-      },
+      {name: 'Crystal hatchet w/ Honed 5'},
       {
         name: 'Urns',
         effect() {
