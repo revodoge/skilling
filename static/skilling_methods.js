@@ -685,7 +685,7 @@ window.methods = [
     ],
     daily: 'return 10 / 60',
     // TODO: add updated videos with bladed dive
-    desc: '<a href="https://www.youtube.com/watch?v=27gum6noa-U" target="_blank">Full run</a> (6 Magics, 7 Papaya, Calquat, Crystal Tree, Elder, Arc Berries) + magic only run. Do spirit trees if you have them, but they are not part of the calculation',
+    desc: '<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 Magics, 7 Papaya, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">magic only run</a>. Do spirit trees if you have them, but they are not part of the calculation',
   },
   {
     name: 'Book of Char',
