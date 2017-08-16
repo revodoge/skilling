@@ -15,7 +15,7 @@
     </form>
     <br/>
     <!--load all the methods with a 15M EHP to get the relative efficiency-->
-    <template v-for="methodData in methods">
+    <template v-for="methodData in filteredMethods">
       <method :key="methodData.id" :tvc="15" :boosts="boosts" :data="methodData" :display="false"
               :alt="9" v-on:dailyCalculated="updateMethodDaily" v-on:valueCalculated="updateMethodCost"></method>
     </template>
@@ -25,7 +25,7 @@
         <div class="table-responsive">
           <table class="table table-hover table-bordered" id="methods">
             <caption>
-              Player EHP (15MM gp/hr TVC, counting in time needed to fund skills, 9MM gp/hr on alts for AFK skills, 800 days max of dailies):
+              Player EHP (15MM gp/hr TVC, counting in time needed to fund skills, 9MM gp/hr on alts for AFK skills, 800 days of dailies):
             </caption>
             <thead>
             <tr>
@@ -94,8 +94,11 @@
       };
     },
     computed: {
+      filteredMethods() {
+        return this.methods.filter(a => !a.triHard);
+      },
       skillCosts() {
-        const sorted = this.methods.sort((a, b) => { // sort methods by skill and efficiency
+        const sorted = this.filteredMethods.sort((a, b) => { // sort methods by skill and efficiency
           const skillA = a.skill;
           const skillB = b.skill;
           const costA = a.effectiveCost;
@@ -181,8 +184,6 @@
     mounted() {
       this.methods = window.methods.map(o => Object.assign({}, o));
       this.methods.forEach(method => method.id = method.skill + method.name);
-      this.methods.forEach(method => method.display = true);
-      this.methods.forEach(method => method.descriptionDisplay = false);
       this.methods.forEach(method => method.modifiers.forEach(modifier => this.$set(this.boosts, modifier.name, true)));
       this.fetchHiscore();
     },

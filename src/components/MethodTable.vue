@@ -119,6 +119,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import Method from './Method';
   import MethodDesc from './MethodDesc';
 
@@ -156,13 +157,18 @@
           if (costA > costB) return 1;
           return 0;
         });
+        const skillsMap = window.skillList.reduce((acc, skill) => {
+          acc[skill] = {bonus: false, normal: false};
+          return acc;
+        }, {});
         for (let i = 0; i < sorted.length; i++) { // only display the best non-daily for each skill
           const current = sorted[i];
-          current.display = true;
-          const previous = sorted[i - 1];
-          if (this.stats[current.skill] === 200000000 || (previous && previous.skill === current.skill &&
-              ((!previous.daily && !previous.bonus) || !previous.display) && !isNaN(current.effectiveCost))) {
-            current.display = false;
+
+          current.display = !(this.stats[current.skill] === 200000000 || (!isNaN(current.effectiveCost)
+            && (skillsMap[current.skill].normal || (skillsMap[current.skill].bonus && current.bonus))));
+          if (!current.daily) {
+            skillsMap[current.skill].bonus = skillsMap[current.skill].bonus || current.bonus;
+            skillsMap[current.skill].normal = skillsMap[current.skill].normal || !current.bonus;
           }
         }
         return sorted;
@@ -194,10 +200,13 @@
       toggleModifier(modifier) {
         this.boosts[modifier] = !this.boosts[modifier];
       },
+      updateMethod: _.debounce(function (method) {
+        this.$set(this.methods, this.methods.indexOf(method), method);
+      }, 50),
       updateMethodCost(method, cost) {
         if (method.effectiveCost !== cost) {
           method.effectiveCost = cost;
-          this.$set(this.methods, this.methods.indexOf(method), method);
+          this.updateMethod(method);
         }
       },
     },

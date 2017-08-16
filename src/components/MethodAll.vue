@@ -119,6 +119,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import Method from './Method';
   import MethodDesc from './MethodDesc';
 
@@ -184,10 +185,13 @@
       toggleModifier(modifier) {
         this.boosts[modifier] = !this.boosts[modifier];
       },
+      updateMethod: _.debounce(function (method) {
+        this.$set(this.methods, this.methods.indexOf(method), method);
+      }, 50),
       updateMethodCost(method, cost) {
         if (method.effectiveCost !== cost) {
           method.effectiveCost = cost;
-          this.methods.splice(this.methods.indexOf(method), 1, method);
+          this.updateMethod(method);
         }
       },
     },
