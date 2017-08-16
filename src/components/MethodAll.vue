@@ -88,7 +88,7 @@
                 Method
               </th>
               <th style="width: 150px;">
-                XP/HR (no boosts)
+                XP/HR
               </th>
               <th style="width: 75px;">
                 GP/XP

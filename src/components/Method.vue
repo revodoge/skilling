@@ -7,8 +7,7 @@
       {{name}}
     </td>
     <td>
-      {{xpRate | formatXp}}<br/>
-      ({{base | formatXp}})
+      {{xpRate | formatXp}}
       <template v-if="daily"><br/>{{dailyXP | formatXp}} XP/day</template>
     </td>
     <td>
@@ -145,16 +144,16 @@
     },
     watch: {
       dailyXP: {
-        handler(amount) { // propagate the XP rate after boosts
-          if (!isNaN(amount)) {
+        handler(amount, oldAmount) { // propagate the XP rate after boosts
+          if (!isNaN(amount) && amount !== oldAmount) {
             this.$emit('dailyCalculated', this.data, amount);
           }
         },
         immediate: true,
       },
       effectiveCost: {
-        handler(eCost) { // propagate the cost accounting for time to the top to reorder the method display
-          if (!isNaN(eCost)) {
+        handler(eCost, oldECost) { // propagate the cost accounting for time to the top to reorder the method display
+          if (!isNaN(eCost) && eCost !== oldECost) {
             this.$emit('valueCalculated', this.data, eCost, this.cost);
           }
         },

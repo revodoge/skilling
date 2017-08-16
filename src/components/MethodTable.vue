@@ -88,7 +88,7 @@
                 Method
               </th>
               <th style="width: 150px;">
-                XP/HR (no boosts)
+                XP/HR
               </th>
               <th style="width: 75px;">
                 GP/XP
@@ -197,7 +197,7 @@
       updateMethodCost(method, cost) {
         if (method.effectiveCost !== cost) {
           method.effectiveCost = cost;
-          this.methods.splice(this.methods.indexOf(method), 1, method);
+          this.$set(this.methods, this.methods.indexOf(method), method);
         }
       },
     },
