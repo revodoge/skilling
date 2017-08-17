@@ -38,13 +38,15 @@ const pulse = {
   },
 };
 
-function arrowMethod(name, levelRequired, actionXP, arrowheadID, sell) {
+function arrowMethod(name, levelRequired, actionXP, arrowheadName, sell) {
   return {
     name,
     skill: 'Fletching',
     actionXP,
     actionsPerHour: 43000,
-    baseCost: `return (0.9 * (getPrice(${arrowheadID}) + getPrice(53)) - ${sell}) / this.actionXP`,
+    baseCost() {
+      return (0.9 * (getPrice(arrowheadName) + getPrice('Feather')) - sell) / this.actionXP;
+    },
     modifiers: [
       {
         name: 'Fletcher\'s outfit',
@@ -69,13 +71,15 @@ function arrowMethod(name, levelRequired, actionXP, arrowheadID, sell) {
   };
 }
 
-function summoningMethod(name, levelRequired, actionXP, shards, storeCost, primaryIngID, scrollID) {
+function summoningMethod(name, levelRequired, actionXP, shards, storeCost, primaryIngName, scrollName) {
   return {
     name,
     skill: 'Summoning',
     actionXP,
     actionsPerHour: 16750,
-    baseCost: `return (${shards} * 25 + ${storeCost} + getPrice(${primaryIngID}) - 10 * getPrice(${scrollID})) / this.actionXP`,
+    baseCost() {
+      return (shards * 25 + storeCost + getPrice(primaryIngName) - 10 * getPrice(scrollName)) / this.actionXP;
+    },
     modifiers: [
       ava6,
       raf,
@@ -100,7 +104,9 @@ function dhideShieldMethod(name, levelRequired, actionXP, costPerAction) {
     skill: 'Crafting',
     actionXP,
     actionsPerHour: 1820,
-    baseCost: `return (${costPerAction}) / this.actionXP`,
+    baseCost() {
+      return costPerAction() / this.actionXP;
+    },
     modifiers: [
       raf,
       pulse,
@@ -126,13 +132,15 @@ function dhideShieldMethod(name, levelRequired, actionXP, costPerAction) {
   };
 }
 
-function cutGemMethod(name, levelRequired, actionXP, uncutID, cutID) {
+function cutGemMethod(name, levelRequired, actionXP, uncutName, cutName) {
   return {
     name,
     skill: 'Crafting',
     actionXP,
     actionsPerHour: 5300,
-    baseCost: `return (0.95 * getPrice(${uncutID}) - 1.02 * getPrice(${cutID})) / this.actionXP`,
+    baseCost() {
+      return (0.95 * getPrice(uncutName) - 1.02 * getPrice(cutName)) / this.actionXP;
+    },
     modifiers: [
       raf,
       pulse,
@@ -158,13 +166,15 @@ function cutGemMethod(name, levelRequired, actionXP, uncutID, cutID) {
   };
 }
 
-function wildyAltarMethod(name, boneXP, itemID) {
+function wildyAltarMethod(name, boneXP, boneName) {
   return {
     name: `${name} in wilderness`,
     skill: 'Prayer',
     actionXP: boneXP * 3.5,
     actionsPerHour: 2000,
-    baseCost: `return 0.98 * getPrice(${itemID}) / this.actionXP`,
+    baseCost() {
+      return 0.98 * getPrice(boneName) / this.actionXP;
+    },
     modifiers: [
       raf,
       ava6,
@@ -189,13 +199,15 @@ function wildyAltarMethod(name, boneXP, itemID) {
   };
 }
 
-function altarMethod(name, boneXP, itemID) {
+function altarMethod(name, boneXP, boneName) {
   return {
     name,
     skill: 'Prayer',
     actionXP: boneXP * 3.5,
     actionsPerHour: 1800,
-    baseCost: `return 0.98 * getPrice(${itemID}) / this.actionXP`,
+    baseCost() {
+      return 0.98 * getPrice(boneName) / this.actionXP;
+    },
     modifiers: [
       raf,
       ava6,
@@ -229,7 +241,9 @@ const prismania = window.skillList.map(function (skill) {
     name: 'Prismania',
     skill,
     base: 'return 15000000',
-    baseCost: 'return 40',
+    baseCost() {
+      return 40;
+    },
     modifiers: [],
     requirements: [],
     bonus: true,
@@ -242,7 +256,9 @@ const smouldering = window.skillList.map(function (skill) {
     name: 'Smouldering Lamps',
     skill,
     base: 'return 10000000',
-    baseCost: 'return 70',
+    baseCost() {
+      return 70;
+    },
     modifiers: [],
     requirements: [],
     spinner: true,
@@ -256,7 +272,9 @@ const meleeMethods = [
     name: 'Abyssal Demons (wildy)',
     actionXP: 661,
     actionsPerHour: 1800,
-    baseCost: 'return -6000000 / this.base',
+    baseCost() {
+      return -6000000 / this.base;
+    },
     modifiers: [
       raf,
       ava6,
@@ -284,7 +302,9 @@ const meleeMethods = [
   {
     name: 'Shattered Worlds (melee)',
     base: 'return 1610000',
-    baseCost: 'return 2500000 / this.base',
+    baseCost() {
+      return 2500000 / this.base;
+    },
     modifiers: [
       raf,
       ava6,
@@ -316,7 +336,9 @@ window.methods = [
     skill: 'Agility',
     actionXP: 308439,
     actionsPerHour: 60 / 16,
-    baseCost: 'return -getPrice(31908) / this.actionXP',
+    baseCost() {
+      return -getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
+    },
     modifiers: [],
     requirements: [{name: 'Barbarian Assault team'}],
     desc: 'Barbarian Assault Hard Mode waves 1-9 (16 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
@@ -327,7 +349,9 @@ window.methods = [
     skill: 'Agility',
     actionXP: 186688,
     actionsPerHour: 60 / 7,
-    baseCost: 'return getPrice(31908) / this.actionXP',
+    baseCost() {
+      return getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
+    },
     modifiers: [],
     requirements: [{name: 'Barbarian Assault team'}],
     desc: 'Barbarian Assault Hard Mode waves 1-9 (7 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
@@ -338,7 +362,9 @@ window.methods = [
     skill: 'Agility',
     actionXP: 860,
     actionsPerHour: 80,
-    baseCost: 'return getPrice(30915) / this.actionXP',
+    baseCost() {
+      return getPrice('Silverhawk feathers') / this.actionXP;
+    },
     modifiers: [
       raf,
       ava3,
@@ -362,7 +388,9 @@ window.methods = [
     skill: 'Construction',
     actionXP: 1120,
     actionsPerHour: 1000,
-    baseCost: 'return getPrice(8782) * 7.8 / this.actionXP',
+    baseCost() {
+      return getPrice('Mahogany plank') * 7.8 / this.actionXP;
+    },
     modifiers: [
       raf,
       ava3,
@@ -391,7 +419,9 @@ window.methods = [
     skill: 'Construction',
     actionXP: 840,
     actionsPerHour: 400,
-    baseCost: 'return getPrice(8782) * 6 / this.actionXP',
+    baseCost() {
+      return getPrice('Mahogany plank') * 6 / this.actionXP;
+    },
     modifiers: [
       raf,
       ava6,
@@ -420,7 +450,9 @@ window.methods = [
     name: 'Combat',
     skill: 'Constitution',
     base: 'return Infinity',
-    baseCost: 'return 0',
+    baseCost() {
+      return 0;
+    },
     modifiers: [],
     requirements: [],
     desc: 'You\'d have to put in extra effort to not get this for free with 200m all combat skills',
@@ -430,7 +462,9 @@ window.methods = [
     skill: 'Cooking',
     actionXP: 225,
     actionsPerHour: 1850,
-    baseCost: 'return (getPrice(554) + getPrice(20374)) / 7737.5 + (getPrice(15270) - 1.1 * getPrice(15272)) / this.actionXP',
+    baseCost() {
+      return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice('Raw rocktail') - 1.1 * getPrice('Rocktail')) / this.actionXP;
+    },
     modifiers: [
       raf,
       pulse,
@@ -467,7 +501,9 @@ window.methods = [
     skill: 'Cooking',
     actionXP: 225,
     actionsPerHour: 1400,
-    baseCost: 'return (getPrice(554) + getPrice(20374)) / 7737.5 + (getPrice(15270) - 1.1 * getPrice(15272)) / this.actionXP',
+    baseCost() {
+      return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice('Raw rocktail') - 1.1 * getPrice('Rocktail')) / this.actionXP;
+    },
     modifiers: [
       raf,
       pulse,
@@ -506,7 +542,9 @@ window.methods = [
     skill: 'Cooking',
     actionXP: 201,
     actionsPerHour: 5100,
-    baseCost: 'return (getPrice(1937) + getPrice(1987) - getPrice(1993)) / this.actionXP',
+    baseCost() {
+      return (getPrice('Jug of water') + getPrice('Grapes') - getPrice('Jug of wine')) / this.actionXP;
+    },
     modifiers: [
       raf,
       pulse,
@@ -523,17 +561,27 @@ window.methods = [
     ],
     desc: '<a href="https://www.youtube.com/watch?v=9fAn3R76aUA" target="_blank">Video by Persiflage</a>, use a BoB',
   },
-  dhideShieldMethod('Green d\'hide Shields', 64, 248, '(4 - 0.4) * getPrice(1745) - getPrice(25794)'),
-  dhideShieldMethod('Blue d\'hide Shields', 72, 280, '(4 - 0.35) * getPrice(2505) - getPrice(25796)'),
-  dhideShieldMethod('Red d\'hide Shields', 78, 312, '(4 - 0.3) * getPrice(2507) - getPrice(25798)'),
-  dhideShieldMethod('Black d\'hide Shields', 85, 344, '(4 - 0.25) * getPrice(2509) - getPrice(25800)'),
-  cutGemMethod('Diamonds', 43, 107.5, 1617, 1601),
-  cutGemMethod('Dragonstones', 55, 137.5, 1631, 1615),
+  dhideShieldMethod('Green d\'hide Shields', 64, 248, function () {
+    return (4 - 0.4) * getPrice('Green dragon leather') - getPrice('Green dragonhide shield');
+  }),
+  dhideShieldMethod('Blue d\'hide Shields', 72, 280, function () {
+    return (4 - 0.35) * getPrice('Blue dragon leather') - getPrice('Blue dragonhide shield');
+  }),
+  dhideShieldMethod('Red d\'hide Shields', 78, 312, function () {
+    return (4 - 0.3) * getPrice('Red dragon leather') - getPrice('Red dragonhide shield');
+  }),
+  dhideShieldMethod('Black d\'hide Shields', 85, 344, function () {
+    return (4 - 0.25) * getPrice('Black dragon leather') - getPrice('Black dragonhide shield');
+  }),
+  cutGemMethod('Diamonds', 43, 107.5, 'Uncut diamond', 'Diamond'),
+  cutGemMethod('Dragonstones', 55, 137.5, 'Uncut dragonstone', 'Dragonstone'),
   {
     name: 'Shattered Worlds (ranged)',
     skill: 'Defence',
     base: 'return 1860000',
-    baseCost: 'return 2500000 / this.base',
+    baseCost() {
+      return 2500000 / this.base;
+    },
     modifiers: [
       raf,
       ava3,
@@ -549,7 +597,9 @@ window.methods = [
     skill: 'Divination',
     actionXP: 73400,
     actionsPerHour: 60 / 4,
-    baseCost: 'return 0',
+    baseCost() {
+      return 0;
+    },
     modifiers: [],
     requirements: [{name: '99 Divination'}],
     daily: 'return 2 / this.actionsPerHour',
@@ -560,7 +610,9 @@ window.methods = [
     skill: 'Divination',
     actionXP: 53.5,
     actionsPerHour: 2400, // 2.5 ticks per action
-    baseCost: 'return (getPrice(558) + getPrice(40798)) / 9500',
+    baseCost() {
+      return (getPrice('Mind rune') + getPrice('Decorated divination urn (nr)')) / 9500;
+    },
     modifiers: [
       raf,
       urnEnhancer,
@@ -593,7 +645,9 @@ window.methods = [
     skill: 'Divination',
     actionXP: 53.5,
     actionsPerHour: 2400, // 2.5 ticks per action
-    baseCost: 'return (getPrice(558) + getPrice(40798)) / 9500',
+    baseCost() {
+      return (getPrice('Mind rune') + getPrice('Decorated divination urn (nr)')) / 9500;
+    },
     modifiers: [
       raf,
       urnEnhancer,
@@ -618,7 +672,9 @@ window.methods = [
     skill: 'Divination',
     actionXP: 1.5,
     actionsPerHour: 1480 * 100,
-    baseCost: 'return (0.9275 * 400 - 1.5 * getPrice(29324)) / this.actionXP',
+    baseCost() {
+      return (0.9275 * 400 - 1.5 * getPrice('Incandescent energy')) / this.actionXP;
+    },
     modifiers: [
       raf,
       pulse,
@@ -641,7 +697,9 @@ window.methods = [
     skill: 'Dungeoneering',
     actionXP: 180000,
     actionsPerHour: 12,
-    baseCost: 'return 0',
+    baseCost() {
+      return 0;
+    },
     modifiers: [],
     requirements: [{name: '120 Dungeoneering'}],
     daily: 'return 2 / this.actionsPerHour',
@@ -652,7 +710,9 @@ window.methods = [
     skill: 'Dungeoneering',
     actionXP: 200000, // need to test
     actionsPerHour: 8.5,
-    baseCost: 'return 0',
+    baseCost() {
+      return 0;
+    },
     modifiers: [],
     requirements: [{name: '120 Dungeoneering'}],
     desc: `<a href="https://docs.google.com/document/d/1Kluwf-R4wPAwRxC4vXcyIfrTVrzWaVzuu2BzJUXihYI" target="_blank">Guide by DG Service FC</a>, rates depend on team ability<br>
@@ -664,9 +724,11 @@ window.methods = [
     base: `treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;
     treesThatCantDie = 15000 + 8500 + 7 * 6380.4;
     return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10`,
-    baseCost: `
-    const cost = 12 * 0.9 * getPrice(5316) + 0.9 * getPrice(5290) + 0.9 * getPrice(31437) / 3 + 7 * (0.9 * getPrice(5288) + 10 * getPrice(2114) - 6 * getPrice(5972)) + 64 / 3 * (1500 + getPrice(6034));
-    return cost / this.dailyXP + (getPrice(561) + getPrice(40838)) / 7000`,
+    baseCost() {
+      const cost = 12 * 0.9 * getPrice('Magic seed') + 0.9 * getPrice('Calquat tree seed') + 0.9 * getPrice('Elder seed') / 3 + 7 *
+        (0.9 * getPrice('Papaya tree seed') + 10 * getPrice('Pineapple') - 6 * getPrice('Papaya fruit')) + 64 / 3 * (1500 + getPrice('Supercompost'));
+      return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
+    },
     modifiers: [
       raf,
       pulse,
@@ -692,7 +754,9 @@ window.methods = [
     skill: 'Firemaking',
     actionXP: 607.6,
     actionsPerHour: 384 * 60 / 4, // 4 mins including set up
-    baseCost: 'return getPrice(1513) / this.actionXP',
+    baseCost() {
+      return getPrice('Magic logs') / this.actionXP;
+    },
     modifiers: [],
     requirements: [{name: 'Book of char'}],
     daily: 'return 384 / this.actionsPerHour',
@@ -703,7 +767,9 @@ window.methods = [
     skill: 'Firemaking',
     actionXP: 812921,
     actionsPerHour: 60 / 16,
-    baseCost: 'return -getPrice(31908) / this.actionXP',
+    baseCost() {
+      return -getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
+    },
     modifiers: [],
     requirements: [{name: 'Barbarian Assault team'}],
     desc: 'Barbarian Assault Hard Mode waves 1-9 (16 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
@@ -714,7 +780,9 @@ window.methods = [
     skill: 'Firemaking',
     actionXP: 492035.5,
     actionsPerHour: 60 / 7,
-    baseCost: 'return getPrice(31908) / this.actionXP',
+    baseCost() {
+      return getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
+    },
     modifiers: [],
     requirements: [{name: 'Barbarian Assault team'}],
     desc: 'Barbarian Assault Hard Mode waves 1-9 (7 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
@@ -725,7 +793,9 @@ window.methods = [
     skill: 'Firemaking',
     actionXP: 1514.8,
     actionsPerHour: 515,
-    baseCost: 'return 0',
+    baseCost() {
+      return 0;
+    },
     modifiers: [
       ava6,
       raf,
@@ -747,7 +817,9 @@ window.methods = [
     skill: 'Fishing',
     actionXP: (0.205 * (0.85 * 1.1 + 0.15 * (922.5 / 682.5)) + 0.795 * 0.05) * 682.5, // 20.5% success, 15% scrimshaw, 10% furnace proc on remaining
     actionsPerHour: 1500,
-    baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(555) + getPrice(20344)) / 9500 + getPrice(33896) / 3 / this.base',
+    baseCost() {
+      return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500 + getPrice('Whopper-baiting scrimshaw') / 3 / this.base;
+    },
     modifiers: [
       raf,
       urnEnhancer,
@@ -778,7 +850,9 @@ window.methods = [
     skill: 'Fishing',
     actionXP: (0.205 * 1.1 + 0.795 * 0.05) * 682.5, // 20.5% success, 10% furnace proc on success
     actionsPerHour: 1500,
-    baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(555) + getPrice(20344)) / 9500',
+    baseCost() {
+      return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
+    },
     modifiers: [
       raf,
       urnEnhancer,
@@ -808,7 +882,9 @@ window.methods = [
     skill: 'Fishing',
     actionXP: 1.1 * 682.5,
     actionsPerHour: 0.205 * 1500, // 20.5% success, 4 ticks per attempt
-    baseCost: 'return (getPrice(555) + getPrice(20344)) / 9500',
+    baseCost() {
+      return (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
+    },
     modifiers: [
       raf,
       urnEnhancer,
@@ -837,7 +913,9 @@ window.methods = [
     skill: 'Fletching',
     actionXP: 25,
     actionsPerHour: 55000,
-    baseCost: 'return (0.9 * (getPrice(314) + getPrice(11232)) - 150) / this.actionXP',
+    baseCost() {
+      return (0.9 * (getPrice('Feather') + getPrice('Dragon dart tip')) - 150) / this.actionXP;
+    },
     modifiers: [
       {
         name: 'Fletcher\'s outfit',
@@ -860,19 +938,21 @@ window.methods = [
     ],
     desc: 'Make dragon darts, sell to general store',
   },
-  arrowMethod('Dragon arrows', 90, 15, 11237, 240),
-  arrowMethod('Dark arrows', 95, 17.5, 29729, 30),
-  arrowMethod('Rune arrows', 75, 12.5, 892, 153),
-  arrowMethod('Broad arrows', 52, 15, 44, 0),
+  arrowMethod('Dragon arrows', 90, 15, 'Dragon arrowheads', 240),
+  arrowMethod('Dark arrows', 95, 17.5, 'Dark arrowheads', 30),
+  arrowMethod('Rune arrows', 75, 12.5, 'Rune arrowheads', 153),
+  arrowMethod('Broad arrows', 52, 15, 'Broad arrowheads', 0),
   {
     name: 'Overloads from supers',
     skill: 'Herblore',
     actionXP: 2201,
     actionsPerHour: 460,
-    baseCost: `const extremes = (0.9 * (getPrice(261) + getPrice(267) + getPrice(2481) + getPrice(4698) + 5 * getPrice(12539))
-                                    + (getPrice(145) + getPrice(157) + getPrice(163) + getPrice(3042) + getPrice(169))) / 1.1;
-    const totalCost = 0.983 * (extremes + getPrice(269));
-    return totalCost / this.actionXP`,
+    baseCost() {
+      const extremes = (0.9 * (getPrice('Clean avantoe') + getPrice('Clean dwarf weed') + getPrice('Clean lantadyme') + getPrice('Mud rune') + 5 * getPrice('Grenwall spikes'))
+        + (getPrice('Super attack (3)') + getPrice('Super strength (3)') + getPrice('Super defence (3)') + getPrice('Super magic potion (3)') + getPrice('Super ranging potion (3)'))) / 1.1;
+      const totalCost = 0.983 * (extremes + getPrice('Clean torstol'));
+      return totalCost / this.actionXP;
+    },
     modifiers: [
       raf,
       pulse,
@@ -900,10 +980,12 @@ window.methods = [
     skill: 'Herblore',
     actionXP: 2201,
     actionsPerHour: 575,
-    baseCost: `const extremes = (0.9 * (getPrice(261) + getPrice(267) + getPrice(2481) + getPrice(4698) + 5 * getPrice(12539))
-                                    + (getPrice(145) + getPrice(157) + getPrice(163) + getPrice(3042) + getPrice(169))) / 1.1;
-    const totalCost = 0.983 * (extremes + getPrice(269));
-    return totalCost / this.actionXP`,
+    baseCost() {
+      const extremes = (0.9 * (getPrice('Clean avantoe') + getPrice('Clean dwarf weed') + getPrice('Clean lantadyme') + getPrice('Mud rune') + 5 * getPrice('Grenwall spikes'))
+        + (getPrice('Super attack (3)') + getPrice('Super strength (3)') + getPrice('Super defence (3)') + getPrice('Super magic potion (3)') + getPrice('Super ranging potion (3)'))) / 1.1;
+      const totalCost = 0.983 * (extremes + getPrice('Clean torstol'));
+      return totalCost / this.actionXP;
+    },
     modifiers: [
       raf,
       pulse,
@@ -932,7 +1014,9 @@ window.methods = [
     skill: 'Hunter',
     actionXP: 204 * 1585,
     actionsPerHour: 60 / 15,
-    baseCost: 'return (getPrice(4698) + getPrice(40878)) / 8000',
+    baseCost() {
+      return (getPrice('Mud rune') + getPrice('Decorated hunter urn (nr)')) / 8000;
+    },
     modifiers: [
       raf,
       ava3,
@@ -962,7 +1046,9 @@ window.methods = [
     skill: 'Hunter',
     actionXP: 476,
     actionsPerHour: 2400,
-    baseCost: 'return (getPrice(4698) + getPrice(40878)) / 8000 - getPrice(40995) / this.actionXP',
+    baseCost() {
+      return (getPrice('Mud rune') + getPrice('Decorated hunter urn (nr)')) / 8000 - getPrice('Crystal skillchompa') / this.actionXP;
+    },
     modifiers: [
       raf,
       ava3,
@@ -992,7 +1078,9 @@ window.methods = [
     name: 'Siphoning Gear',
     skill: 'Invention',
     base: 'return 622566',
-    baseCost: 'return getPrice(36730) / 621000',
+    baseCost() {
+      return getPrice('Equipment siphon') / 621000;
+    },
     modifiers: [],
     requirements: [
       {name: '60 Invention (for lv 12 items)'},
@@ -1006,7 +1094,9 @@ window.methods = [
     name: 'Shattered Worlds (magic)',
     skill: 'Magic',
     base: 'return 1600000',
-    baseCost: 'return 2500000 / this.base',
+    baseCost() {
+      return 2500000 / this.base;
+    },
     modifiers: [
       raf,
       ava3,
@@ -1022,7 +1112,9 @@ window.methods = [
     skill: 'Mining',
     actionXP: 363862.5,
     actionsPerHour: 60 / 10,
-    baseCost: 'return 0',
+    baseCost() {
+      return 0;
+    },
     modifiers: [],
     requirements: [{name: 'Warbanding FC or yolo'}],
     daily: 'return 1 / this.actionsPerHour',
@@ -1034,7 +1126,9 @@ window.methods = [
     skill: 'Mining',
     actionXP: 444763,
     actionsPerHour: 60 / 16,
-    baseCost: 'return -getPrice(31908) / this.actionXP',
+    baseCost() {
+      return -getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
+    },
     modifiers: [],
     requirements: [{name: 'Barbarian Assault team'}],
     desc: 'Barbarian Assault Hard Mode waves 1-9 (16 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
@@ -1045,7 +1139,9 @@ window.methods = [
     skill: 'Mining',
     actionXP: 269200,
     actionsPerHour: 60 / 7,
-    baseCost: 'return getPrice(31908) / this.actionXP',
+    baseCost() {
+      return getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
+    },
     modifiers: [],
     requirements: [{name: 'Barbarian Assault team'}],
     desc: 'Barbarian Assault Hard Mode waves 1-9 (7 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
@@ -1056,7 +1152,9 @@ window.methods = [
     skill: 'Mining',
     actionXP: 500,
     actionsPerHour: 860,
-    baseCost: 'return getPrice(31597) / this.actionXP',
+    baseCost() {
+      return getPrice('Azure skillchompa') / this.actionXP;
+    },
     modifiers: [
       raf,
       ava6,
@@ -1084,7 +1182,9 @@ window.methods = [
     skill: 'Mining',
     actionXP: (0.158 * 1.1 + 0.842 * 0.05) * 692.5, // 15.8% success, 10% furnace proc on success
     actionsPerHour: 2000,
-    baseCost: 'return getPrice(31597) / this.actionXP + (getPrice(557) + getPrice(20404)) / 3125',
+    baseCost() {
+      return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Earth rune') + getPrice('Decorated mining urn (nr)')) / 3125;
+    },
     modifiers: [
       raf,
       urnEnhancer,
@@ -1113,7 +1213,9 @@ window.methods = [
     skill: 'Mining',
     actionXP: 0.158 * 1.1 * 692.5, // 15.8% success, 3 ticks per attempt
     actionsPerHour: 2000,
-    baseCost: 'return (getPrice(557) + getPrice(20404)) / 3125',
+    baseCost() {
+      return (getPrice('Earth rune') + getPrice('Decorated mining urn (nr)')) / 3125;
+    },
     modifiers: [
       raf,
       urnEnhancer,
@@ -1136,22 +1238,24 @@ window.methods = [
     alt: 1,
     desc: 'TFW can\'t afford skillchompas after update :(',
   },
-  wildyAltarMethod('Dragon Bones', 72, 536),
-  wildyAltarMethod('Hardened Dragon Bones', 144, 35008),
-  wildyAltarMethod('Airut Bones', 132.5, 30209),
-  wildyAltarMethod('Frost Dragon Bones', 180, 18832),
-  wildyAltarMethod('Reinforced Dragon Bones', 190, 35010),
-  altarMethod('Dragon Bones', 72, 536),
-  altarMethod('Hardened Dragon Bones', 144, 35008),
-  altarMethod('Airut Bones', 132.5, 30209),
-  altarMethod('Frost Dragon Bones', 180, 18832),
-  altarMethod('Reinforced Dragon Bones', 190, 35010),
+  wildyAltarMethod('Dragon Bones', 72, 'Dragon bones'),
+  wildyAltarMethod('Hardened Dragon Bones', 144, 'Hardened dragon bones'),
+  wildyAltarMethod('Airut Bones', 132.5, 'Airut bones'),
+  wildyAltarMethod('Frost Dragon Bones', 180, 'Frost dragon bones'),
+  wildyAltarMethod('Reinforced Dragon Bones', 190, 'Reinforced dragon bones'),
+  altarMethod('Dragon Bones', 72, 'Dragon bones'),
+  altarMethod('Hardened Dragon Bones', 144, 'Hardened dragon bones'),
+  altarMethod('Airut Bones', 132.5, 'Airut bones'),
+  altarMethod('Frost Dragon Bones', 180, 'Frost dragon bones'),
+  altarMethod('Reinforced Dragon Bones', 190, 'Reinforced dragon bones'),
   {
     name: 'Scatter/Bury: Dragon Bones + Infernal Ashes',
     skill: 'Prayer',
     actionXP: 2 * 72 + 62.5,
     actionsPerHour: 5750,
-    baseCost: 'return (0.98 * getPrice(536) + getPrice(20268)) / this.actionXP',
+    baseCost() {
+      return (0.98 * getPrice('Dragon bones') + getPrice('Infernal ashes')) / this.actionXP;
+    },
     modifiers: [
       raf,
       ava6,
@@ -1172,7 +1276,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Prayer',
     actionXP: 2100,
     actionsPerHour: 1200,
-    baseCost: 'return 110000 / this.actionXP',
+    baseCost() {
+      return 110000 / this.actionXP;
+    },
     modifiers: [
       raf,
       ava6,
@@ -1204,7 +1310,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Prayer',
     actionXP: 9800,
     actionsPerHour: 29,
-    baseCost: 'return 110000 / this.actionXP',
+    baseCost() {
+      return 110000 / this.actionXP;
+    },
     modifiers: [
       raf,
       ava6,
@@ -1238,7 +1346,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     name: 'Shattered Worlds (ranged)',
     skill: 'Ranged',
     base: 'return 1860000',
-    baseCost: 'return 2500000 / this.base',
+    baseCost() {
+      return 2500000 / this.base;
+    },
     modifiers: [
       raf,
       ava3,
@@ -1254,7 +1364,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Runecrafting',
     actionXP: 220,
     actionsPerHour: 440,
-    baseCost: 'return (getPrice(7936) - 1.05 * 0.8 * getPrice(566)) / this.actionXP + (getPrice(7936) + getPrice(40918)) / 7000',
+    baseCost() {
+      return (getPrice('Pure essence') - 1.05 * 0.8 * getPrice('Soul rune')) / this.actionXP + (getPrice('Pure essence') + getPrice('Decorated runecrafting urn (nr)')) / 7000;
+    },
     modifiers: [
       raf,
       {
@@ -1298,7 +1410,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     name: 'Movran Tasks',
     skill: 'Slayer',
     base: 'return 1000000',
-    baseCost: 'return -4',
+    baseCost() {
+      return -4;
+    },
     modifiers: [
       raf,
       ava3,
@@ -1314,7 +1428,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Smithing',
     actionXP: 10487.5 * 1.1, // you can get perfect sword about half the time
     actionsPerHour: 60,
-    baseCost: 'return 50 * getPrice(32092) / this.dailyXP',
+    baseCost() {
+      return 50 * getPrice('Vis wax') / this.dailyXP;
+    },
     modifiers: [
       raf,
       ava6,
@@ -1354,7 +1470,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Smithing',
     actionXP: 225,
     actionsPerHour: 1580,
-    baseCost: 'return (2.6 * getPrice(2363) - getPrice(1319)) / this.actionXP',
+    baseCost() {
+      return (2.6 * getPrice('Rune bar') - getPrice('Rune 2h sword')) / this.actionXP;
+    },
     modifiers: [
       raf,
       pulse,
@@ -1385,17 +1503,19 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     ],
     desc: 'Make Rune 2h/platelegs/plateskirts with a mammoth, sell in bulk on forums',
   },
-  summoningMethod('Pack Yak', 96, 422.4 + 4.8, 211, 50 - 15, 10818, 12435),
-  summoningMethod('Steel titan', 99, 435.2 + 4.9, 178, 2000 - 600, 1119, 12825),
-  summoningMethod('Fire titan', 79, 695.2 + 7.9, 198, 4 - 1, 1442, 12824),
-  summoningMethod('Moss titan', 79, 695.2 + 7.9, 202, 4 - 1, 1440, 12824),
-  summoningMethod('Geyser titan', 89, 783.2 + 8.9, 222, 4 - 1, 1444, 12833),
+  summoningMethod('Pack Yak', 96, 422.4 + 4.8, 211, 50 - 15, 'Yak-hide', 'Winter storage scroll'),
+  summoningMethod('Steel titan', 99, 435.2 + 4.9, 178, 2000 - 600, 'Steel platebody', 'Steel of legends scroll'),
+  summoningMethod('Fire titan', 79, 695.2 + 7.9, 198, 4 - 1, 'Fire talisman', 'Titan\'s constitution scroll'),
+  summoningMethod('Moss titan', 79, 695.2 + 7.9, 202, 4 - 1, 'Earth talisman', 'Titan\'s constitution scroll'),
+  summoningMethod('Geyser titan', 89, 783.2 + 8.9, 222, 4 - 1, 'Water talisman', 'Boil scroll'),
   {
     name: 'Dwarf Traders',
     skill: 'Thieving',
     actionXP: 556.5,
     actionsPerHour: 1670,
-    baseCost: 'return -1',
+    baseCost() {
+      return -1;
+    },
     modifiers: [
       raf,
       ava6,
@@ -1427,7 +1547,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     name: 'Priffdinas Elves',
     skill: 'Thieving',
     base: 'return 420000',
-    baseCost: 'return -3',
+    baseCost() {
+      return -3;
+    },
     modifiers: [
       raf,
       ava6,
@@ -1452,7 +1574,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Woodcutting',
     actionXP: 48515,
     actionsPerHour: 60 / 2,
-    baseCost: 'return 0',
+    baseCost() {
+      return 0;
+    },
     modifiers: [],
     requirements: [{name: '99 Woodcutting'}],
     daily: 'return 2 / 60',
@@ -1463,7 +1587,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Woodcutting',
     actionXP: 175,
     actionsPerHour: 2800,
-    baseCost: 'return 40 * getPrice(32092) / this.dailyXP',
+    baseCost() {
+      return 40 * getPrice('Vis wax') / this.dailyXP;
+    },
     modifiers: [
       raf,
       pulse,
@@ -1498,7 +1624,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Woodcutting',
     actionXP: 92,
     actionsPerHour: 1450, // 1500 max, give some wiggle room
-    baseCost: 'return 120 * 6 * (getPrice(566) + getPrice(562) + getPrice(554) + getPrice(555)) / this.base + getPrice(31597) / this.actionXP + (getPrice(557) + getPrice(39010)) / 9500',
+    baseCost() {
+      return 120 * 6 * (getPrice('Soul rune') + getPrice('Chaos rune') + getPrice('Fire rune') + getPrice('Water rune')) / this.base + getPrice('Azure skillchompa') / this.actionXP + (getPrice('Earth rune') + getPrice('Decorated woodcutting urn (nr)')) / 9500;
+    },
     modifiers: [
       raf,
       urnEnhancer,
@@ -1552,7 +1680,9 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     skill: 'Woodcutting',
     actionXP: 92,
     actionsPerHour: 1450, // 1500 max, give some wiggle room
-    baseCost: 'return 120 * 6 * (getPrice(566) + getPrice(562) + getPrice(554) + getPrice(555)) / this.base + (getPrice(557) + getPrice(39010)) / 9500',
+    baseCost() {
+      return 120 * 6 * (getPrice('Soul rune') + getPrice('Chaos rune') + getPrice('Fire rune') + getPrice('Water rune')) / this.base + (getPrice('Earth rune') + getPrice('Decorated woodcutting urn (nr)')) / 9500;
+    },
     modifiers: [
       raf,
       urnEnhancer,

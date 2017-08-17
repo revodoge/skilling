@@ -103,41 +103,9 @@
       },
     },
     mounted() {
-      this.evalCost(this.data.baseCost);
+      window.loaded.then(() => this.baseCost = this.data.baseCost.apply(this));
     },
     methods: {
-      evalCost(costString) { // evaluate cost and take prices from GE
-        const unevaluatedPrice = costString.match(/getPrice\((\d+)\)/);
-        if (unevaluatedPrice) {
-          this.getPrice(unevaluatedPrice[1]).then((price) => {
-            this.evalCost(costString.replace(unevaluatedPrice[0], price));
-          });
-        } else {
-          this.baseCost = Function(costString).apply(this);
-        }
-      },
-      getPrice(id) { // price from GE, consider a better API to use
-        if (localStorage.getItem(id)) {
-          return new Promise((resolve) => {
-            resolve(parseInt(localStorage.getItem(id), 10));
-          });
-        }
-        const api = 'https://cors-anywhere.herokuapp.com/http://services.runescape.com/m=itemdb_rs/api/graph/';
-        return this.$http.get(`${api + id}.json`, {responseType: 'json'}).then((response) => {
-          if (!response.body) {
-            return NaN;
-          }
-          const i = response.body.daily;
-          const time = Object.keys(i).sort().reverse()[0];
-          const price = i[time];
-          if (localStorage.getItem('geTime') !== time.toString()) {
-            localStorage.clear();
-            localStorage.setItem('geTime', time);
-          }
-          localStorage.setItem(id, price);
-          return price;
-        }, () => NaN);
-      },
       toggleDesc() {
         this.$emit('descriptionToggled', this.data);
       },
