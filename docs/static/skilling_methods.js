@@ -257,7 +257,7 @@ const smouldering = window.skillList.map(function (skill) {
     skill,
     base: 'return 10000000',
     baseCost() {
-      return 70;
+      return 150;
     },
     modifiers: [],
     requirements: [],
