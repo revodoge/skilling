@@ -14,7 +14,7 @@ const urnEnhancer = {
 const raf = {
   name: 'RaF',
   effect() {
-    return {bonus: 0.1};
+    return {bonus: this.bonusActive ? 0.2 : 0.1};
   },
 };
 
@@ -166,14 +166,14 @@ function cutGemMethod(name, levelRequired, actionXP, uncutName, cutName) {
   };
 }
 
-function wildyAltarMethod(name, boneXP, boneName) {
+function wildyAltarMethod(name, boneXP) {
   return {
     name: `${name} in wilderness`,
     skill: 'Prayer',
     actionXP: boneXP * 3.5,
     actionsPerHour: 2000,
     baseCost() {
-      return 0.98 * getPrice(boneName) / this.actionXP;
+      return 0.98 * getPrice(name) / this.actionXP;
     },
     modifiers: [
       raf,
@@ -194,19 +194,20 @@ function wildyAltarMethod(name, boneXP, boneName) {
         },
       },
     ],
+    illumination: true,
     wildy: true,
     desc: '<a href="https://www.youtube.com/watch?v=7IO5E2Lzggo" target="_blank">Run bones with alt</a>',
   };
 }
 
-function altarMethod(name, boneXP, boneName) {
+function altarMethod(name, boneXP) {
   return {
     name,
     skill: 'Prayer',
     actionXP: boneXP * 3.5,
     actionsPerHour: 1800,
     baseCost() {
-      return 0.98 * getPrice(boneName) / this.actionXP;
+      return 0.98 * getPrice(name) / this.actionXP;
     },
     modifiers: [
       raf,
@@ -227,7 +228,72 @@ function altarMethod(name, boneXP, boneName) {
         },
       },
     ],
+    illumination: true,
     desc: 'Run bones with alt',
+  };
+}
+
+function scatterBuryMethod(boneName, boneXP, ashName, ashXP) {
+  return {
+    name: `Scatter/Bury: ${boneName} + ${ashName}`,
+    skill: 'Prayer',
+    actionXP: boneXP + ashXP,
+    actionsPerHour: 5750,
+    baseCost() {
+      return (0.98 * getPrice(boneName) + getPrice(ashName)) / this.actionXP;
+    },
+    modifiers: [
+      raf,
+      ava6,
+    ],
+    requirements: [
+      {
+        name: 'Modified first age outfit',
+        effect() {
+          return {bonus: 0.04};
+        },
+      },
+      {
+        name: 'Dragon Rider amulet',
+        effect() {
+          return {base: this.dxpActive ? 0 : boneXP / (boneXP + ashXP)};
+        },
+      },
+    ],
+    desc: `<a href="https://www.youtube.com/watch?v=wq4FA8qxAZ4" target="_blank">Video by Persiflage</a>, use a BoB<br>
+Can also be done losslessly with other skills such as Herblore, Cooking. Dragon Rider amulet does not stack with DXPW, but stacks with Illumination`,
+  };
+}
+
+function baMethod(skill, roundXP) {
+  return {
+    name: 'Barbarian Assault',
+    skill,
+    actionXP: roundXP,
+    actionsPerHour: 60 / 16,
+    baseCost() {
+      return -getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
+    },
+    modifiers: [],
+    requirements: [{name: 'Barbarian Assault team'}],
+    bonus: true,
+    desc: 'Barbarian Assault Hard Mode waves 1-9 (16 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
+  };
+}
+
+function ba79Method(skill, roundXP) {
+  return {
+    name: 'Barbarian Assault 7-9',
+    skill,
+    actionXP: roundXP,
+    actionsPerHour: 60 / 7,
+    baseCost() {
+      return getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
+    },
+    modifiers: [],
+    requirements: [{name: 'Barbarian Assault team'}],
+    bonus: true,
+    desc: 'Barbarian Assault Hard Mode waves 1-9 (7 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
   };
 }
 
@@ -262,6 +328,7 @@ const smouldering = window.skillList.map(function (skill) {
     modifiers: [],
     requirements: [],
     spinner: true,
+    noDxp: true,
     desc: '<a href="http://www.runescape.com/a=12/bonds" target="_blank">Get Bond</a>',
   };
 });
@@ -331,32 +398,8 @@ const defMelee = meleeMethods.map(function (m) {
 });
 
 window.methods = [
-  {
-    name: 'Barbarian Assault',
-    skill: 'Agility',
-    actionXP: 308439,
-    actionsPerHour: 60 / 16,
-    baseCost() {
-      return -getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
-    },
-    modifiers: [],
-    requirements: [{name: 'Barbarian Assault team'}],
-    desc: 'Barbarian Assault Hard Mode waves 1-9 (16 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
-    bonus: true,
-  },
-  {
-    name: 'Barbarian Assault 7-9',
-    skill: 'Agility',
-    actionXP: 186688,
-    actionsPerHour: 60 / 7,
-    baseCost() {
-      return getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
-    },
-    modifiers: [],
-    requirements: [{name: 'Barbarian Assault team'}],
-    desc: 'Barbarian Assault Hard Mode waves 1-9 (7 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
-    bonus: true,
-  },
+  baMethod('Agility', 308439),
+  ba79Method('Agility', 186688),
   {
     name: 'Silverhawk Boots',
     skill: 'Agility',
@@ -603,6 +646,7 @@ window.methods = [
     modifiers: [],
     requirements: [{name: '99 Divination'}],
     daily: 'return 2 / this.actionsPerHour',
+    noDxp: true,
     desc: '<a href="https://www.youtube.com/watch?v=EUMy0JuW1uw" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price), non-solo Cres not worth after Children of Mah and Bladed Dive',
   },
   {
@@ -703,6 +747,7 @@ window.methods = [
     modifiers: [],
     requirements: [{name: '120 Dungeoneering'}],
     daily: 'return 2 / this.actionsPerHour',
+    noDxp: true,
     desc: '<a href="https://www.youtube.com/watch?v=4zKvqL7zmJs" target="_blank">adrenaline91 exposed</a>',
   },
   {
@@ -760,34 +805,11 @@ window.methods = [
     modifiers: [],
     requirements: [{name: 'Book of char'}],
     daily: 'return 384 / this.actionsPerHour',
+    noDxp: true,
     desc: '<a href="https://www.reddit.com/r/NRiver/comments/3z99jl/book_of_char/" target="_blank">Guide by NRiver</a>, use Elder logs if limiting factor',
   },
-  {
-    name: 'Barbarian Assault',
-    skill: 'Firemaking',
-    actionXP: 812921,
-    actionsPerHour: 60 / 16,
-    baseCost() {
-      return -getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
-    },
-    modifiers: [],
-    requirements: [{name: 'Barbarian Assault team'}],
-    desc: 'Barbarian Assault Hard Mode waves 1-9 (16 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
-    bonus: true,
-  },
-  {
-    name: 'Barbarian Assault 7-9',
-    skill: 'Firemaking',
-    actionXP: 492035.5,
-    actionsPerHour: 60 / 7,
-    baseCost() {
-      return getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
-    },
-    modifiers: [],
-    requirements: [{name: 'Barbarian Assault team'}],
-    desc: 'Barbarian Assault Hard Mode waves 1-9 (7 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
-    bonus: true,
-  },
+  baMethod('Firemaking', 812921),
+  ba79Method('Firemaking', 492035.5),
   {
     name: 'Jadinko Lair',
     skill: 'Firemaking',
@@ -1087,6 +1109,7 @@ window.methods = [
       {name: 'T90 gear'},
     ],
     lossless: true,
+    noDxp: true,
     desc: 'Siphon T90 weapons/armour (and crystal tools).',
   },
   // TODO: wildy aby demons, aby demons
@@ -1119,34 +1142,11 @@ window.methods = [
     requirements: [{name: 'Warbanding FC or yolo'}],
     daily: 'return 1 / this.actionsPerHour',
     wildy: true,
+    noDxp: true,
     desc: '<a href="https://www.youtube.com/watch?v=Q8cIBTd3hCY" target="_blank">Sexy Mining Exp! Warbands OP As Balls Gf Spins</a>',
   },
-  {
-    name: 'Barbarian Assault',
-    skill: 'Mining',
-    actionXP: 444763,
-    actionsPerHour: 60 / 16,
-    baseCost() {
-      return -getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
-    },
-    modifiers: [],
-    requirements: [{name: 'Barbarian Assault team'}],
-    desc: 'Barbarian Assault Hard Mode waves 1-9 (16 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
-    bonus: true,
-  },
-  {
-    name: 'Barbarian Assault 7-9',
-    skill: 'Mining',
-    actionXP: 269200,
-    actionsPerHour: 60 / 7,
-    baseCost() {
-      return getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
-    },
-    modifiers: [],
-    requirements: [{name: 'Barbarian Assault team'}],
-    desc: 'Barbarian Assault Hard Mode waves 1-9 (7 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
-    bonus: true,
-  },
+  baMethod('Mining', 444763),
+  ba79Method('Mining', 269200),
   {
     name: 'Lava Geyser with alt',
     skill: 'Mining',
@@ -1238,39 +1238,28 @@ window.methods = [
     alt: 1,
     desc: 'TFW can\'t afford skillchompas after update :(',
   },
-  wildyAltarMethod('Dragon Bones', 72, 'Dragon bones'),
-  wildyAltarMethod('Hardened Dragon Bones', 144, 'Hardened dragon bones'),
-  wildyAltarMethod('Airut Bones', 132.5, 'Airut bones'),
-  wildyAltarMethod('Frost Dragon Bones', 180, 'Frost dragon bones'),
-  wildyAltarMethod('Reinforced Dragon Bones', 190, 'Reinforced dragon bones'),
-  altarMethod('Dragon Bones', 72, 'Dragon bones'),
-  altarMethod('Hardened Dragon Bones', 144, 'Hardened dragon bones'),
-  altarMethod('Airut Bones', 132.5, 'Airut bones'),
-  altarMethod('Frost Dragon Bones', 180, 'Frost dragon bones'),
-  altarMethod('Reinforced Dragon Bones', 190, 'Reinforced dragon bones'),
-  {
-    name: 'Scatter/Bury: Dragon Bones + Infernal Ashes',
-    skill: 'Prayer',
-    actionXP: 2 * 72 + 62.5,
-    actionsPerHour: 5750,
-    baseCost() {
-      return (0.98 * getPrice('Dragon bones') + getPrice('Infernal ashes')) / this.actionXP;
-    },
-    modifiers: [
-      raf,
-      ava6,
-    ],
-    requirements: [
-      {
-        name: 'Modified first age outfit',
-        effect() {
-          return {bonus: 0.04};
-        },
-      },
-    ],
-    desc: `<a href="https://www.youtube.com/watch?v=wq4FA8qxAZ4" target="_blank">Video by Persiflage</a>, use a BoB<br>
-Can also be done losslessly with other skills such as Herblore, Cooking`,
-  },
+  wildyAltarMethod('Dragon bones', 72),
+  wildyAltarMethod('Hardened dragon bones', 144),
+  wildyAltarMethod('Airut bones', 132.5),
+  wildyAltarMethod('Frost dragon bones', 180),
+  wildyAltarMethod('Reinforced dragon bones', 190),
+  altarMethod('Dragon bones', 72),
+  altarMethod('Hardened dragon bones', 144),
+  altarMethod('Airut bones', 132.5),
+  altarMethod('Frost dragon bones', 180),
+  altarMethod('Reinforced dragon bones', 190),
+  scatterBuryMethod('Dragon bones', 72, 'Infernal ashes', 62.5),
+  scatterBuryMethod('Hardened dragon bones', 144, 'Infernal ashes', 62.5),
+  scatterBuryMethod('Frost dragon bones', 180, 'Infernal ashes', 62.5),
+  scatterBuryMethod('Reinforced dragon bones', 190, 'Infernal ashes', 62.5),
+  scatterBuryMethod('Dragon bones', 72, 'Tortured ashes', 90),
+  scatterBuryMethod('Hardened dragon bones', 144, 'Tortured ashes', 90),
+  scatterBuryMethod('Frost dragon bones', 180, 'Tortured ashes', 90),
+  scatterBuryMethod('Reinforced dragon bones', 190, 'Tortured ashes', 90),
+  scatterBuryMethod('Dragon bones', 72, 'Searing ashes', 200),
+  scatterBuryMethod('Hardened dragon bones', 144, 'Searing ashes', 200),
+  scatterBuryMethod('Frost dragon bones', 180, 'Searing ashes', 200),
+  scatterBuryMethod('Reinforced dragon bones', 190, 'Searing ashes', 200),
   {
     name: '5-tick cleansing crystals',
     skill: 'Prayer',
@@ -1534,7 +1523,7 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     ],
     requirements: [
       {name: '90 Thieving'},
-      {name: 'T3+ Five finger discount aura'},
+      {name: 'T4+ Five finger discount aura'},
       {name: 'Trahaern exoskeleton / Master camouflage outfit)'},
       {name: 'Crystal mask + Light form'},
       {name: 'Ardy cape 4 and/or Thieving skillcape'},
@@ -1580,6 +1569,7 @@ Can also be done losslessly with other skills such as Herblore, Cooking`,
     modifiers: [],
     requirements: [{name: '99 Woodcutting'}],
     daily: 'return 2 / 60',
+    noDxp: true,
     desc: '<a href="https://www.youtube.com/watch?v=zSozFZsEXF0" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price), Minigames FC tracks the worlds',
   },
   {

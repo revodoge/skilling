@@ -17,6 +17,7 @@
     <!--load all the methods with a 15M EHP to get the relative efficiency-->
     <template v-for="methodData in filteredMethods">
       <method :key="methodData.id" :tvc="15" :boosts="boosts" :data="methodData" :display="false"
+              :illuminationActive="false" :dxpActive="false"
               :alt="9" v-on:dailyCalculated="updateMethodDaily" v-on:valueCalculated="updateMethodCost"></method>
     </template>
     <div class="row">

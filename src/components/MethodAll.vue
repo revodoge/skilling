@@ -58,6 +58,26 @@
       </div>
       <div class="col-xs-0 col-md-2"></div>
     </form>
+    <form class="row">
+      <div class="col-xs-0 col-md-2"></div>
+      <div class="form-group col-xs-3 col-md-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" v-model="illuminationActive">Illumination 100%
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-6 col-md-4">
+      </div>
+      <div class="form-group col-xs-3 col-md-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" v-model="dxpActive">DXP Weekend
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-0 col-md-2"></div>
+    </form>
     <div class="row" id="boosts">
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
       <div class="col-xs-12 col-md-10 col-lg-8">
@@ -104,7 +124,7 @@
             <tbody>
             <template v-for="methodData in sortedMethods">
               <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :data="methodData" :display="true"
-                      :alt="alt" v-on:valueCalculated="updateMethodCost"
+                      :alt="alt" v-on:valueCalculated="updateMethodCost" :illuminationActive="illuminationActive" :dxpActive="dxpActive"
                       v-on:descriptionToggled="toggleDescription"></method>
               <method-desc :desc="methodData.desc"
                            :display="true"></method-desc>
@@ -138,6 +158,8 @@
         afk: false,
         triHard: true,
         noWildy: false,
+        illuminationActive: false,
+        dxpActive: false,
       };
     },
     computed: {
@@ -204,6 +226,16 @@
       triHard(triHard) {
         if (triHard) {
           this.afk = false;
+        }
+      },
+      illuminationActive(active) {
+        if (active) {
+          this.dxpActive = false;
+        }
+      },
+      dxpActive(active) {
+        if (active) {
+          this.illuminationActive = false;
         }
       },
     },
