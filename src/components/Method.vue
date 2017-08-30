@@ -42,6 +42,10 @@
         type: Boolean,
         required: true,
       },
+      bxpActive: {
+        type: Boolean,
+        required: true,
+      },
       illuminationActive: {
         type: Boolean,
         required: true,
@@ -68,7 +72,8 @@
         baseCost: NaN, // basic cost per XP
         bonus: this.data.bonus, // if the method gives bonus XP
         illuminationOnly: this.data.illumination, // method boosted by illumination but not DXP weekend
-        noDxp: this.data.noDxp, // method unaffected by bonus XP/DXP/Illumination
+        noDxp: this.data.noDxp, // method unaffected by DXP/Illumination
+        noBxp: this.data.noBxp, // method unaffected by bonus XP
         requirements: this.data.requirements, // requirements needed
         daily: this.data.daily, // number of hours you can do the method, if daily method
         desc: this.data.desc, // description
@@ -94,10 +99,23 @@
           this.requirements.filter(req => req.effect)
             .map(req => req.effect().bonus)
             .filter(bonus => bonus !== undefined).reduce((acc, cur) => acc + cur, 0) +
-          (this.bonusActive ? 1 : 0);
+          this.bxpBoost;
       },
-      bonusActive() {
-        return !this.bonus && !this.noDxp && (this.illuminationActive || (!this.illuminationOnly && this.dxpActive));
+      bxpBoost() {
+        if (this.bonus) {
+          return 0;
+        }
+        let boost = 0;
+        if (!this.noDxp && this.illuminationActive) {
+          boost += 1;
+        }
+        if (!this.noDxp && !this.illuminationOnly && this.dxpActive) {
+          boost += 1;
+        }
+        if (!this.noBxp && this.bxpActive) {
+          boost += 1;
+        }
+        return boost;
       },
       modifiers() {
         return this.data.modifiers.map(modifier =>

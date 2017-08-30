@@ -98,7 +98,7 @@ function summoningMethod(name, levelRequired, actionXP, shards, storeCost, prima
   };
 }
 
-function dhideShieldMethod(name, levelRequired, actionXP, costPerAction) {
+function dhideMethod(name, levelRequired, actionXP, costPerAction) {
   return {
     name,
     skill: 'Crafting',
@@ -604,16 +604,16 @@ window.methods = [
     ],
     desc: '<a href="https://www.youtube.com/watch?v=9fAn3R76aUA" target="_blank">Video by Persiflage</a>, use a BoB',
   },
-  dhideShieldMethod('Green d\'hide Shields', 64, 248, function () {
+  dhideMethod('Green d\'hide Shields', 64, 248, function () {
     return (4 - 0.4) * getPrice('Green dragon leather') - getPrice('Green dragonhide shield');
   }),
-  dhideShieldMethod('Blue d\'hide Shields', 72, 280, function () {
+  dhideMethod('Blue d\'hide Shields', 72, 280, function () {
     return (4 - 0.35) * getPrice('Blue dragon leather') - getPrice('Blue dragonhide shield');
   }),
-  dhideShieldMethod('Red d\'hide Shields', 78, 312, function () {
+  dhideMethod('Red d\'hide Shields', 78, 312, function () {
     return (4 - 0.3) * getPrice('Red dragon leather') - getPrice('Red dragonhide shield');
   }),
-  dhideShieldMethod('Black d\'hide Shields', 85, 344, function () {
+  dhideMethod('Black d\'hide Shields', 85, 344, function () {
     return (4 - 0.25) * getPrice('Black dragon leather') - getPrice('Black dragonhide shield');
   }),
   cutGemMethod('Diamonds', 43, 107.5, 'Uncut diamond', 'Diamond'),
@@ -646,6 +646,7 @@ window.methods = [
     modifiers: [],
     requirements: [{name: '99 Divination'}],
     daily: 'return 2 / this.actionsPerHour',
+    noBxp: true,
     noDxp: true,
     desc: '<a href="https://www.youtube.com/watch?v=EUMy0JuW1uw" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price), non-solo Cres not worth after Children of Mah and Bladed Dive',
   },
@@ -747,6 +748,7 @@ window.methods = [
     modifiers: [],
     requirements: [{name: '120 Dungeoneering'}],
     daily: 'return 2 / this.actionsPerHour',
+    noBxp: true,
     noDxp: true,
     desc: '<a href="https://www.youtube.com/watch?v=4zKvqL7zmJs" target="_blank">adrenaline91 exposed</a>',
   },
@@ -805,6 +807,7 @@ window.methods = [
     modifiers: [],
     requirements: [{name: 'Book of char'}],
     daily: 'return 384 / this.actionsPerHour',
+    noBxp: true,
     noDxp: true,
     desc: '<a href="https://www.reddit.com/r/NRiver/comments/3z99jl/book_of_char/" target="_blank">Guide by NRiver</a>, use Elder logs if limiting factor',
   },
@@ -1142,6 +1145,7 @@ window.methods = [
     requirements: [{name: 'Warbanding FC or yolo'}],
     daily: 'return 1 / this.actionsPerHour',
     wildy: true,
+    noBxp: true,
     noDxp: true,
     desc: '<a href="https://www.youtube.com/watch?v=Q8cIBTd3hCY" target="_blank">Sexy Mining Exp! Warbands OP As Balls Gf Spins</a>',
   },
@@ -1569,6 +1573,7 @@ window.methods = [
     modifiers: [],
     requirements: [{name: '99 Woodcutting'}],
     daily: 'return 2 / 60',
+    noBxp: true,
     noDxp: true,
     desc: '<a href="https://www.youtube.com/watch?v=zSozFZsEXF0" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price), Minigames FC tracks the worlds',
   },

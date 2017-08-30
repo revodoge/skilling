@@ -60,16 +60,23 @@
     </form>
     <form class="row">
       <div class="col-xs-0 col-md-2"></div>
-      <div class="form-group col-xs-3 col-md-2">
+      <div class="form-group col-xs-4 col-md-2">
         <div class="checkbox">
           <label>
             <input type="checkbox" v-model="illuminationActive">Illumination 100%
           </label>
         </div>
       </div>
-      <div class="col-xs-6 col-md-4">
+      <div class="col-xs-0 col-md-1"></div>
+      <div class="form-group col-xs-4 col-md-2">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" v-model="bxpActive">I have bonus XP
+          </label>
+        </div>
       </div>
-      <div class="form-group col-xs-3 col-md-2">
+      <div class="col-xs-0 col-md-1"></div>
+      <div class="form-group col-xs-4 col-md-2">
         <div class="checkbox">
           <label>
             <input type="checkbox" v-model="dxpActive">DXP Weekend
@@ -123,7 +130,7 @@
             </thead>
             <tbody>
             <template v-for="methodData in sortedMethods">
-              <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :data="methodData" :display="true"
+              <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :data="methodData" :display="true" :bxpActive="bxpActive"
                       :alt="alt" v-on:valueCalculated="updateMethodCost" :illuminationActive="illuminationActive" :dxpActive="dxpActive"
                       v-on:descriptionToggled="toggleDescription"></method>
               <method-desc :desc="methodData.desc"
@@ -160,6 +167,7 @@
         noWildy: false,
         illuminationActive: false,
         dxpActive: false,
+        bxpActive: false,
       };
     },
     computed: {
