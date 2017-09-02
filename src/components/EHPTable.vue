@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="row" v-on:submit.prevent="onSubmit" v-on:submit.capture="fetchHiscore">
+    <form class="row" v-on:submit.prevent="fetchHiscore">
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
       <div class="col-xs-12 col-md-10 col-lg-8">
         <label for="rsn">Runescape Username</label>

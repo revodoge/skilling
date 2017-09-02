@@ -8,6 +8,9 @@ import router from './router';
 Vue.use(VueResource);
 Vue.config.productionTip = false;
 
+Vue.filter('formatXp', value => Math.round(value).toLocaleString('en-US'));
+Vue.filter('formatCost', value => (isNaN(value) ? 'loading cost...' : value.toFixed(2)));
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -15,9 +18,6 @@ new Vue({
   template: '<App/>',
   components: {App},
 });
-
-Vue.filter('formatXp', value => Math.round(value).toLocaleString('en-US'));
-Vue.filter('formatCost', value => (isNaN(value) ? 'loading cost...' : value.toFixed(2)));
 
 window.itemPrices = {};
 window.getPrice = function (name) {
