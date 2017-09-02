@@ -345,7 +345,7 @@ const smouldering = window.skillList.map(function (skill) {
 const meleeMethods = [
   // TODO: PSD shapeshifters, aby demon, airut
   {
-    name: 'Abyssal Demons (wildy)',
+    name: 'Abyssal Demons (wildy) (melee)',
     actionXP: 661,
     actionsPerHour: 1800,
     baseCost() {
@@ -358,6 +358,7 @@ const meleeMethods = [
     requirements: [
       {name: '85 Slayer'},
       {name: 'Noxious scythe'},
+      {name: 'Upgraded cannon'},
       {name: 'Spring cleaner'},
       {
         name: 'Demon slayer gear',
@@ -395,6 +396,80 @@ const meleeMethods = [
   },
 ];
 
+const magicMethods = [
+  // TODO: wildy aby demons, aby demons
+  {
+    name: 'Shattered Worlds (magic)',
+    base: 'return 1600000',
+    baseCost() {
+      return 2500000 / this.base;
+    },
+    modifiers: [
+      raf,
+      ava3,
+    ],
+    requirements: [
+      {name: 'Noxious staff'},
+      {name: 'Combat gear'},
+    ],
+    desc: youtubeEmbed('x4Yo8gN1dME'),
+  },
+];
+
+const rangedMethods = [
+  // TODO: PSD shapeshifters, aby demon, airut
+  {
+    name: 'Abyssal Demons (wildy) (ranged)',
+    actionXP: 661,
+    actionsPerHour: 2100,
+    baseCost() {
+      return -6000000 / this.base;
+    },
+    modifiers: [
+      raf,
+      ava6,
+    ],
+    requirements: [
+      {name: '85 Slayer'},
+      {name: 'Mechanized chinchompas'},
+      {name: 'Upgraded cannon'},
+      {name: 'Spring cleaner'},
+      {
+        name: 'Demon slayer gear',
+        effect() {
+          return {bonus: 0.08};
+        },
+      },
+      {
+        name: 'Slayer contract',
+        effect() {
+          return {bonus: 0.33};
+        },
+      },
+    ],
+    wildy: true,
+    desc: `${youtubeEmbed('RrIF_K9obQw', 360)}<br>
+           Looting with alt highly recommended. + 145k prayer xp/hr from attuned ectoplasmator/urns`,
+  },
+  {
+    name: 'Shattered Worlds (ranged)',
+    base: 'return 1860000',
+    baseCost() {
+      return 2500000 / this.base;
+    },
+    modifiers: [
+      raf,
+      ava3,
+    ],
+    requirements: [
+      {name: 'Mechanized chins'},
+      {name: 'Combat gear'},
+    ],
+    desc: `${youtubeEmbed('x4Yo8gN1dME', 119)}<br>Actual rates will vary depending on your skill with combat<br>`,
+  },
+];
+
+
 const attack = meleeMethods.map(function (m) {
   return Object.assign({skill: 'Attack'}, m);
 });
@@ -404,6 +479,22 @@ const strength = meleeMethods.map(function (m) {
 });
 
 const defMelee = meleeMethods.map(function (m) {
+  return Object.assign({skill: 'Defence'}, m);
+});
+
+const magic = magicMethods.map(function (m) {
+  return Object.assign({skill: 'Magic'}, m);
+});
+
+const defMagic = magicMethods.map(function (m) {
+  return Object.assign({skill: 'Defence'}, m);
+});
+
+const ranged = rangedMethods.map(function (m) {
+  return Object.assign({skill: 'Ranged'}, m);
+});
+
+const defRanged = rangedMethods.map(function (m) {
   return Object.assign({skill: 'Defence'}, m);
 });
 
@@ -629,23 +720,6 @@ window.methods = [
   }),
   cutGemMethod('Diamonds', 43, 107.5, 'Uncut diamond', 'Diamond'),
   cutGemMethod('Dragonstones', 55, 137.5, 'Uncut dragonstone', 'Dragonstone'),
-  {
-    name: 'Shattered Worlds (ranged)',
-    skill: 'Defence',
-    base: 'return 1860000',
-    baseCost() {
-      return 2500000 / this.base;
-    },
-    modifiers: [
-      raf,
-      ava3,
-    ],
-    requirements: [
-      {name: 'Mechanized chins'},
-      {name: 'Combat gear'},
-    ],
-    desc: youtubeEmbed('x4Yo8gN1dME', 119),
-  },
   {
     name: 'Guthixian Caches',
     skill: 'Divination',
@@ -1126,24 +1200,6 @@ window.methods = [
     noDxp: true,
     desc: 'Siphon T90 weapons/armour (and crystal tools).',
   },
-  // TODO: wildy aby demons, aby demons
-  {
-    name: 'Shattered Worlds (magic)',
-    skill: 'Magic',
-    base: 'return 1600000',
-    baseCost() {
-      return 2500000 / this.base;
-    },
-    modifiers: [
-      raf,
-      ava3,
-    ],
-    requirements: [
-      {name: 'Noxious staff'},
-      {name: 'Combat gear'},
-    ],
-    desc: youtubeEmbed('x4Yo8gN1dME'),
-  },
   {
     name: 'Warbands',
     skill: 'Mining',
@@ -1344,24 +1400,6 @@ window.methods = [
     afk: true,
     alt: 1,
     desc: 'Tirannwn quiver 3 or 4 makes it completely AFK',
-  },
-  // TODO: wildy aby demons
-  {
-    name: 'Shattered Worlds (ranged)',
-    skill: 'Ranged',
-    base: 'return 1860000',
-    baseCost() {
-      return 2500000 / this.base;
-    },
-    modifiers: [
-      raf,
-      ava3,
-    ],
-    requirements: [
-      {name: 'Mechanized chinchompas'},
-      {name: 'Combat gear'},
-    ],
-    desc: youtubeEmbed('x4Yo8gN1dME', 119),
   },
   {
     name: 'Soul Runes',
@@ -1731,4 +1769,4 @@ window.methods = [
     ],
     desc: youtubeEmbed('PCf8KBDuS04'),
   },
-].concat(prismania, smouldering, attack, strength, defMelee);
+].concat(prismania, smouldering, attack, strength, defMelee, magic, defMagic, ranged, defRanged);
