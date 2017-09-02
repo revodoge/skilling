@@ -134,7 +134,7 @@
                       :alt="alt" v-on:valueCalculated="updateMethodCost" :illuminationActive="illuminationActive" :dxpActive="dxpActive"
                       v-on:descriptionToggled="toggleDescription"></method>
               <method-desc :desc="methodData.desc"
-                           :display="true"></method-desc>
+                           :display="methodData.descriptionDisplay"></method-desc>
             </template>
             </tbody>
           </table>

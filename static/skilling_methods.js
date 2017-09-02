@@ -38,6 +38,11 @@ const pulse = {
   },
 };
 
+function youtubeEmbed(videoId, startTime) {
+  const timeArg = startTime ? `&amp;start=${startTime}` : '';
+  return `<iframe width="640" height="360" src="https://www.youtube-nocookie.com/embed/${videoId}?rel=0&amp;showinfo=0${timeArg}" frameborder="0" allowfullscreen></iframe>`;
+}
+
 function arrowMethod(name, levelRequired, actionXP, arrowheadName, sell) {
   return {
     name,
@@ -94,7 +99,7 @@ function summoningMethod(name, levelRequired, actionXP, shards, storeCost, prima
         },
       },
     ],
-    desc: 'Taverley Shop method <a href="https://www.youtube.com/watch?v=1rS81xB9iwQ" target="_blank">Video by Drowns</a>',
+    desc: `Taverley Shop method<br>${youtubeEmbed('1rS81xB9iwQ')}`,
   };
 }
 
@@ -162,7 +167,7 @@ function cutGemMethod(name, levelRequired, actionXP, uncutName, cutName) {
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=PiwKyMAo4hA" target="_blank">Video by Persiflage</a>, prices will differ if buying/selling in bulk on forums',
+    desc: `${youtubeEmbed('PiwKyMAo4hA')}<br>Prices will differ if buying/selling in bulk on forums`,
   };
 }
 
@@ -196,7 +201,8 @@ function wildyAltarMethod(name, boneXP) {
     ],
     illumination: true,
     wildy: true,
-    desc: '<a href="https://www.youtube.com/watch?v=7IO5E2Lzggo" target="_blank">Run bones with alt</a>',
+    desc: `${youtubeEmbed('7IO5E2Lzggo')}<br>
+           Unnote bones with Harrison if not using an alt, or else it is not really worth being in wildy`,
   };
 }
 
@@ -229,7 +235,7 @@ function altarMethod(name, boneXP) {
       },
     ],
     illumination: true,
-    desc: 'Run bones with alt',
+    desc: 'Run bones with alt for best XP rates',
   };
 }
 
@@ -260,8 +266,9 @@ function scatterBuryMethod(boneName, boneXP, ashName, ashXP) {
         },
       },
     ],
-    desc: `<a href="https://www.youtube.com/watch?v=wq4FA8qxAZ4" target="_blank">Video by Persiflage</a>, use a BoB<br>
-Can also be done losslessly with other skills such as Herblore, Cooking. Dragon Rider amulet does not stack with DXPW, but stacks with Illumination`,
+    desc: `Demonstration by Persiflage is F2P, use a BoB to further increase actions per hour<br>
+           ${youtubeEmbed('wq4FA8qxAZ4')}<br>
+           Can also be done losslessly with other skills such as Herblore, Cooking. Dragon Rider amulet does not stack with DXPW, but stacks with Illumination`,
   };
 }
 
@@ -277,7 +284,8 @@ function baMethod(skill, roundXP) {
     modifiers: [],
     requirements: [{name: 'Barbarian Assault team'}],
     bonus: true,
-    desc: 'Barbarian Assault Hard Mode waves 1-9 (16 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
+    desc: `Rates based on 16 min rounds, and cost is based on GE price of BA tickets, which may not reflect street price<br>
+           ${youtubeEmbed('RuSfTG0yYpM')}`,
   };
 }
 
@@ -293,7 +301,8 @@ function ba79Method(skill, roundXP) {
     modifiers: [],
     requirements: [{name: 'Barbarian Assault team'}],
     bonus: true,
-    desc: 'Barbarian Assault Hard Mode waves 1-9 (7 min rounds) <a href="https://www.youtube.com/watch?v=RuSfTG0yYpM" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
+    desc: `Rates based on 7 min rounds, and cost is based on GE price of BA tickets, which may not reflect street price<br>
+           ${youtubeEmbed('RuSfTG0yYpM')}`,
   };
 }
 
@@ -364,7 +373,8 @@ const meleeMethods = [
       },
     ],
     wildy: true,
-    desc: '<a href="https://www.youtube.com/watch?v=RrIF_K9obQw" target="_blank">Video by Roskat</a>, looting with alt highly recommended. + 130k ranged/def xp/hr from cannon and 145k prayer xp/hr from attuned ectoplasmator',
+    desc: `${youtubeEmbed('RrIF_K9obQw', 360)}<br>
+           Looting with alt highly recommended. + 130k ranged/def xp/hr from cannon and 145k prayer xp/hr from attuned ectoplasmator/urns`,
   },
   {
     name: 'Shattered Worlds (melee)',
@@ -381,7 +391,7 @@ const meleeMethods = [
       {name: 'Vamp scrim'},
       {name: 'Combat gear'},
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=GWAetPN8dZ0" target="_blank">Video by Jona</a>',
+    desc: `${youtubeEmbed('GWAetPN8dZ0')}<br>Actual rates will vary depending on your skill with combat<br>`,
   },
 ];
 
@@ -455,7 +465,7 @@ window.methods = [
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=h6hRV9RuViw" target="_blank">Video by NRiver</a>, don\'t use AHK or you\'ll face the same fate as Damp Cat v1',
+    desc: `${youtubeEmbed('h6hRV9RuViw')}<br>Don't use AHK or you'll face the same fate as Damp Cat v1`,
   },
   {
     name: 'Mahogany Table Flatpack',
@@ -537,7 +547,7 @@ window.methods = [
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=OMlT6PzmEjE" target="_blank">Video by Efficiency Experts Youtube</a>',
+    desc: youtubeEmbed('OMlT6PzmEjE'),
   },
   {
     name: '4-tick rocktails',
@@ -578,7 +588,7 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: '<a href="https://clips.twitch.tv/FlirtyZealousNoodleGivePLZ" target="_blank">Video by Dragonseance</a>',
+    desc: '<iframe src="https://clips.twitch.tv/embed?clip=FlirtyZealousNoodleGivePLZ&autoplay=false&tt_medium=clips_embed" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>',
   },
   {
     name: 'Wines',
@@ -602,7 +612,8 @@ window.methods = [
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=9fAn3R76aUA" target="_blank">Video by Persiflage</a>, use a BoB',
+    desc: `Demonstration is in F2P, use a BoB to increase actions per hour
+           ${youtubeEmbed('9fAn3R76aUA')}`,
   },
   dhideMethod('Green d\'hide Shields', 64, 248, function () {
     return (4 - 0.4) * getPrice('Green dragon leather') - getPrice('Green dragonhide shield');
@@ -633,7 +644,7 @@ window.methods = [
       {name: 'Mechanized chins'},
       {name: 'Combat gear'},
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=x4Yo8gN1dME&t=119" target="_blank">Video by Jona</a>',
+    desc: youtubeEmbed('x4Yo8gN1dME', 119),
   },
   {
     name: 'Guthixian Caches',
@@ -648,7 +659,7 @@ window.methods = [
     daily: 'return 2 / this.actionsPerHour',
     noBxp: true,
     noDxp: true,
-    desc: '<a href="https://www.youtube.com/watch?v=EUMy0JuW1uw" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price), non-solo Cres not worth after Children of Mah and Bladed Dive',
+    desc: `${youtubeEmbed('dD5OWa5mwnE')}<br>Solo/proper duo Cres is still worth, but good luck with that`,
   },
   {
     name: 'Ancestral Energy w/ contract',
@@ -835,7 +846,7 @@ window.methods = [
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=Ff5Dgq8lZnA" target="_blank">Video by Dreyri the #1 Ironman</a>',
+    desc: youtubeEmbed('Ff5Dgq8lZnA'),
   },
   {
     name: 'Wobbegongs with Skillchompas and Scrimshaw',
@@ -867,8 +878,8 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: `<a href="https://www.youtube.com/watch?v=9ixyY9Wfzns" target="_blank">Video by Revodoge</a>, Whopper-baiting scrimshaw also makes spots last longer<br>
- Scrim makes xp/hr worse for doing contracts (Price is based on azure skillchompa but any type works fine)`,
+    desc: `${youtubeEmbed('9ixyY9Wfzns')}<br>
+           Whopper-baiting scrimshaw also makes spots last longer, but makes xp/hr worse for doing contracts (Price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Wobbegongs with Skillchompas',
@@ -900,7 +911,7 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: '<a href="https://www.youtube.com/watch?v=Ot5nrMIYKfw" target="_blank">Video by Marina</a> (Price is based on azure skillchompa but any type works fine)',
+    desc: `${youtubeEmbed('Ot5nrMIYKfw')}<br>(Price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Wobbegongs',
@@ -1032,7 +1043,7 @@ window.methods = [
       },
     ],
     triHard: true,
-    desc: '<a href="https://www.youtube.com/watch?v=Ixf14YZlsWc" target="_blank">Video by Marina</a>',
+    desc: youtubeEmbed('Ixf14YZlsWc'),
   },
   {
     name: 'Ornate Tortles',
@@ -1064,7 +1075,7 @@ window.methods = [
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=ocDtzwSV1jM" target="_blank">Video by Revodoge</a>',
+    desc: youtubeEmbed('ocDtzwSV1jM'),
   },
   {
     name: 'Crystal Skillchompas',
@@ -1097,7 +1108,7 @@ window.methods = [
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=6ETexKA64ok" target="_blank">Video by Jona</a>',
+    desc: youtubeEmbed('6ETexKA64ok'),
   },
   {
     name: 'Siphoning Gear',
@@ -1131,7 +1142,7 @@ window.methods = [
       {name: 'Noxious staff'},
       {name: 'Combat gear'},
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=x4Yo8gN1dME&t=119" target="_blank">Video by Jona</a>',
+    desc: youtubeEmbed('x4Yo8gN1dME'),
   },
   {
     name: 'Warbands',
@@ -1179,7 +1190,7 @@ window.methods = [
       },
     ],
     triHard: true,
-    desc: '<a href="https://www.youtube.com/watch?v=vvaFDMd_Wo4" target="_blank">Video by Marina</a>, XP drops without alt due to hopping limit. Skillchompa bonus XP works here',
+    desc: `${youtubeEmbed('vvaFDMd_Wo4')}<br>XP drops without alt due to hopping limit. Skillchompa bonus XP works here`,
   },
   {
     name: 'Alaea Crabs with Skillchompas',
@@ -1210,7 +1221,7 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: '(Price is based on azure skillchompa but any type works fine)',
+    desc: `${youtubeEmbed('Rq4-8O3TiaA')}<br>(Price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Alaea Crabs',
@@ -1296,7 +1307,7 @@ window.methods = [
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=tjN34chGyR4" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price)',
+    desc: youtubeEmbed('tjN34chGyR4'),
   },
   {
     name: 'Cleansing crystals',
@@ -1350,7 +1361,7 @@ window.methods = [
       {name: 'Mechanized chinchompas'},
       {name: 'Combat gear'},
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=x4Yo8gN1dME&t=119" target="_blank">Video by Jona</a>',
+    desc: youtubeEmbed('x4Yo8gN1dME', 119),
   },
   {
     name: 'Soul Runes',
@@ -1397,7 +1408,7 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: '<a href="https://www.youtube.com/watch?v=HaO7etpX5zk" target="_blank">Video by Jona</a>',
+    desc: youtubeEmbed('HaO7etpX5zk'),
   },
   {
     name: 'Movran Tasks',
@@ -1456,7 +1467,7 @@ window.methods = [
       },
     ],
     daily: 'return 12 / this.actionsPerHour',
-    desc: '<a href="https://www.youtube.com/watch?v=bpvjOI3sJ6I" target="_blank">Of course, I fear no demon</a>',
+    desc: youtubeEmbed('bpvjOI3sJ6I'),
   },
   {
     name: 'Rune 2h',
@@ -1534,7 +1545,7 @@ window.methods = [
       {name: 'Featherfingered necklace'},
       {name: 'Soul-in-a-box'},
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=-05YAUMEDPs" target="_blank">Video by Spudy</a> Aura makes a big difference, cheeky monkey is best but discontinued now, hold ava with alt',
+    desc: `${youtubeEmbed('-05YAUMEDPs')}<br>Aura makes a big difference, cheeky monkey is best familiar but discontinued now, hold ava with alt`,
   },
   {
     name: 'Priffdinas Elves',
@@ -1575,7 +1586,7 @@ window.methods = [
     daily: 'return 2 / 60',
     noBxp: true,
     noDxp: true,
-    desc: '<a href="https://www.youtube.com/watch?v=zSozFZsEXF0" target="_blank">Video by Crusaderr</a> (cost is based on G.E. price of BA tickets, which may not reflect street price), Minigames FC tracks the worlds',
+    desc: `${youtubeEmbed('zSozFZsEXF0')}<br>Minigames FC tracks the worlds`,
   },
   {
     name: 'Divine Yews',
@@ -1612,7 +1623,7 @@ window.methods = [
       },
     ],
     daily: 'return 500 / this.actionsPerHour',
-    desc: 'Yews are hosted on w48 at reset. <a href="https://www.youtube.com/watch?v=6XvOyUn6z_c" target="_blank">Video by Alkan</a>',
+    desc: `Yews are hosted on w48 at reset.<br>${youtubeEmbed('6XvOyUn6z_c')}`,
   },
   { // TODO: better testing on success rate, add cost of runes
     name: 'Crystallize Acadia with Skillchompas',
@@ -1668,7 +1679,7 @@ window.methods = [
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=PCf8KBDuS04">Video by Maikeru</a> (Price is based on azure skillchompa but any type works fine)',
+    desc: `${youtubeEmbed('PCf8KBDuS04')}<br>(Price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Crystallize Acadia',
@@ -1718,6 +1729,6 @@ window.methods = [
         },
       },
     ],
-    desc: '<a href="https://www.youtube.com/watch?v=PCf8KBDuS04">Video by Maikeru</a>',
+    desc: youtubeEmbed('PCf8KBDuS04'),
   },
 ].concat(prismania, smouldering, attack, strength, defMelee);
