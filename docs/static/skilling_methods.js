@@ -83,7 +83,7 @@ function summoningMethod(name, levelRequired, actionXP, shards, storeCost, prima
     actionXP,
     actionsPerHour: 16750,
     baseCost() {
-      return (shards * 25 + storeCost + getPrice(primaryIngName) - 10 * getPrice(scrollName)) / this.actionXP;
+      return (1 + shards * 25 + storeCost + getPrice(primaryIngName) - 10 * getPrice(scrollName)) / this.actionXP;
     },
     modifiers: [
       ava6,
