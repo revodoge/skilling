@@ -528,6 +528,37 @@ window.methods = [
     desc: 'wear boots, get XP',
   },
   {
+    name: 'Boutique Pawnbrokers',
+    skill: 'Construction',
+    actionXP: 1130,
+    actionsPerHour: 1000,
+    baseCost() {
+      return (getPrice('Mahogany plank') * 7.8 + getPrice('Porthole')) / this.actionXP;
+    },
+    modifiers: [
+      raf,
+      ava3,
+    ],
+    requirements: [
+      {name: '81 Construction'},
+      {name: 'Monkey butler (or demon butler)'},
+      {name: 'Scroll of proficiency'},
+      {
+        name: 'Constructor\'s outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: 'God chisel',
+        effect() {
+          return {bonus: 0.01};
+        },
+      },
+    ],
+    desc: `${youtubeEmbed('h6hRV9RuViw')}<br>Don't use AHK or you'll face the same fate as Damp Cat v1`,
+  },
+  {
     name: 'Flotsam Pawnbrokers',
     skill: 'Construction',
     actionXP: 1120,
@@ -803,7 +834,7 @@ window.methods = [
     actionXP: 1.5,
     actionsPerHour: 1480 * 100,
     baseCost() {
-      return (0.9275 * 400 - 1.5 * getPrice('Incandescent energy')) / this.actionXP;
+      return (0.9275 * 350 - 1.5 * getPrice('Incandescent energy')) / this.actionXP;
     },
     modifiers: [
       raf,
@@ -819,7 +850,7 @@ window.methods = [
         },
       },
     ],
-    desc: 'Buy from forums. Cost here is assumed at buying for 400 each <a href="https://www.youtube.com/watch?v=IPQPW8vgL4o" target="_blank">RIP 2-ticking</a>',
+    desc: 'Buy from forums. Cost here is assumed at buying for 350 each <a href="https://www.youtube.com/watch?v=IPQPW8vgL4o" target="_blank">RIP 2-ticking</a>',
   },
   // TODO: real dg, challenge
   {
