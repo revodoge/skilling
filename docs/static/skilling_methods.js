@@ -49,7 +49,7 @@ function arrowMethod(name, levelRequired, actionXP, arrowheadName, sell) {
     skill: 'Fletching',
     actionXP,
     actionsPerHour: 43000,
-    baseCost() {
+    baseCostPerXp() {
       return (0.9 * (getPrice(arrowheadName) + getPrice('Feather')) - sell) / this.actionXP;
     },
     modifiers: [
@@ -82,7 +82,7 @@ function summoningMethod(name, levelRequired, actionXP, shards, storeCost, prima
     skill: 'Summoning',
     actionXP,
     actionsPerHour: 16750,
-    baseCost() {
+    baseCostPerXp() {
       return (1 + shards * 25 + storeCost + getPrice(primaryIngName) - 10 * getPrice(scrollName)) / this.actionXP;
     },
     modifiers: [
@@ -109,7 +109,7 @@ function dhideMethod(name, levelRequired, actionXP, costPerAction) {
     skill: 'Crafting',
     actionXP,
     actionsPerHour: 1820,
-    baseCost() {
+    baseCostPerXp() {
       return costPerAction() / this.actionXP;
     },
     modifiers: [
@@ -143,7 +143,7 @@ function cutGemMethod(name, levelRequired, actionXP, uncutName, cutName) {
     skill: 'Crafting',
     actionXP,
     actionsPerHour: 5300,
-    baseCost() {
+    baseCostPerXp() {
       return (0.95 * getPrice(uncutName) - 1.02 * getPrice(cutName)) / this.actionXP;
     },
     modifiers: [
@@ -177,7 +177,7 @@ function wildyAltarMethod(name, boneXP) {
     skill: 'Prayer',
     actionXP: boneXP * 3.5,
     actionsPerHour: 2000,
-    baseCost() {
+    baseCostPerXp() {
       return 0.98 * getPrice(name) / this.actionXP;
     },
     modifiers: [
@@ -199,7 +199,7 @@ function wildyAltarMethod(name, boneXP) {
         },
       },
     ],
-    illumination: true,
+    illuminationOnly: true,
     wildy: true,
     desc: `${youtubeEmbed('7IO5E2Lzggo')}<br>
            Unnote bones with Harrison if not using an alt, or else it is not really worth being in wildy`,
@@ -212,7 +212,7 @@ function altarMethod(name, boneXP) {
     skill: 'Prayer',
     actionXP: boneXP * 3.5,
     actionsPerHour: 1800,
-    baseCost() {
+    baseCostPerXp() {
       return 0.98 * getPrice(name) / this.actionXP;
     },
     modifiers: [
@@ -234,7 +234,7 @@ function altarMethod(name, boneXP) {
         },
       },
     ],
-    illumination: true,
+    illuminationOnly: true,
     desc: 'Run bones with alt for best XP rates',
   };
 }
@@ -245,7 +245,7 @@ function scatterBuryMethod(boneName, boneXP, ashName, ashXP) {
     skill: 'Prayer',
     actionXP: boneXP + ashXP,
     actionsPerHour: 5750,
-    baseCost() {
+    baseCostPerXp() {
       return (0.98 * getPrice(boneName) + getPrice(ashName)) / this.actionXP;
     },
     modifiers: [
@@ -278,12 +278,12 @@ function baMethod(skill, roundXP) {
     skill,
     actionXP: roundXP,
     actionsPerHour: 60 / 16,
-    baseCost() {
+    baseCostPerXp() {
       return -getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
     },
     modifiers: [],
     requirements: [{name: 'Barbarian Assault team'}],
-    bonus: true,
+    bonusEarning: true,
     desc: `Rates based on 16 min rounds, and cost is based on GE price of BA tickets, which may not reflect street price<br>
            ${youtubeEmbed('RuSfTG0yYpM')}`,
   };
@@ -295,12 +295,12 @@ function ba79Method(skill, roundXP) {
     skill,
     actionXP: roundXP,
     actionsPerHour: 60 / 7,
-    baseCost() {
+    baseCostPerXp() {
       return getPrice('Barbarian assault ticket - hard wave 10') / this.actionXP;
     },
     modifiers: [],
     requirements: [{name: 'Barbarian Assault team'}],
-    bonus: true,
+    bonusEarning: true,
     desc: `Rates based on 7 min rounds, and cost is based on GE price of BA tickets, which may not reflect street price<br>
            ${youtubeEmbed('RuSfTG0yYpM')}`,
   };
@@ -315,13 +315,13 @@ const prismania = window.skillList.map(function (skill) {
   return {
     name: 'Prismania',
     skill,
-    base: 'return 15000000',
-    baseCost() {
+    baseXpRate: 15000000,
+    baseCostPerXp() {
       return 40;
     },
     modifiers: [],
     requirements: [],
-    bonus: true,
+    bonusEarning: true,
     spinner: true,
     desc: '<a href="http://www.runescape.com/a=12/bonds" target="_blank">Get Bond</a>',
   };
@@ -330,8 +330,8 @@ const smouldering = window.skillList.map(function (skill) {
   return {
     name: 'Smouldering Lamps',
     skill,
-    base: 'return 10000000',
-    baseCost() {
+    baseXpRate: 10000000,
+    baseCostPerXp() {
       return 150;
     },
     modifiers: [],
@@ -348,8 +348,8 @@ const meleeMethods = [
     name: 'Abyssal Demons (wildy) (melee)',
     actionXP: 661,
     actionsPerHour: 1800,
-    baseCost() {
-      return -6000000 / this.base;
+    baseCostPerXp() {
+      return -6000000 / this.baseXpRate;
     },
     modifiers: [
       raf,
@@ -379,9 +379,9 @@ const meleeMethods = [
   },
   {
     name: 'Shattered Worlds (melee)',
-    base: 'return 1610000',
-    baseCost() {
-      return 2500000 / this.base;
+    baseXpRate: 1610000,
+    baseCostPerXp() {
+      return 2500000 / this.baseXpRate;
     },
     modifiers: [
       raf,
@@ -400,9 +400,9 @@ const magicMethods = [
   // TODO: wildy aby demons, aby demons
   {
     name: 'Shattered Worlds (magic)',
-    base: 'return 1600000',
-    baseCost() {
-      return 2500000 / this.base;
+    baseXpRate: 1600000,
+    baseCostPerXp() {
+      return 2500000 / this.baseXpRate;
     },
     modifiers: [
       raf,
@@ -422,8 +422,8 @@ const rangedMethods = [
     name: 'Abyssal Demons (wildy) (ranged)',
     actionXP: 661,
     actionsPerHour: 2100,
-    baseCost() {
-      return -6000000 / this.base;
+    baseCostPerXp() {
+      return -6000000 / this.baseXpRate;
     },
     modifiers: [
       raf,
@@ -453,9 +453,9 @@ const rangedMethods = [
   },
   {
     name: 'Shattered Worlds (ranged)',
-    base: 'return 1860000',
-    baseCost() {
-      return 2500000 / this.base;
+    baseXpRate: 1860000,
+    baseCostPerXp() {
+      return 2500000 / this.baseXpRate;
     },
     modifiers: [
       raf,
@@ -506,7 +506,7 @@ window.methods = [
     skill: 'Agility',
     actionXP: 860,
     actionsPerHour: 80,
-    baseCost() {
+    baseCostPerXp() {
       return getPrice('Silverhawk feathers') / this.actionXP;
     },
     modifiers: [
@@ -532,7 +532,7 @@ window.methods = [
     skill: 'Construction',
     actionXP: 1130,
     actionsPerHour: 1000,
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Mahogany plank') * 7.8 + getPrice('Porthole')) / this.actionXP;
     },
     modifiers: [
@@ -563,7 +563,7 @@ window.methods = [
     skill: 'Construction',
     actionXP: 1120,
     actionsPerHour: 1000,
-    baseCost() {
+    baseCostPerXp() {
       return getPrice('Mahogany plank') * 7.8 / this.actionXP;
     },
     modifiers: [
@@ -594,7 +594,7 @@ window.methods = [
     skill: 'Construction',
     actionXP: 840,
     actionsPerHour: 400,
-    baseCost() {
+    baseCostPerXp() {
       return getPrice('Mahogany plank') * 6 / this.actionXP;
     },
     modifiers: [
@@ -624,8 +624,8 @@ window.methods = [
   {
     name: 'Combat',
     skill: 'Constitution',
-    base: 'return Infinity',
-    baseCost() {
+    baseXpRate: Infinity,
+    baseCostPerXp() {
       return 0;
     },
     modifiers: [],
@@ -637,7 +637,7 @@ window.methods = [
     skill: 'Cooking',
     actionXP: 225,
     actionsPerHour: 1850,
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice('Raw rocktail') - 1.1 * getPrice('Rocktail')) / this.actionXP;
     },
     modifiers: [
@@ -676,7 +676,7 @@ window.methods = [
     skill: 'Cooking',
     actionXP: 225,
     actionsPerHour: 1400,
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice('Raw rocktail') - 1.1 * getPrice('Rocktail')) / this.actionXP;
     },
     modifiers: [
@@ -717,7 +717,7 @@ window.methods = [
     skill: 'Cooking',
     actionXP: 201,
     actionsPerHour: 5100,
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Jug of water') + getPrice('Grapes') - getPrice('Jug of wine')) / this.actionXP;
     },
     modifiers: [
@@ -756,7 +756,7 @@ window.methods = [
     skill: 'Divination',
     actionXP: 73400,
     actionsPerHour: 60 / 4,
-    baseCost() {
+    baseCostPerXp() {
       return 0;
     },
     modifiers: [],
@@ -771,7 +771,7 @@ window.methods = [
     skill: 'Divination',
     actionXP: 53.5,
     actionsPerHour: 2400, // 2.5 ticks per action
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Mind rune') + getPrice('Decorated divination urn (nr)')) / 9500;
     },
     modifiers: [
@@ -806,7 +806,7 @@ window.methods = [
     skill: 'Divination',
     actionXP: 53.5,
     actionsPerHour: 2400, // 2.5 ticks per action
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Mind rune') + getPrice('Decorated divination urn (nr)')) / 9500;
     },
     modifiers: [
@@ -833,7 +833,7 @@ window.methods = [
     skill: 'Divination',
     actionXP: 1.5,
     actionsPerHour: 1480 * 100,
-    baseCost() {
+    baseCostPerXp() {
       return (0.9275 * 350 - 1.5 * getPrice('Incandescent energy')) / this.actionXP;
     },
     modifiers: [
@@ -858,7 +858,7 @@ window.methods = [
     skill: 'Dungeoneering',
     actionXP: 180000,
     actionsPerHour: 12,
-    baseCost() {
+    baseCostPerXp() {
       return 0;
     },
     modifiers: [],
@@ -873,7 +873,7 @@ window.methods = [
     skill: 'Dungeoneering',
     actionXP: 200000, // need to test
     actionsPerHour: 8.5,
-    baseCost() {
+    baseCostPerXp() {
       return 0;
     },
     modifiers: [],
@@ -884,10 +884,12 @@ window.methods = [
   {
     name: 'Tree Run',
     skill: 'Farming',
-    base: `treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;
-    treesThatCantDie = 15000 + 8500 + 7 * 6380.4;
-    return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10`,
-    baseCost() {
+    baseXpRate: (function () {
+      const treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;
+      const treesThatCantDie = 15000 + 8500 + 7 * 6380.4;
+      return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10;
+    }()),
+    baseCostPerXp() {
       const cost = 12 * 0.9 * getPrice('Magic seed') + 0.9 * getPrice('Calquat tree seed') + 0.9 * getPrice('Elder seed') / 3 + 7 *
         (0.9 * getPrice('Papaya tree seed') + 10 * getPrice('Pineapple') - 6 * getPrice('Papaya fruit')) + 64 / 3 * (1500 + getPrice('Supercompost'));
       return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
@@ -917,7 +919,7 @@ window.methods = [
     skill: 'Firemaking',
     actionXP: 607.6,
     actionsPerHour: 384 * 60 / 4, // 4 mins including set up
-    baseCost() {
+    baseCostPerXp() {
       return getPrice('Magic logs') / this.actionXP;
     },
     modifiers: [],
@@ -934,7 +936,7 @@ window.methods = [
     skill: 'Firemaking',
     actionXP: 1514.8,
     actionsPerHour: 515,
-    baseCost() {
+    baseCostPerXp() {
       return 0;
     },
     modifiers: [
@@ -958,8 +960,8 @@ window.methods = [
     skill: 'Fishing',
     actionXP: (0.205 * (0.85 * 1.1 + 0.15 * (922.5 / 682.5)) + 0.795 * 0.05) * 682.5, // 20.5% success, 15% scrimshaw, 10% furnace proc on remaining
     actionsPerHour: 1500,
-    baseCost() {
-      return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500 + getPrice('Whopper-baiting scrimshaw') / 3 / this.base;
+    baseCostPerXp() {
+      return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500 + getPrice('Whopper-baiting scrimshaw') / 3 / this.baseXpRate;
     },
     modifiers: [
       raf,
@@ -991,7 +993,7 @@ window.methods = [
     skill: 'Fishing',
     actionXP: (0.205 * 1.1 + 0.795 * 0.05) * 682.5, // 20.5% success, 10% furnace proc on success
     actionsPerHour: 1500,
-    baseCost() {
+    baseCostPerXp() {
       return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
     },
     modifiers: [
@@ -1023,7 +1025,7 @@ window.methods = [
     skill: 'Fishing',
     actionXP: 1.1 * 682.5,
     actionsPerHour: 0.205 * 1500, // 20.5% success, 4 ticks per attempt
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
     },
     modifiers: [
@@ -1054,7 +1056,7 @@ window.methods = [
     skill: 'Fletching',
     actionXP: 25,
     actionsPerHour: 55000,
-    baseCost() {
+    baseCostPerXp() {
       return (0.9 * (getPrice('Feather') + getPrice('Dragon dart tip')) - 150) / this.actionXP;
     },
     modifiers: [
@@ -1088,7 +1090,7 @@ window.methods = [
     skill: 'Herblore',
     actionXP: 2201,
     actionsPerHour: 460,
-    baseCost() {
+    baseCostPerXp() {
       const extremes = (0.9 * (getPrice('Clean avantoe') + getPrice('Clean dwarf weed') + getPrice('Clean lantadyme') + getPrice('Mud rune') + 5 * getPrice('Grenwall spikes'))
         + (getPrice('Super attack (3)') + getPrice('Super strength (3)') + getPrice('Super defence (3)') + getPrice('Super magic potion (3)') + getPrice('Super ranging potion (3)'))) / 1.1;
       const totalCost = 0.983 * (extremes + getPrice('Clean torstol'));
@@ -1121,7 +1123,7 @@ window.methods = [
     skill: 'Herblore',
     actionXP: 2201,
     actionsPerHour: 575,
-    baseCost() {
+    baseCostPerXp() {
       const extremes = (0.9 * (getPrice('Clean avantoe') + getPrice('Clean dwarf weed') + getPrice('Clean lantadyme') + getPrice('Mud rune') + 5 * getPrice('Grenwall spikes'))
         + (getPrice('Super attack (3)') + getPrice('Super strength (3)') + getPrice('Super defence (3)') + getPrice('Super magic potion (3)') + getPrice('Super ranging potion (3)'))) / 1.1;
       const totalCost = 0.983 * (extremes + getPrice('Clean torstol'));
@@ -1155,7 +1157,7 @@ window.methods = [
     skill: 'Hunter',
     actionXP: 204 * 1585,
     actionsPerHour: 60 / 15,
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Mud rune') + getPrice('Decorated hunter urn (nr)')) / 8000;
     },
     modifiers: [
@@ -1187,7 +1189,7 @@ window.methods = [
     skill: 'Hunter',
     actionXP: 476,
     actionsPerHour: 2400,
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Mud rune') + getPrice('Decorated hunter urn (nr)')) / 8000 - getPrice('Crystal skillchompa') / this.actionXP;
     },
     modifiers: [
@@ -1218,8 +1220,8 @@ window.methods = [
   {
     name: 'Siphoning Gear',
     skill: 'Invention',
-    base: 'return 622566',
-    baseCost() {
+    baseXpRate: 622566,
+    baseCostPerXp() {
       return getPrice('Equipment siphon') / 621000;
     },
     modifiers: [],
@@ -1236,7 +1238,7 @@ window.methods = [
     skill: 'Mining',
     actionXP: 363862.5,
     actionsPerHour: 60 / 10,
-    baseCost() {
+    baseCostPerXp() {
       return 0;
     },
     modifiers: [],
@@ -1254,7 +1256,7 @@ window.methods = [
     skill: 'Mining',
     actionXP: 500,
     actionsPerHour: 860,
-    baseCost() {
+    baseCostPerXp() {
       return getPrice('Azure skillchompa') / this.actionXP;
     },
     modifiers: [
@@ -1284,7 +1286,7 @@ window.methods = [
     skill: 'Mining',
     actionXP: (0.158 * 1.1 + 0.842 * 0.05) * 692.5, // 15.8% success, 10% furnace proc on success
     actionsPerHour: 2000,
-    baseCost() {
+    baseCostPerXp() {
       return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Earth rune') + getPrice('Decorated mining urn (nr)')) / 3125;
     },
     modifiers: [
@@ -1315,7 +1317,7 @@ window.methods = [
     skill: 'Mining',
     actionXP: 0.158 * 1.1 * 692.5, // 15.8% success, 3 ticks per attempt
     actionsPerHour: 2000,
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Earth rune') + getPrice('Decorated mining urn (nr)')) / 3125;
     },
     modifiers: [
@@ -1367,7 +1369,7 @@ window.methods = [
     skill: 'Prayer',
     actionXP: 2100,
     actionsPerHour: 1200,
-    baseCost() {
+    baseCostPerXp() {
       return 110000 / this.actionXP;
     },
     modifiers: [
@@ -1401,7 +1403,7 @@ window.methods = [
     skill: 'Prayer',
     actionXP: 9800,
     actionsPerHour: 29,
-    baseCost() {
+    baseCostPerXp() {
       return 110000 / this.actionXP;
     },
     modifiers: [
@@ -1437,7 +1439,7 @@ window.methods = [
     skill: 'Runecrafting',
     actionXP: 220,
     actionsPerHour: 440,
-    baseCost() {
+    baseCostPerXp() {
       return (getPrice('Pure essence') - 1.05 * 0.8 * getPrice('Soul rune')) / this.actionXP + (getPrice('Pure essence') + getPrice('Decorated runecrafting urn (nr)')) / 7000;
     },
     modifiers: [
@@ -1482,8 +1484,8 @@ window.methods = [
   {
     name: 'Movran Tasks',
     skill: 'Slayer',
-    base: 'return 1000000',
-    baseCost() {
+    baseXpRate: 1000000,
+    baseCostPerXp() {
       return -4;
     },
     modifiers: [
@@ -1501,7 +1503,7 @@ window.methods = [
     skill: 'Smithing',
     actionXP: 10487.5 * 1.1, // you can get perfect sword about half the time
     actionsPerHour: 60,
-    baseCost() {
+    baseCostPerXp() {
       return 50 * getPrice('Vis wax') / this.dailyXP;
     },
     modifiers: [
@@ -1543,7 +1545,7 @@ window.methods = [
     skill: 'Smithing',
     actionXP: 225,
     actionsPerHour: 1580,
-    baseCost() {
+    baseCostPerXp() {
       return (2.6 * getPrice('Rune bar') - getPrice('Rune 2h sword')) / this.actionXP;
     },
     modifiers: [
@@ -1586,7 +1588,7 @@ window.methods = [
     skill: 'Thieving',
     actionXP: 556.5,
     actionsPerHour: 1670,
-    baseCost() {
+    baseCostPerXp() {
       return -1;
     },
     modifiers: [
@@ -1619,8 +1621,8 @@ window.methods = [
   {
     name: 'Priffdinas Elves',
     skill: 'Thieving',
-    base: 'return 420000',
-    baseCost() {
+    baseXpRate: 420000,
+    baseCostPerXp() {
       return -3;
     },
     modifiers: [
@@ -1647,7 +1649,7 @@ window.methods = [
     skill: 'Woodcutting',
     actionXP: 48515,
     actionsPerHour: 60 / 2,
-    baseCost() {
+    baseCostPerXp() {
       return 0;
     },
     modifiers: [],
@@ -1662,7 +1664,7 @@ window.methods = [
     skill: 'Woodcutting',
     actionXP: 175,
     actionsPerHour: 2800,
-    baseCost() {
+    baseCostPerXp() {
       return 40 * getPrice('Vis wax') / this.dailyXP;
     },
     modifiers: [
@@ -1699,8 +1701,8 @@ window.methods = [
     skill: 'Woodcutting',
     actionXP: 92,
     actionsPerHour: 1450, // 1500 max, give some wiggle room
-    baseCost() {
-      return 120 * 6 * (getPrice('Soul rune') + getPrice('Chaos rune') + getPrice('Fire rune') + getPrice('Water rune')) / this.base + getPrice('Azure skillchompa') / this.actionXP + (getPrice('Earth rune') + getPrice('Decorated woodcutting urn (nr)')) / 9500;
+    baseCostPerXp() {
+      return 120 * 6 * (getPrice('Soul rune') + getPrice('Chaos rune') + getPrice('Fire rune') + getPrice('Water rune')) / this.baseXpRate + getPrice('Azure skillchompa') / this.actionXP + (getPrice('Earth rune') + getPrice('Decorated woodcutting urn (nr)')) / 9500;
     },
     modifiers: [
       raf,
@@ -1755,8 +1757,8 @@ window.methods = [
     skill: 'Woodcutting',
     actionXP: 92,
     actionsPerHour: 1450, // 1500 max, give some wiggle room
-    baseCost() {
-      return 120 * 6 * (getPrice('Soul rune') + getPrice('Chaos rune') + getPrice('Fire rune') + getPrice('Water rune')) / this.base + (getPrice('Earth rune') + getPrice('Decorated woodcutting urn (nr)')) / 9500;
+    baseCostPerXp() {
+      return 120 * 6 * (getPrice('Soul rune') + getPrice('Chaos rune') + getPrice('Fire rune') + getPrice('Water rune')) / this.baseXpRate + (getPrice('Earth rune') + getPrice('Decorated woodcutting urn (nr)')) / 9500;
     },
     modifiers: [
       raf,

@@ -14,9 +14,9 @@
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
     </form>
     <br/>
-    <!--load all the methods with a 15M EHP to get the relative efficiency-->
+    <!--load all the methods with a 15M EHP and 9M alt to get the relative efficiency-->
     <template v-for="methodData in filteredMethods">
-      <method :key="methodData.id" :tvc="15" :boosts="boosts" :data="methodData" :display="false"
+      <method :key="methodData.id" :tvc="15" :boosts="boosts" :methodData="methodData" :display="false"
               :illuminationActive="false" :dxpActive="false" :bxpActive="false"
               :alt="9" v-on:dailyCalculated="updateMethodDaily" v-on:valueCalculated="updateMethodCost"></method>
     </template>
@@ -113,18 +113,18 @@
         });
         const skillMap = {};
         window.skillList.forEach((skill, index) =>
-          skillMap[skill] = {remaining: 200000000, eCost: 0, rCost: 0, bonus: false});
+          skillMap[skill] = {remaining: 200000000, eCost: 0, rCost: 0, bonusEarned: false});
         for (let i = 0; i < sorted.length; i++) {
           const current = sorted[i];
           const previous = sorted[i - 1];
-          if ((previous && !previous.daily && !previous.bonus &&
+          if ((previous && !previous.daily && !previous.bonusEarning &&
               previous.skill === current.skill) || isNaN(current.effectiveCost)) {
             continue;
           }
           if (skillMap[current.skill].remaining <= 0) {
             continue;
           }
-          if (skillMap[current.skill].bonus && current.bonus) {
+          if (skillMap[current.skill].bonusEarned && current.bonusEarning) {
             continue;
           }
           if (current.daily) {
@@ -136,8 +136,8 @@
             skillMap[current.skill].eCost += methodECost;
             skillMap[current.skill].rCost += methodRCost;
           } else {
-            skillMap[current.skill].bonus = current.bonus || skillMap[current.skill].bonus;
-            const methodXP = skillMap[current.skill].remaining / (current.bonus ? 2 : 1);
+            skillMap[current.skill].bonusEarned = current.bonusEarning || skillMap[current.skill].bonusEarned;
+            const methodXP = skillMap[current.skill].remaining / (current.bonusEarning ? 2 : 1);
             const methodECost = methodXP * current.effectiveCost;
             const methodRCost = methodXP * current.realCost;
             skillMap[current.skill].remaining -= methodXP;
@@ -219,7 +219,6 @@
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style>
-
   tr > th {
     text-align: center;
   }

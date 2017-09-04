@@ -130,7 +130,7 @@
             </thead>
             <tbody>
             <template v-for="methodData in sortedMethods">
-              <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :data="methodData" :display="methodData.display" :bxpActive="bxpActive"
+              <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :methodData="methodData" :display="methodData.display" :bxpActive="bxpActive"
                       :alt="alt" v-on:valueCalculated="updateMethodCost" :illuminationActive="illuminationActive" :dxpActive="dxpActive"
                       v-on:descriptionToggled="toggleDescription"></method>
               <method-desc :desc="methodData.desc"
@@ -189,17 +189,17 @@
         });
         const skillsMap = window.skillList.reduce((acc, skill) => {
           // hide bonus XP methods for illuminaiton/DXP or if bonus is already accumulated
-          acc[skill] = {bonus: this.illuminationActive || this.dxpActive || this.bxpActive, normal: false};
+          acc[skill] = {bonusEarning: this.illuminationActive || this.dxpActive || this.bxpActive, normal: false};
           return acc;
         }, {});
         for (let i = 0; i < sorted.length; i++) { // only display the best non-daily for each skill
           const current = sorted[i];
 
           current.display = !(this.stats[current.skill] === 200000000 || (!isNaN(current.effectiveCost)
-            && (skillsMap[current.skill].normal || (skillsMap[current.skill].bonus && current.bonus))));
+            && (skillsMap[current.skill].normal || (skillsMap[current.skill].bonusEarning && current.bonusEarning))));
           if (!current.daily) {
-            skillsMap[current.skill].bonus = skillsMap[current.skill].bonus || current.bonus;
-            skillsMap[current.skill].normal = skillsMap[current.skill].normal || !current.bonus;
+            skillsMap[current.skill].bonusEarning = skillsMap[current.skill].bonusEarning || current.bonusEarning;
+            skillsMap[current.skill].normal = skillsMap[current.skill].normal || !current.bonusEarning;
           }
         }
         return sorted;
