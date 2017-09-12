@@ -1587,7 +1587,7 @@ window.methods = [
     name: 'Dwarf Traders',
     skill: 'Thieving',
     actionXP: 556.5,
-    actionsPerHour: 1670,
+    actionsPerHour: 0.73 * 6000 / (2 + 5 * 0.415 * 0.27), // 73% success rate, 41.5% stun rate without monkey
     baseCostPerXp() {
       return -1;
     },
@@ -1595,9 +1595,15 @@ window.methods = [
       raf,
       ava6,
       {
-        name: 'Cheeky monkey', // TODO: quantify the effect of this
+        name: 'Ardy cloak 3', // TODO: quantify effects
         effect() {
-          return {base: 0};
+          return {base: 0.0};
+        },
+      },
+      {
+        name: 'Cheeky monkey',
+        effect() {
+          return {base: 0.045};
         },
       },
       {
@@ -1612,11 +1618,11 @@ window.methods = [
       {name: 'T4+ Five finger discount aura'},
       {name: 'Trahaern exoskeleton / Master camouflage outfit)'},
       {name: 'Crystal mask + Light form'},
-      {name: 'Ardy cape 4 and/or Thieving skillcape'},
+      {name: 'Thieving skillcape'},
       {name: 'Featherfingered necklace'},
       {name: 'Soul-in-a-box'},
     ],
-    desc: `${youtubeEmbed('-05YAUMEDPs')}<br>Aura makes a big difference, cheeky monkey is best familiar but discontinued now, hold ava with alt`,
+    desc: `${youtubeEmbed('-05YAUMEDPs')}<br>Aura makes a big difference. skillcape > Ardy cloak if you don't have comp cape to use both. cheeky monkey is best familiar but discontinued now. hold ava with alt`,
   },
   {
     name: 'Priffdinas Elves',
@@ -1638,7 +1644,7 @@ window.methods = [
     requirements: [
       {name: '98 Thieving'},
       {name: 'Trahaern exoskeleton / Master camouflage outfit)'},
-      {name: 'Ardy cape 4'},
+      {name: 'Ardy cape 3'},
     ],
     afk: true,
     alt: 1,
