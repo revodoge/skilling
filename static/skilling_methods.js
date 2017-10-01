@@ -1,4 +1,4 @@
-/* eslint-disable max-len,prefer-arrow-callback */
+/* eslint-disable max-len,no-undef */
 const urns = {
   name: 'Decorated urns',
   effect() {
@@ -178,7 +178,7 @@ function wildyAltarMethod(name, boneXP) {
     actionXP: boneXP * 3.5,
     actionsPerHour: 2000,
     baseCostPerXp() {
-      return 0.98 * getPrice(name) / this.actionXP;
+      return (name.includes('bones') ? 0.98 : 1) * getPrice(name) / this.actionXP;
     },
     modifiers: [
       raf,
@@ -213,7 +213,7 @@ function altarMethod(name, boneXP) {
     actionXP: boneXP * 3.5,
     actionsPerHour: 1800,
     baseCostPerXp() {
-      return 0.98 * getPrice(name) / this.actionXP;
+      return (name.includes('bones') ? 0.98 : 1) * getPrice(name) / this.actionXP;
     },
     modifiers: [
       raf,
@@ -322,6 +322,57 @@ function bookOfChar(logType, logXp) {
     noDxp: true,
     mutuallyExclusive: true,
     desc: '<a href="https://www.reddit.com/r/NRiver/comments/3z99jl/book_of_char/" target="_blank">Guide by NRiver</a>, use more expensive logs if limiting factor',
+  };
+}
+
+function treeRun(tree, fruit) {
+  return {
+    name: `Tree Run (${tree.protection ? 'Protected' : 'Unprotected'} ${tree.name} + 
+                     ${fruit.protection ? 'Protected' : 'Unprotected'} ${fruit.name})`,
+    skill: 'Farming',
+    actionXP: (function () {
+      const canDie = 12225.5 + 23473 / 3;
+      const cantDie = 15000 + 9350;
+      const treePatch = 12 * (tree.protection ? 1 : 0.86) * tree.xp;
+      const fruitTreePatch = 7 * (fruit.protection ? 1 : 0.86) * fruit.xp;
+      // TODO: more research on disease rates
+      return (0.86 * canDie + cantDie + treePatch + fruitTreePatch);
+    }()),
+    actionsPerHour: 60 / 8.5,
+    baseCostPerXp() {
+      const cost =
+        12 * (0.95 * getPrice(`${tree.name} seed`)
+        + (tree.protection ? (tree.protection.qty * getPrice(tree.protection.item)) : 0))
+        + 0.95 * getPrice('Calquat tree seed')
+        + 0.95 * getPrice('Elder seed') / 3
+        + 7 * (0.95 * getPrice(`${fruit.name} seed`)
+        + (fruit.protection ? (fruit.protection.qty * getPrice(fruit.protection.item)) : 0)
+        - 6 * (fruit.protection ? 1 : 0.86) * getPrice(fruit.product))
+        + 64 / 3 * (1500 + getPrice('Supercompost'));
+      return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
+    },
+    modifiers: [
+      raf,
+      pulse,
+      ava6,
+      urnEnhancer,
+    ],
+    requirements: [
+      {name: '94 Farming'},
+      {name: 'Scroll of life'},
+      urns,
+      {
+        name: 'Farmer\'s outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    mutuallyExclusive: true,
+    daily: 'return 1 / this.actionsPerHour',
+    // TODO: add updated videos with bladed dive
+    desc: `<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 ${tree.name}, 7 ${fruit.name}, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">normal tree only run</a>.
+           Pay leprechaun for automatic supercompost. Assuming unprotected Elder and Calquat. Do spirit trees if you have them, but they are not part of the calculation`,
   };
 }
 
@@ -488,7 +539,6 @@ const rangedMethods = [
   },
 ];
 
-
 const attack = meleeMethods.map(function (m) {
   return Object.assign({skill: 'Attack'}, m);
 });
@@ -515,6 +565,49 @@ const ranged = rangedMethods.map(function (m) {
 
 const defRanged = rangedMethods.map(function (m) {
   return Object.assign({skill: 'Defence'}, m);
+});
+
+
+const unprotectedMagic = {name: 'Magic', xp: 13913.8};
+const unprotectedYew = {name: 'Yew', xp: 7150.9};
+const unprotectedPalm = {name: 'Palm tree', xp: 10509.6, product: 'Coconut'};
+const unprotectedPapaya = {name: 'Papaya tree', xp: 6453.9, product: 'Papaya fruit'};
+const unprotectedPineapple = {name: 'Pineapple', xp: 4791.7, product: 'Pineapple'};
+const protectedMagic = Object.assign({protection: {qty: 25, item: 'Coconut'}}, unprotectedMagic);
+const protectedYew = Object.assign({protection: {qty: 25, item: 'Cactus spine'}}, unprotectedYew);
+const protectedPalm = Object.assign({protection: {qty: 15, item: 'Papaya fruit'}}, unprotectedPalm);
+const protectedPapaya = Object.assign({protection: {qty: 10, item: 'Pineapple'}}, unprotectedPapaya);
+const protectedPineapple = Object.assign({protection: {qty: 10, item: 'Watermelon'}}, unprotectedPineapple);
+const normalTrees = [unprotectedMagic, unprotectedYew, protectedMagic, protectedYew];
+const fruitTrees = [unprotectedPalm, unprotectedPapaya, protectedPalm, protectedPapaya];
+const treeRuns = normalTrees.map(function (normalTree) {
+  return fruitTrees.map(function (fruitTree) {
+    return treeRun(normalTree, fruitTree);
+  });
+});
+
+const bones = [
+  {name: 'Dragon bones', xp: 72},
+  {name: 'Airut bones', xp: 132.5},
+  {name: 'Hardened dragon bones', xp: 144},
+  {name: 'Frost dragon bones', xp: 180},
+  {name: 'Reinforced dragon bones', xp: 190},
+];
+const ashes = [
+  {name: 'Infernal ashes', xp: 62.5},
+  {name: 'Tortured ashes', xp: 90},
+  {name: 'Searing ashes', xp: 200},
+];
+const altarMethods = bones.concat(ashes).map(function (item) {
+  return altarMethod(item.name, item.xp);
+});
+const wildyAltarMethods = bones.concat(ashes).map(function (item) {
+  return wildyAltarMethod(item.name, item.xp);
+});
+const scatterBuryMethods = bones.map(function (bone) {
+  return ashes.map(function (ash) {
+    return scatterBuryMethod(bone.name, bone.xp, ash.name, ash.xp);
+  });
 });
 
 window.methods = [
@@ -756,18 +849,10 @@ window.methods = [
     desc: `Demonstration is in F2P, use a BoB to increase actions per hour
            ${youtubeEmbed('9fAn3R76aUA')}`,
   },
-  dhideMethod('Green d\'hide Shields', 64, 248, function () {
-    return (4 - 0.4) * getPrice('Green dragon leather') - getPrice('Green dragonhide shield');
-  }),
-  dhideMethod('Blue d\'hide Shields', 72, 280, function () {
-    return (4 - 0.35) * getPrice('Blue dragon leather') - getPrice('Blue dragonhide shield');
-  }),
-  dhideMethod('Red d\'hide Shields', 78, 312, function () {
-    return (4 - 0.3) * getPrice('Red dragon leather') - getPrice('Red dragonhide shield');
-  }),
-  dhideMethod('Black d\'hide Shields', 85, 344, function () {
-    return (4 - 0.25) * getPrice('Black dragon leather') - getPrice('Black dragonhide shield');
-  }),
+  dhideMethod('Green d\'hide Shields', 64, 248, () => (4 - 0.4) * getPrice('Green dragon leather') - getPrice('Green dragonhide shield')),
+  dhideMethod('Blue d\'hide Shields', 72, 280, () => (4 - 0.35) * getPrice('Blue dragon leather') - getPrice('Blue dragonhide shield')),
+  dhideMethod('Red d\'hide Shields', 78, 312, () => (4 - 0.3) * getPrice('Red dragon leather') - getPrice('Red dragonhide shield')),
+  dhideMethod('Black d\'hide Shields', 85, 344, () => (4 - 0.25) * getPrice('Black dragon leather') - getPrice('Black dragonhide shield')),
   cutGemMethod('Diamonds', 43, 107.5, 'Uncut diamond', 'Diamond'),
   cutGemMethod('Dragonstones', 55, 137.5, 'Uncut dragonstone', 'Dragonstone'),
   {
@@ -899,112 +984,6 @@ window.methods = [
     requirements: [{name: '120 Dungeoneering'}],
     desc: `<a href="https://docs.google.com/document/d/1Kluwf-R4wPAwRxC4vXcyIfrTVrzWaVzuu2BzJUXihYI" target="_blank">Guide by DG Service FC</a>, rates depend on team ability<br>
 <a href="https://www.youtube.com/watch?v=LbLiwr1f4Uw" target="_blank">What not to do ;)</a>`,
-  },
-  // TODO: refactor
-  {
-    name: 'Tree Run (Protected Palms)',
-    skill: 'Farming',
-    baseXpRate: (function () {
-      const treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;
-      const treesThatCantDie = 15000 + 8500 + 7 * 10509.6;
-      return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10; // TODO: more research on disease rates
-    }()),
-    baseCostPerXp() {
-      const cost = 12 * 0.95 * getPrice('Magic seed') + 0.95 * getPrice('Calquat tree seed') + 0.95 * getPrice('Elder seed') / 3 + 7 *
-        (0.95 * getPrice('Palm tree seed') + 15 * getPrice('Papaya fruit') - 6 * getPrice('Coconut')) + 64 / 3 * (1500 + getPrice('Supercompost'));
-      return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
-    },
-    modifiers: [
-      raf,
-      pulse,
-      ava6,
-      urnEnhancer,
-    ],
-    requirements: [
-      {name: '94 Farming'},
-      {name: 'Scroll of life'},
-      urns,
-      {
-        name: 'Farmer\'s outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-    ],
-    mutuallyExclusive: true,
-    daily: 'return 10 / 60',
-    // TODO: add updated videos with bladed dive
-    desc: '<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 Magics, 7 Palm, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">magic only run</a>. Do spirit trees if you have them, but they are not part of the calculation',
-  },
-  {
-    name: 'Tree Run (Palms)',
-    skill: 'Farming',
-    baseXpRate: (function () {
-      const treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3 + 7 * 10509.6;
-      const treesThatCantDie = 15000 + 8500;
-      return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10; // TODO: more research on disease rates
-    }()),
-    baseCostPerXp() {
-      const cost = 12 * 0.95 * getPrice('Magic seed') + 0.95 * getPrice('Calquat tree seed') + 0.95 * getPrice('Elder seed') / 3 + 7 *
-        (0.95 * getPrice('Palm tree seed') - 0.86 * 6 * getPrice('Coconut')) + 64 / 3 * (1500 + getPrice('Supercompost'));
-      return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
-    },
-    modifiers: [
-      raf,
-      pulse,
-      ava6,
-      urnEnhancer,
-    ],
-    requirements: [
-      {name: '94 Farming'},
-      {name: 'Scroll of life'},
-      urns,
-      {
-        name: 'Farmer\'s outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-    ],
-    mutuallyExclusive: true,
-    daily: 'return 10 / 60',
-    // TODO: add updated videos with bladed dive
-    desc: '<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 Magics, 7 Palm, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">magic only run</a>. Do spirit trees if you have them, but they are not part of the calculation',
-  },
-  {
-    name: 'Tree Run (Protected Papayas)',
-    skill: 'Farming',
-    baseXpRate: (function () {
-      const treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;
-      const treesThatCantDie = 15000 + 8500 + 7 * 6380.4;
-      return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10; // TODO: more research on disease rates
-    }()),
-    baseCostPerXp() {
-      const cost = 12 * 0.95 * getPrice('Magic seed') + 0.95 * getPrice('Calquat tree seed') + 0.95 * getPrice('Elder seed') / 3 + 7 *
-        (0.95 * getPrice('Papaya tree seed') + 10 * getPrice('Pineapple') - 6 * getPrice('Papaya fruit')) + 64 / 3 * (1500 + getPrice('Supercompost'));
-      return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
-    },
-    modifiers: [
-      raf,
-      pulse,
-      ava6,
-      urnEnhancer,
-    ],
-    requirements: [
-      {name: '94 Farming'},
-      {name: 'Scroll of life'},
-      urns,
-      {
-        name: 'Farmer\'s outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-    ],
-    mutuallyExclusive: true,
-    daily: 'return 10 / 60',
-    // TODO: add updated videos with bladed dive
-    desc: '<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 Magics, 7 Papaya, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">magic only run</a>. Do spirit trees if you have them, but they are not part of the calculation',
   },
   bookOfChar('Yew logs', 405),
   bookOfChar('Magic logs', 607.6),
@@ -1423,28 +1402,6 @@ window.methods = [
     alt: 1,
     desc: 'TFW can\'t afford skillchompas after update :(',
   },
-  wildyAltarMethod('Dragon bones', 72),
-  wildyAltarMethod('Hardened dragon bones', 144),
-  wildyAltarMethod('Airut bones', 132.5),
-  wildyAltarMethod('Frost dragon bones', 180),
-  wildyAltarMethod('Reinforced dragon bones', 190),
-  altarMethod('Dragon bones', 72),
-  altarMethod('Hardened dragon bones', 144),
-  altarMethod('Airut bones', 132.5),
-  altarMethod('Frost dragon bones', 180),
-  altarMethod('Reinforced dragon bones', 190),
-  scatterBuryMethod('Dragon bones', 72, 'Infernal ashes', 62.5),
-  scatterBuryMethod('Hardened dragon bones', 144, 'Infernal ashes', 62.5),
-  scatterBuryMethod('Frost dragon bones', 180, 'Infernal ashes', 62.5),
-  scatterBuryMethod('Reinforced dragon bones', 190, 'Infernal ashes', 62.5),
-  scatterBuryMethod('Dragon bones', 72, 'Tortured ashes', 90),
-  scatterBuryMethod('Hardened dragon bones', 144, 'Tortured ashes', 90),
-  scatterBuryMethod('Frost dragon bones', 180, 'Tortured ashes', 90),
-  scatterBuryMethod('Reinforced dragon bones', 190, 'Tortured ashes', 90),
-  scatterBuryMethod('Dragon bones', 72, 'Searing ashes', 200),
-  scatterBuryMethod('Hardened dragon bones', 144, 'Searing ashes', 200),
-  scatterBuryMethod('Frost dragon bones', 180, 'Searing ashes', 200),
-  scatterBuryMethod('Reinforced dragon bones', 190, 'Searing ashes', 200),
   {
     name: '5-tick cleansing crystals',
     skill: 'Prayer',
@@ -1889,4 +1846,7 @@ window.methods = [
     ],
     desc: youtubeEmbed('PCf8KBDuS04'),
   },
-].concat(prismania, smouldering, attack, strength, defMelee, magic, defMagic, ranged, defRanged);
+].concat(prismania, smouldering, attack, strength, defMelee, magic, defMagic, ranged, defRanged,
+  altarMethods, wildyAltarMethods);
+window.methods = window.methods.concat.apply(window.methods, treeRuns);
+window.methods = window.methods.concat.apply(window.methods, scatterBuryMethods);
