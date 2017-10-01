@@ -104,7 +104,7 @@
       <div class="col-xs-12 col-md-10">
         <div class="table-responsive">
           <table class="table table-hover table-bordered" id="methods">
-            <caption>Most efficient methods (click on a method for more info):</caption>
+            <caption>Skilling methods, sorted by efficiency (click on a method for more info):</caption>
             <thead>
             <tr>
               <th style="width: 150px;">
