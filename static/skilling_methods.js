@@ -306,6 +306,25 @@ function ba79Method(skill, roundXP) {
   };
 }
 
+function bookOfChar(logType, logXp) {
+  return {
+    name: `Book of Char (${logType})`,
+    skill: 'Firemaking',
+    actionXP: logXp,
+    actionsPerHour: 384 * 60 / 4, // 4 mins including set up
+    baseCostPerXp() {
+      return getPrice(logType) / this.actionXP;
+    },
+    modifiers: [],
+    requirements: [{name: 'Book of char'}],
+    daily: 'return 384 / this.actionsPerHour',
+    noBxp: true,
+    noDxp: true,
+    mutuallyExclusive: true,
+    desc: '<a href="https://www.reddit.com/r/NRiver/comments/3z99jl/book_of_char/" target="_blank">Guide by NRiver</a>, use more expensive logs if limiting factor',
+  };
+}
+
 window.skillList = ['Attack', 'Defence', 'Strength', 'Constitution', 'Ranged', 'Prayer', 'Magic',
   'Cooking', 'Woodcutting', 'Fletching', 'Fishing', 'Firemaking', 'Crafting', 'Smithing',
   'Mining', 'Herblore', 'Agility', 'Thieving', 'Slayer', 'Farming', 'Runecrafting',
@@ -881,17 +900,18 @@ window.methods = [
     desc: `<a href="https://docs.google.com/document/d/1Kluwf-R4wPAwRxC4vXcyIfrTVrzWaVzuu2BzJUXihYI" target="_blank">Guide by DG Service FC</a>, rates depend on team ability<br>
 <a href="https://www.youtube.com/watch?v=LbLiwr1f4Uw" target="_blank">What not to do ;)</a>`,
   },
+  // TODO: refactor
   {
-    name: 'Tree Run',
+    name: 'Tree Run (Protected Palms)',
     skill: 'Farming',
     baseXpRate: (function () {
       const treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;
-      const treesThatCantDie = 15000 + 8500 + 7 * 6380.4;
-      return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10;
+      const treesThatCantDie = 15000 + 8500 + 7 * 10509.6;
+      return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10; // TODO: more research on disease rates
     }()),
     baseCostPerXp() {
-      const cost = 12 * 0.9 * getPrice('Magic seed') + 0.9 * getPrice('Calquat tree seed') + 0.9 * getPrice('Elder seed') / 3 + 7 *
-        (0.9 * getPrice('Papaya tree seed') + 10 * getPrice('Pineapple') - 6 * getPrice('Papaya fruit')) + 64 / 3 * (1500 + getPrice('Supercompost'));
+      const cost = 12 * 0.95 * getPrice('Magic seed') + 0.95 * getPrice('Calquat tree seed') + 0.95 * getPrice('Elder seed') / 3 + 7 *
+        (0.95 * getPrice('Palm tree seed') + 15 * getPrice('Papaya fruit') - 6 * getPrice('Coconut')) + 64 / 3 * (1500 + getPrice('Supercompost'));
       return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
     },
     modifiers: [
@@ -902,6 +922,7 @@ window.methods = [
     ],
     requirements: [
       {name: '94 Farming'},
+      {name: 'Scroll of life'},
       urns,
       {
         name: 'Farmer\'s outfit',
@@ -910,25 +931,85 @@ window.methods = [
         },
       },
     ],
+    mutuallyExclusive: true,
+    daily: 'return 10 / 60',
+    // TODO: add updated videos with bladed dive
+    desc: '<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 Magics, 7 Palm, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">magic only run</a>. Do spirit trees if you have them, but they are not part of the calculation',
+  },
+  {
+    name: 'Tree Run (Palms)',
+    skill: 'Farming',
+    baseXpRate: (function () {
+      const treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3 + 7 * 10509.6;
+      const treesThatCantDie = 15000 + 8500;
+      return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10; // TODO: more research on disease rates
+    }()),
+    baseCostPerXp() {
+      const cost = 12 * 0.95 * getPrice('Magic seed') + 0.95 * getPrice('Calquat tree seed') + 0.95 * getPrice('Elder seed') / 3 + 7 *
+        (0.95 * getPrice('Palm tree seed') - 0.86 * 6 * getPrice('Coconut')) + 64 / 3 * (1500 + getPrice('Supercompost'));
+      return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
+    },
+    modifiers: [
+      raf,
+      pulse,
+      ava6,
+      urnEnhancer,
+    ],
+    requirements: [
+      {name: '94 Farming'},
+      {name: 'Scroll of life'},
+      urns,
+      {
+        name: 'Farmer\'s outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    mutuallyExclusive: true,
+    daily: 'return 10 / 60',
+    // TODO: add updated videos with bladed dive
+    desc: '<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 Magics, 7 Palm, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">magic only run</a>. Do spirit trees if you have them, but they are not part of the calculation',
+  },
+  {
+    name: 'Tree Run (Protected Papayas)',
+    skill: 'Farming',
+    baseXpRate: (function () {
+      const treesThatCanDie = 12 * 13913.8 + 12516.6 + 23463 / 3;
+      const treesThatCantDie = 15000 + 8500 + 7 * 6380.4;
+      return (0.86 * treesThatCanDie + treesThatCantDie) * 60 / 10; // TODO: more research on disease rates
+    }()),
+    baseCostPerXp() {
+      const cost = 12 * 0.95 * getPrice('Magic seed') + 0.95 * getPrice('Calquat tree seed') + 0.95 * getPrice('Elder seed') / 3 + 7 *
+        (0.95 * getPrice('Papaya tree seed') + 10 * getPrice('Pineapple') - 6 * getPrice('Papaya fruit')) + 64 / 3 * (1500 + getPrice('Supercompost'));
+      return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
+    },
+    modifiers: [
+      raf,
+      pulse,
+      ava6,
+      urnEnhancer,
+    ],
+    requirements: [
+      {name: '94 Farming'},
+      {name: 'Scroll of life'},
+      urns,
+      {
+        name: 'Farmer\'s outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+    ],
+    mutuallyExclusive: true,
     daily: 'return 10 / 60',
     // TODO: add updated videos with bladed dive
     desc: '<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 Magics, 7 Papaya, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">magic only run</a>. Do spirit trees if you have them, but they are not part of the calculation',
   },
-  {
-    name: 'Book of Char',
-    skill: 'Firemaking',
-    actionXP: 607.6,
-    actionsPerHour: 384 * 60 / 4, // 4 mins including set up
-    baseCostPerXp() {
-      return getPrice('Magic logs') / this.actionXP;
-    },
-    modifiers: [],
-    requirements: [{name: 'Book of char'}],
-    daily: 'return 384 / this.actionsPerHour',
-    noBxp: true,
-    noDxp: true,
-    desc: '<a href="https://www.reddit.com/r/NRiver/comments/3z99jl/book_of_char/" target="_blank">Guide by NRiver</a>, use Elder logs if limiting factor',
-  },
+  bookOfChar('Yew logs', 405),
+  bookOfChar('Magic logs', 607.6),
+  bookOfChar('Corrupted magic logs', 638),
+  bookOfChar('Elder logs', 900),
   baMethod('Firemaking', 812921),
   ba79Method('Firemaking', 492035.5),
   {

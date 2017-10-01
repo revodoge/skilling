@@ -130,8 +130,10 @@
             </thead>
             <tbody>
             <template v-for="methodData in sortedMethods">
-              <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :methodData="methodData" :display="methodData.display" :bxpActive="bxpActive"
-                      :alt="alt" v-on:valueCalculated="updateMethodCost" :illuminationActive="illuminationActive" :dxpActive="dxpActive"
+              <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :methodData="methodData"
+                      :display="methodData.display" :bxpActive="bxpActive"
+                      :alt="alt" v-on:valueCalculated="updateMethodCost" :illuminationActive="illuminationActive"
+                      :dxpActive="dxpActive"
                       v-on:descriptionToggled="toggleDescription"></method>
               <method-desc :desc="methodData.desc"
                            :display="methodData.display && methodData.descriptionDisplay"></method-desc>
@@ -159,7 +161,7 @@
         methods: [],
         rsn: 'couchy',
         stats: {},
-        tvc: 50,
+        tvc: 100,
         alt: 0,
         spinner: true,
         afk: false,
@@ -187,21 +189,51 @@
           if (costA > costB) return 1;
           return 0;
         });
+        // TODO: add warning if TVC is set too low and a method has negative cost
+        // TODO: add warning if alt is higher than TVC
         const skillsMap = window.skillList.reduce((acc, skill) => {
           // hide bonus XP methods for illuminaiton/DXP or if bonus is already accumulated
-          acc[skill] = {bonusEarning: this.illuminationActive || this.dxpActive || this.bxpActive, normal: false};
+          acc[skill] = {
+            bonusEarning: this.illuminationActive || this.dxpActive || this.bxpActive,
+            normal: false,
+            mutuallyExclusive: false,
+          };
           return acc;
         }, {});
         for (let i = 0; i < sorted.length; i++) { // only display the best non-daily for each skill
           const current = sorted[i];
+          current.normal = !current.bonusEarning;
 
+          const methodTypeAlreadyMarked = function markMethodType(methodType) {
+            return skillsMap[current.skill][methodType] && current[methodType];
+          };
+
+          const markMethodType = function markMethodType(methodType) {
+            skillsMap[current.skill][methodType] = skillsMap[current.skill][methodType] || current[methodType];
+          };
+
+          // add filters for BoC, Tree Runs to see the best value
           current.display = !(this.stats[current.skill] === 200000000 || (!isNaN(current.effectiveCost)
-            && (skillsMap[current.skill].normal || (skillsMap[current.skill].bonusEarning && current.bonusEarning))));
+            && (skillsMap[current.skill].normal || methodTypeAlreadyMarked('bonusEarning')
+              || methodTypeAlreadyMarked('mutuallyExclusive'))));
+          markMethodType('mutuallyExclusive');
           if (!current.daily) {
-            skillsMap[current.skill].bonusEarning = skillsMap[current.skill].bonusEarning || current.bonusEarning;
-            skillsMap[current.skill].normal = skillsMap[current.skill].normal || !current.bonusEarning;
+            markMethodType('bonusEarning');
+            markMethodType('normal');
           }
         }
+        // TODO: track multiskill methods (e.g. all warbands skills, daily challenges, goebie)
+        // find all method by method name. filter visible ones. compare each to the best outside of that method
+        // set all but the best to hidden
+        /*
+        this.crossSkillMethods.forEach(method => {
+        const methods = sorted.filter(skill => skill.name === method && skill.display);
+        const other = methods.map(method => sorted.find(otherMethod => otherMethod.skill === method.skill
+         && !otherMethod.bonusEarning));
+        const ratio = methods.zip(other).map((method, other) => other.effectiveCost / method.effectiveCost);
+        });
+        */
+
         return sorted;
       },
     },

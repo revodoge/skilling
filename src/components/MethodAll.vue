@@ -16,13 +16,12 @@
     <form class="row" v-on:submit.prevent="fetchHiscore">
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
       <div class="form-group col-xs-12 col-md-10 col-lg-8">
-        <label for="rsn">Runescape Username</label>
-        <span class="input-group">
-          <input type="text" v-model="rsn" class="form-control" id="rsn">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="submit">Hide my 200m skills</button>
-          </span>
-        </span>
+        <label for="skill">Skill</label>
+        <select v-model="skill" class="form-control" id="skill">
+          <template v-for="skill in skills">
+            <option v-bind:value="skill">{{skill}}</option>
+          </template>
+        </select>
       </div>
       <div class="col-xs-0 col-md-1 col-lg-2"></div>
     </form>
@@ -130,8 +129,10 @@
             </thead>
             <tbody>
             <template v-for="methodData in sortedMethods">
-              <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :methodData="methodData" :display="true" :bxpActive="bxpActive"
-                      :alt="alt" v-on:valueCalculated="updateMethodCost" :illuminationActive="illuminationActive" :dxpActive="dxpActive"
+              <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :methodData="methodData" :display="true"
+                      :bxpActive="bxpActive"
+                      :alt="alt" v-on:valueCalculated="updateMethodCost" :illuminationActive="illuminationActive"
+                      :dxpActive="dxpActive"
                       v-on:descriptionToggled="toggleDescription"></method>
               <method-desc :desc="methodData.desc"
                            :display="methodData.descriptionDisplay"></method-desc>
@@ -157,10 +158,9 @@
       return {
         boosts: {},
         methods: [],
-        rsn: 'couchy',
         stats: {},
-        tvc: 50,
-        alt: 0,
+        tvc: 15,
+        alt: 10,
         spinner: true,
         afk: false,
         triHard: true,
@@ -168,11 +168,13 @@
         illuminationActive: false,
         dxpActive: false,
         bxpActive: false,
+        skills: window.skillList.sort(),
+        skill: 'Agility',
       };
     },
     computed: {
       sortedMethods() {
-        return this.methods.filter(a =>
+        return this.methods.filter(a => a.skill === this.skill &&
           (!a.spinner || this.spinner) && (!a.triHard || this.triHard)
           && (a.afk || !this.afk) && (!a.wildy || !this.noWildy),
         ).sort((a, b) => { // sort methods by skill and efficiency
@@ -197,17 +199,6 @@
       this.methods.forEach(method => method.modifiers.forEach(modifier => this.$set(this.boosts, modifier.name, true)));
     },
     methods: {
-      fetchHiscore() {
-        const hiScoreUrl = 'https://243.ip-149-56-134.net:8080/http://services.runescape.com/m=hiscore/index_lite.ws';
-        this.$http.get(hiScoreUrl, {params: {player: this.rsn}}).then((response) => {
-          const skillXpList = response.body.split('\n').slice(1, 28).map(stats => parseInt(stats.split(',')[2], 10));
-          const statsMap = {};
-          window.skillList.forEach((skill, index) => statsMap[skill] = skillXpList[index]);
-          this.stats = statsMap;
-        }, (response) => {
-          console.log(response.statusText);
-        });
-      },
       toggleDescription(method) {
         method.descriptionDisplay = !method.descriptionDisplay;
         this.methods.splice(this.methods.indexOf(method), 1, method);
