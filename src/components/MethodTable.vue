@@ -1,21 +1,21 @@
 <template>
   <div>
     <form class="row">
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
-      <div class="form-group col-xs-6 col-md-5 col-lg-4">
+      <div class="col-xs-0 col-md-1"></div>
+      <div class="form-group col-xs-6 col-md-5">
         <label for="tvc">MM GP/hr my time is worth</label>
         <input v-model.number="tvc" type="number" class="form-control" id="tvc">
       </div>
-      <div class="form-group col-xs-6 col-md-5 col-lg-4">
+      <div class="form-group col-xs-6 col-md-5">
         <label for="alt" id="altLabel">MM GP/hr my alt makes (0 = no alt)*
           <span>alt is assumed to only be used for AFK skills, make a copy if you want to customize it to your usage</span></label>
         <input v-model.number="alt" type="number" class="form-control" id="alt">
       </div>
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
+      <div class="col-xs-0 col-md-1"></div>
     </form>
     <form class="row" v-on:submit.prevent="fetchHiscore">
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
-      <div class="form-group col-xs-12 col-md-10 col-lg-8">
+      <div class="col-xs-0 col-md-1"></div>
+      <div class="form-group col-xs-12 col-md-10">
         <label for="rsn">Runescape Username</label>
         <span class="input-group">
           <input type="text" v-model="rsn" class="form-control" id="rsn">
@@ -24,7 +24,7 @@
           </span>
         </span>
       </div>
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
+      <div class="col-xs-0 col-md-1"></div>
     </form>
     <form class="row">
       <div class="col-xs-0 col-md-2"></div>
@@ -86,8 +86,8 @@
       <div class="col-xs-0 col-md-2"></div>
     </form>
     <div class="row" id="boosts">
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
-      <div class="col-xs-12 col-md-10 col-lg-8">
+      <div class="col-xs-0 col-md-1"></div>
+      <div class="col-xs-12 col-md-10">
         <span>
           Boosts (click to toggle):
         </span>
@@ -97,12 +97,12 @@
           </span>
         </span>
       </div>
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
+      <div class="col-xs-0 col-md-1"></div>
     </div>
     <br/>
     <div class="row">
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
-      <div class="col-xs-12 col-md-10 col-lg-8">
+      <div class="col-xs-0 col-md-1"></div>
+      <div class="col-xs-12 col-md-10">
         <div class="table-responsive">
           <table class="table table-hover table-bordered" id="methods">
             <caption>Most efficient methods (click on a method for more info):</caption>
@@ -142,7 +142,7 @@
           </table>
         </div>
       </div>
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
+      <div class="col-xs-0 col-md-1"></div>
     </div>
   </div>
 </template>

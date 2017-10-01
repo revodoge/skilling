@@ -15,7 +15,8 @@
     <router-view></router-view>
     <footer class="footer">
       <div class="container">
-        Join the <a href="https://discord.gg/CbdCqc8">Discord</a> or PM JusticeDeeps in game if you want to help or provide feedback.
+        Join the <a href="https://discord.gg/CbdCqc8">Discord</a>
+        or PM JusticeDeeps in game if you want to help or provide feedback.
         Thanks to Marina and Barge for helping test methods
       </div>
     </footer>
@@ -43,5 +44,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    overflow: hidden;
+    width: 100%;
   }
 </style>

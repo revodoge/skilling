@@ -1,8 +1,8 @@
 <template>
   <div>
     <form class="row" v-on:submit.prevent="fetchHiscore">
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
-      <div class="col-xs-12 col-md-10 col-lg-8">
+      <div class="col-xs-0 col-md-1"></div>
+      <div class="col-xs-12 col-md-10">
         <label for="rsn">Runescape Username</label>
         <span class="input-group">
           <input type="text" v-model="rsn" class="form-control" id="rsn">
@@ -11,7 +11,7 @@
           </span>
         </span>
       </div>
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
+      <div class="col-xs-0 col-md-1"></div>
     </form>
     <br/>
     <!--load all the methods with a 15M EHP and 9M alt to get the relative efficiency-->
@@ -21,8 +21,8 @@
               :alt="9" v-on:dailyCalculated="updateMethodDaily" v-on:valueCalculated="updateMethodCost"></method>
     </template>
     <div class="row">
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
-      <div class="col-xs-12 col-md-10 col-lg-8">
+      <div class="col-xs-0 col-md-1"></div>
+      <div class="col-xs-12 col-md-10">
         <div class="table-responsive">
           <table class="table table-hover table-bordered" id="methods">
             <caption>
@@ -75,7 +75,7 @@
           </table>
         </div>
       </div>
-      <div class="col-xs-0 col-md-1 col-lg-2"></div>
+      <div class="col-xs-0 col-md-1"></div>
     </div>
   </div>
 </template>
