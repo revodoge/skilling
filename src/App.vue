@@ -23,6 +23,8 @@
 </template>
 
 <script>
+  import './skilling_methods';
+
   export default {
     name: 'app',
   };
