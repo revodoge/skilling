@@ -263,7 +263,7 @@
       toggleModifier(modifier) {
         this.boosts[modifier] = !this.boosts[modifier];
       },
-      updateMethod: _.debounce(function (method) {
+      updateMethod: _.debounce(function updateMethod(method) {
         this.$set(this.methods, this.methods.indexOf(method), method);
       }, 50),
       updateMethodCost(method, cost) {

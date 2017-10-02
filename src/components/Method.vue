@@ -125,7 +125,7 @@
         return this.baseCostPerXp * (this.baseXpRate === Infinity ? 1 : (this.baseXpRate / this.xpRate));
       },
       dailyXP() { // how much XP a daily can give per day
-        return Function(this.daily).apply(this) * this.xpRate;
+        return this.daily ? (this.daily.apply(this) * this.xpRate) : undefined;
       },
       effectiveCost() { // cost after considering time as money
         const alt = this.methodData.alt ? this.methodData.alt : 0;

@@ -1,4 +1,27 @@
-/* eslint-disable max-len,no-undef */
+/* eslint-disable max-len */
+import Vue from 'vue';
+import VueResource from 'vue-resource';
+
+Vue.use(VueResource);
+
+const itemPrices = {};
+const getPrice = name => itemPrices[name.replace('\'', '\\\'')] || NaN;
+
+window.loaded = new Promise((resolve, reject) => {
+  const priceUrl = 'https://243.ip-149-56-134.net:8080/https://runescape.wikia.com/api.php?action=parse&page=Module%3AGEPrices/data&format=json';
+  Vue.http.get(priceUrl, {responseType: 'json'}).then((response) => {
+    if (!response.body) {
+      return reject();
+    }
+    const items = response.body.parse.text['*'].match(/\[.*?(?=,)/g);
+    items.forEach((item) => {
+      const itemMatch = item.match(/\['(.*?)'] = (\d+)/);
+      itemPrices[itemMatch[1]] = parseInt(itemMatch[2], 10);
+    });
+    return resolve(itemPrices);
+  }, () => reject());
+});
+
 const urns = {
   name: 'Decorated urns',
   effect() {
@@ -317,7 +340,9 @@ function bookOfChar(logType, logXp) {
     },
     modifiers: [],
     requirements: [{name: 'Book of char'}],
-    daily: 'return 384 / this.actionsPerHour',
+    daily() {
+      return 384 / this.actionsPerHour;
+    },
     noBxp: true,
     noDxp: true,
     mutuallyExclusive: true,
@@ -369,7 +394,9 @@ function treeRun(tree, fruit) {
       },
     ],
     mutuallyExclusive: true,
-    daily: 'return 1 / this.actionsPerHour',
+    daily() {
+      return 1 / this.actionsPerHour;
+    },
     // TODO: add updated videos with bladed dive
     desc: `<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 ${tree.name}, 7 ${fruit.name}, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">normal tree only run</a>.
            Pay leprechaun for automatic supercompost. Assuming unprotected Elder and Calquat. Do spirit trees if you have them, but they are not part of the calculation`,
@@ -838,7 +865,9 @@ window.methods = [
     },
     modifiers: [],
     requirements: [{name: '99 Divination'}],
-    daily: 'return 2 / this.actionsPerHour',
+    daily() {
+      return 2 / this.actionsPerHour;
+    },
     noBxp: true,
     noDxp: true,
     desc: `${youtubeEmbed('dD5OWa5mwnE')}<br>Solo/proper duo Cres is still worth, but good luck with that`,
@@ -872,7 +901,7 @@ window.methods = [
         },
       },
     ],
-    daily: 'return 0.5',
+    daily: () => 0.5,
     afk: true,
     alt: 1,
     // TODO: add video
@@ -940,7 +969,9 @@ window.methods = [
     },
     modifiers: [],
     requirements: [{name: '120 Dungeoneering'}],
-    daily: 'return 2 / this.actionsPerHour',
+    daily() {
+      return 2 / this.actionsPerHour;
+    },
     noBxp: true,
     noDxp: true,
     desc: '<a href="https://www.youtube.com/watch?v=4zKvqL7zmJs" target="_blank">adrenaline91 exposed</a>',
@@ -1276,7 +1307,9 @@ window.methods = [
     },
     modifiers: [],
     requirements: [{name: 'Warbanding FC or yolo'}],
-    daily: 'return 1 / this.actionsPerHour',
+    daily() {
+      return 1 / this.actionsPerHour;
+    },
     wildy: true,
     noBxp: true,
     noDxp: true,
@@ -1548,7 +1581,9 @@ window.methods = [
         },
       },
     ],
-    daily: 'return 12 / this.actionsPerHour',
+    daily() {
+      return 12 / this.actionsPerHour;
+    },
     desc: youtubeEmbed('bpvjOI3sJ6I'),
   },
   {
@@ -1671,7 +1706,9 @@ window.methods = [
     },
     modifiers: [],
     requirements: [{name: '99 Woodcutting'}],
-    daily: 'return 2 / 60',
+    daily() {
+      return 1 / this.actionsPerHour;
+    },
     noBxp: true,
     noDxp: true,
     desc: `${youtubeEmbed('zSozFZsEXF0')}<br>Minigames FC tracks the worlds`,
@@ -1710,7 +1747,9 @@ window.methods = [
         },
       },
     ],
-    daily: 'return 500 / this.actionsPerHour',
+    daily() {
+      return 500 / this.actionsPerHour;
+    },
     desc: `Yews are hosted on w48 at reset.<br>${youtubeEmbed('6XvOyUn6z_c')}`,
   },
   { // TODO: better testing on success rate, add cost of runes
