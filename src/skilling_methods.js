@@ -289,9 +289,92 @@ function scatterBuryMethod(boneName, boneXP, ashName, ashXP) {
         },
       },
     ],
+    triHard: true,
     desc: `Demonstration by Persiflage is F2P, use a BoB to further increase actions per hour<br>
            ${youtubeEmbed('wq4FA8qxAZ4')}<br>
            Can also be done losslessly with other skills such as Herblore, Cooking. Dragon Rider amulet does not stack with DXPW, but stacks with Illumination`,
+  };
+}
+
+function autosanctifierMethod(itemName, itemXP) {
+  return {
+    name: `Autosanctifier: ${itemName}`,
+    skill: 'Prayer',
+    actionXP: itemXP * 3.5,
+    actionsPerHour: 5700,
+    baseCostPerXp() {
+      const costPerDisassemble = 3.8 / 3000 * getPrice('Divine charge');
+      const spiritualCost = (getPrice('Unicorn stallion pouch') + costPerDisassemble) / 1.19 * 80 / 50;
+      const coverCost = (getPrice('Black dragonhide chaps') + costPerDisassemble) / 2.03 * 40 / 50;
+      const piousCost = (getPrice('Tortured soul') + costPerDisassemble) / 0.02 / 50;
+      const marrentillCost = getPrice('Clean marrentill') * 10 / 50;
+      return ((itemName.includes('bones') ? 0.98 : 1) * getPrice(itemName)
+        + spiritualCost + coverCost + piousCost + marrentillCost) / this.actionXP;
+    },
+    modifiers: [
+      raf,
+      ava6,
+    ],
+    requirements: [
+      {name: '4 x Auto disassembler mk. II'},
+      {
+        name: 'Modified first age outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: 'Perfect juju prayer potion',
+        effect() {
+          return {base: 0.05};
+        },
+      },
+    ],
+    illuminationOnly: true,
+    desc: `Disassemble Unicorn stallion pouches, Black dragonhide chaps, and Tortured souls using invention machines for components.
+    You get enough components for an hour of training roughly every 3 days from your machines.
+    XP rates do not factor in time to fetch components and make sanctifiers. It is recommended to save your sanctifiers for Illumination`,
+  };
+}
+
+function autosanctifierScatterBuryMethod(boneName, boneXP, ashName, ashXP) {
+  return {
+    name: `Autosanctifier: ${boneName} + ${ashName}`,
+    skill: 'Prayer',
+    actionXP: (boneXP + ashXP) * 3.5,
+    actionsPerHour: 5725,
+    baseCostPerXp() {
+      const costPerDisassemble = 3.8 / 3000 * getPrice('Divine charge');
+      const spiritualCost = (getPrice('Unicorn stallion pouch') + costPerDisassemble) / 1.19 * 80 / 50;
+      const coverCost = (getPrice('Black dragonhide chaps') + costPerDisassemble) / 2.03 * 40 / 50;
+      const piousCost = (getPrice('Tortured soul') + costPerDisassemble) / 0.02 / 50;
+      const marrentillCost = getPrice('Clean marrentill') * 10 / 50;
+      return (0.98 * getPrice(boneName) + getPrice(ashName)
+        + 2 * (spiritualCost + coverCost + piousCost + marrentillCost)) / this.actionXP;
+    },
+    modifiers: [
+      raf,
+      ava6,
+    ],
+    requirements: [
+      {name: '4 x Auto disassembler mk. II'},
+      {
+        name: 'Modified first age outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {
+        name: 'Perfect juju prayer potion',
+        effect() {
+          return {base: 0.05};
+        },
+      },
+    ],
+    illuminationOnly: true,
+    desc: `Disassemble Unicorn stallion pouches, Black dragonhide chaps, and Tortured souls using invention machines for components.
+    You get enough components for an hour of training roughly every 6 days from your machines.
+    XP rates do not factor in time to fetch components and make sanctifiers. It is recommended to save your sanctifiers for Illumination`,
   };
 }
 
@@ -606,9 +689,11 @@ const ashes = [
   {name: 'Tortured ashes', xp: 90},
   {name: 'Searing ashes', xp: 200},
 ];
-const altarMethods = bones.concat(ashes).map(item => altarMethod(item.name, item.xp));
-const wildyAltarMethods = bones.concat(ashes).map(item => wildyAltarMethod(item.name, item.xp));
+const altarMethods = [...bones, ...ashes].map(item => altarMethod(item.name, item.xp));
+const wildyAltarMethods = [...bones, ...ashes].map(item => wildyAltarMethod(item.name, item.xp));
+const autosanctifierMethods = [...bones, ...ashes].map(item => autosanctifierMethod(item.name, item.xp));
 const scatterBuryMethods = bones.map(bone => ashes.map(ash => scatterBuryMethod(bone.name, bone.xp, ash.name, ash.xp)));
+const autosanctifierScatterBuryMethods = bones.map(bone => ashes.map(ash => autosanctifierScatterBuryMethod(bone.name, bone.xp, ash.name, ash.xp)));
 
 window.methods = [
   baMethod('Agility', 308439),
@@ -1859,4 +1944,4 @@ window.methods = [
     desc: youtubeEmbed('PCf8KBDuS04'),
   },
 ].concat(prismania, smouldering, attack, strength, defMelee, magic, defMagic, ranged, defRanged,
-  altarMethods, wildyAltarMethods, ...scatterBuryMethods, ...treeRuns);
+  altarMethods, wildyAltarMethods, ...scatterBuryMethods, ...autosanctifierMethods, ...autosanctifierScatterBuryMethods, ...treeRuns);
