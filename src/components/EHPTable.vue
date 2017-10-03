@@ -117,7 +117,10 @@
         for (let i = 0; i < sorted.length; i++) {
           const current = sorted[i];
           const previous = sorted[i - 1];
-          if ((previous && !previous.daily && !previous.bonusEarning &&
+          if (current.hideMethod) {
+            continue;
+          }
+          if ((previous && !previous.daily && !previous.hideMethod && !previous.bonusEarning &&
               previous.skill === current.skill) || isNaN(current.effectiveCost)) {
             continue;
           }

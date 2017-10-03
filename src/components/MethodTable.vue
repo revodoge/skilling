@@ -202,6 +202,12 @@
         }, {});
         for (let i = 0; i < sorted.length; i++) { // only display the best non-daily for each skill
           const current = sorted[i];
+
+          if (current.hideMethod) {
+            current.display = false;
+            continue;
+          }
+
           current.normal = !current.bonusEarning;
 
           const methodTypeAlreadyMarked = function markMethodType(methodType) {

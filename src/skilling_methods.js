@@ -540,8 +540,9 @@ function potion({name, level, xp, primaries, secondaries, product, comboPot}) {
     },
     modifiers,
     requirements,
-    desc: `Use a ${potsPerInv < 24 ? 'mammoth' : 'yak'} and 1-tick the last potion out of each inventory for max potions per hour.
-    <b>Actual price will vary due to demand/supply of ingredients and finished potion.
+    hideMethod: true,
+    desc: `Use a ${potsPerInv < 24 ? 'mammoth' : 'yak'} for max potions per hour.
+    <b>Actual price will vary due to demand/supply of ingredients and finished potion and may differ greatly from the GE prices used here.
     If you do any PvM and are going for 120 or 200m, it is highly recommended you make overloads instead</b>`,
   };
 }
@@ -1294,7 +1295,6 @@ window.methods = [
   arrowMethod('Dark arrows', 95, 17.5, 'Dark arrowheads', 30),
   arrowMethod('Rune arrows', 75, 12.5, 'Rune arrowheads', 153),
   arrowMethod('Broad arrows', 52, 15, 'Broad arrowheads', 0),
-  /*
   potion({
     name: 'Super prayer renewal',
     level: 96,
@@ -1495,7 +1495,6 @@ window.methods = [
     secondaries: ['Clean marrentill'],
     product: 'Guthix rest (3)',
   }),
-  */
   {
     name: 'Overloads from supers',
     skill: 'Herblore',
