@@ -550,7 +550,7 @@ function potion({name, level, xp, primaries, secondaries, product, comboPot}) {
 window.skillList = ['Attack', 'Defence', 'Strength', 'Constitution', 'Ranged', 'Prayer', 'Magic',
   'Cooking', 'Woodcutting', 'Fletching', 'Fishing', 'Firemaking', 'Crafting', 'Smithing',
   'Mining', 'Herblore', 'Agility', 'Thieving', 'Slayer', 'Farming', 'Runecrafting',
-  'Hunter', 'Construction', 'Summoning', 'Dungeoneering', 'Divination', 'Invention'];
+  'Hunter', 'Construction', 'Summoning', 'Dungeoneering', 'Divination', 'Invention'].sort();
 
 const prismania = window.skillList.map(skill => ({
   name: 'Prismania',

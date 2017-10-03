@@ -168,7 +168,7 @@
         illuminationActive: false,
         dxpActive: false,
         bxpActive: false,
-        skills: window.skillList.sort(),
+        skills: window.skillList,
         skill: this.$route.query.skill || 'Agility',
       };
     },
