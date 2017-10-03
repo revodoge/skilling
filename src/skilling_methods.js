@@ -1294,6 +1294,7 @@ window.methods = [
   arrowMethod('Dark arrows', 95, 17.5, 'Dark arrowheads', 30),
   arrowMethod('Rune arrows', 75, 12.5, 'Rune arrowheads', 153),
   arrowMethod('Broad arrows', 52, 15, 'Broad arrowheads', 0),
+  /*
   potion({
     name: 'Super prayer renewal',
     level: 96,
@@ -1494,6 +1495,7 @@ window.methods = [
     secondaries: ['Clean marrentill'],
     product: 'Guthix rest (3)',
   }),
+  */
   {
     name: 'Overloads from supers',
     skill: 'Herblore',

@@ -16,9 +16,9 @@
     <br/>
     <!--load all the methods with a 15M EHP and 9M alt to get the relative efficiency-->
     <template v-for="methodData in filteredMethods">
-      <method :key="methodData.id" :tvc="15" :boosts="boosts" :methodData="methodData" :display="false"
+      <method :key="methodData.id" :tvc="20" :boosts="boosts" :methodData="methodData" :display="false"
               :illuminationActive="false" :dxpActive="false" :bxpActive="false"
-              :alt="9" v-on:dailyCalculated="updateMethodDaily" v-on:valueCalculated="updateMethodCost"></method>
+              :alt="10" v-on:dailyCalculated="updateMethodDaily" v-on:valueCalculated="updateMethodCost"></method>
     </template>
     <div class="row">
       <div class="col-xs-0 col-md-1"></div>
@@ -26,7 +26,7 @@
         <div class="table-responsive">
           <table class="table table-hover table-bordered" id="methods">
             <caption>
-              Player EHP (15MM gp/hr TVC, counting in time needed to fund skills, 9MM gp/hr on alts for AFK skills, 800 days of dailies):
+              Player EHP (20MM gp/hr TVC, counting in time needed to fund skills, making 10MM gp/hr on alts during AFK skills, 800 days of dailies):
             </caption>
             <thead>
             <tr>
@@ -154,7 +154,7 @@
           if (skillInfo.remaining > 0) {
             return;
           }
-          const hours = skillInfo.eCost / 15000000;
+          const hours = skillInfo.eCost / 20000000;
           const cost = skillInfo.rCost;
           skillRates[skill] = {hours, cost};
         });

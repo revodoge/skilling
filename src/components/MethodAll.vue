@@ -159,7 +159,7 @@
         boosts: {},
         methods: [],
         stats: {},
-        tvc: 15,
+        tvc: 20,
         alt: 10,
         spinner: true,
         afk: false,
