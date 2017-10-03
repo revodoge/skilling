@@ -169,7 +169,7 @@
         dxpActive: false,
         bxpActive: false,
         skills: window.skillList.sort(),
-        skill: 'Agility',
+        skill: this.$route.query.skill || 'Agility',
       };
     },
     computed: {
@@ -217,6 +217,9 @@
       },
     },
     watch: {
+      skill(skill) {
+        this.$router.push({name: 'All Methods', query: {skill}});
+      },
       afk(afk) {
         if (afk) {
           this.triHard = false;

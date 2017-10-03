@@ -438,14 +438,14 @@ function treeRun(tree, fruit) {
     name: `Tree Run (${tree.protection ? 'Protected' : 'Unprotected'} ${tree.name} + 
                      ${fruit.protection ? 'Protected' : 'Unprotected'} ${fruit.name})`,
     skill: 'Farming',
-    actionXP: (function () {
+    actionXP: (() => {
       const canDie = 12225.5 + 23473 / 3;
       const cantDie = 15000 + 9350;
       const treePatch = 12 * (tree.protection ? 1 : 0.86) * tree.xp;
       const fruitTreePatch = 7 * (fruit.protection ? 1 : 0.86) * fruit.xp;
       // TODO: more research on disease rates
       return (0.86 * canDie + cantDie + treePatch + fruitTreePatch);
-    }()),
+    })(),
     actionsPerHour: 60 / 8.5,
     baseCostPerXp() {
       const cost =
@@ -483,6 +483,66 @@ function treeRun(tree, fruit) {
     // TODO: add updated videos with bladed dive
     desc: `<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 ${tree.name}, 7 ${fruit.name}, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">normal tree only run</a>.
            Pay leprechaun for automatic supercompost. Assuming unprotected Elder and Calquat. Do spirit trees if you have them, but they are not part of the calculation`,
+  };
+}
+
+function potion({name, level, xp, primaries, secondaries, product, comboPot}) {
+  const itemsPerPot = primaries.length + secondaries.length;
+  const potsPerInv = Math.min(Math.floor(60 / itemsPerPot), 24);
+  const actionsPerHour = Math.floor(potsPerInv * 6000 / (3.3 + 1.875 * potsPerInv)); // TODO: calibrate to a 1 hour tryhard video
+  const requirements = [
+    {name: `${level} Herblore`},
+    {
+      name: 'Portable well',
+      effect() {
+        return {base: 0.1};
+      },
+    },
+    {
+      name: 'Modified botanist\'s outfit',
+      effect() {
+        return {bonus: 0.06};
+      },
+    },
+  ];
+  const modifiers = [
+    raf,
+    pulse,
+    ava6,
+  ];
+  if (comboPot) {
+    requirements.push({
+      name: 'Perfect juju herblore potion',
+      effect() {
+        return {base: 0.05};
+      },
+    });
+    requirements.push({name: 'Potion recipe unlocked'});
+    modifiers.push({
+      name: 'Voice of Seren',
+      effect() {
+        return {base: 0.2};
+      },
+    });
+  }
+  return {
+    name,
+    skill: 'Herblore',
+    actionXP: xp,
+    actionsPerHour,
+    baseCostPerXp() {
+      const primariesCost = primaries.reduce((acc, ingredient) => acc + getPrice(ingredient), 0);
+      const secondariesCost = secondaries.reduce((acc, ingredient) => acc + getPrice(ingredient), 0);
+      const secondariesMultiplier = (secondaries.length * 10 - 1) / (secondaries.length * 10); // 10% scroll of cleansing change spread over all secondaries
+      const productMultiplier = comboPot ? 1.05 : 1.1;
+      const totalCost = primariesCost + secondariesCost * secondariesMultiplier - productMultiplier * getPrice(product);
+      return totalCost / this.actionXP;
+    },
+    modifiers,
+    requirements,
+    desc: `Use a ${potsPerInv < 24 ? 'mammoth' : 'yak'} and 1-tick the last potion out of each inventory for max potions per hour.
+    <b>Actual price will vary due to demand/supply of ingredients and finished potion.
+    If you do any PvM and are going for 120 or 200m, it is highly recommended you make overloads instead</b>`,
   };
 }
 
@@ -1234,6 +1294,206 @@ window.methods = [
   arrowMethod('Dark arrows', 95, 17.5, 'Dark arrowheads', 30),
   arrowMethod('Rune arrows', 75, 12.5, 'Rune arrowheads', 153),
   arrowMethod('Broad arrows', 52, 15, 'Broad arrowheads', 0),
+  potion({
+    name: 'Super prayer renewal',
+    level: 96,
+    xp: 208.2,
+    primaries: ['Crystal flask'],
+    secondaries: ['Prayer potion (4)', 'Prayer renewal (4)'],
+    product: 'Super prayer renewal potion (6)',
+    comboPot: true,
+  }),
+  potion({
+    name: 'Super warmaster',
+    level: 85,
+    xp: 500,
+    primaries: ['Crystal flask'],
+    secondaries: ['Super attack (4)', 'Super strength (4)', 'Super defence (4)', 'Super magic potion (4)', 'Super ranging potion (4)'],
+    product: 'Super warmaster\'s potion (6)',
+    comboPot: true,
+  }),
+  potion({
+    name: 'Super melee',
+    level: 81,
+    xp: 281.3,
+    primaries: ['Crystal flask'],
+    secondaries: ['Super attack (4)', 'Super strength (4)', 'Super defence (4)'],
+    product: 'Super melee potion (6)',
+    comboPot: true,
+  }),
+  potion({
+    name: 'Grand defence',
+    level: 79,
+    xp: 146.3,
+    primaries: ['Crystal flask'],
+    secondaries: ['Super defence (4)', 'Defence potion (4)'],
+    product: 'Grand defence potion (6)',
+    comboPot: true,
+  }),
+  potion({
+    name: 'Grand attack',
+    level: 78,
+    xp: 93.8,
+    primaries: ['Crystal flask'],
+    secondaries: ['Super attack (4)', 'Attack potion (4)'],
+    product: 'Grand attack potion (6)',
+    comboPot: true,
+  }),
+  potion({
+    name: 'Grand magic',
+    level: 77,
+    xp: 155.7,
+    primaries: ['Crystal flask'],
+    secondaries: ['Super magic potion (4)', 'Magic potion (4)'],
+    product: 'Grand magic potion (6)',
+    comboPot: true,
+  }),
+  potion({
+    name: 'Grand ranging',
+    level: 76,
+    xp: 144.4,
+    primaries: ['Crystal flask'],
+    secondaries: ['Super ranging potion (4)', 'Ranging potion (4)'],
+    product: 'Grand ranging potion (6)',
+    comboPot: true,
+  }),
+  potion({
+    name: 'Grand strength',
+    level: 75,
+    xp: 123.8,
+    primaries: ['Crystal flask'],
+    secondaries: ['Super strength (4)', 'Strength potion (4)'],
+    product: 'Grand strength potion (6)',
+    comboPot: true,
+  }),
+  potion({
+    name: 'Prayer renewal',
+    level: 94,
+    xp: 190,
+    primaries: ['Fellstalk potion (unf)'],
+    secondaries: ['Morchella mushroom'],
+    product: 'Prayer renewal (3)',
+  }),
+  potion({
+    name: 'Aggression potion',
+    level: 82,
+    xp: 185,
+    primaries: ['Bloodweed potion (unf)'],
+    secondaries: ['Searing ashes'],
+    product: 'Aggression potion (3)',
+  }),
+  potion({
+    name: 'Saradomin brew',
+    level: 81,
+    xp: 180,
+    primaries: ['Toadflax potion (unf)'],
+    secondaries: ['Crushed nest'],
+    product: 'Saradomin brew (3)',
+  }),
+  potion({
+    name: 'Zamorak brew',
+    level: 78,
+    xp: 175,
+    primaries: ['Torstol potion (unf)'],
+    secondaries: ['Jangerberries'],
+    product: 'Zamorak brew (3)',
+  }),
+  potion({
+    name: 'Super magic',
+    level: 76,
+    xp: 172.5,
+    primaries: ['Lantadyme potion (unf)'],
+    secondaries: ['Potato cactus'],
+    product: 'Super magic potion (3)',
+  }),
+  potion({
+    name: 'Super ranging',
+    level: 72,
+    xp: 162.5,
+    primaries: ['Dwarf weed potion (unf)'],
+    secondaries: ['Wine of Zamorak'],
+    product: 'Super ranging potion (3)',
+  }),
+  potion({
+    name: 'Antifire',
+    level: 69,
+    xp: 157.5,
+    primaries: ['Lantadyme potion (unf)'],
+    secondaries: ['Dragon scale dust'],
+    product: 'Antifire (3)',
+  }),
+  potion({
+    name: 'Super defence',
+    level: 69,
+    xp: 157.5,
+    primaries: ['Cadantine potion (unf)'],
+    secondaries: ['White berries'],
+    product: 'Super defence (3)',
+  }),
+  potion({
+    name: 'Super restore',
+    level: 63,
+    xp: 142.5,
+    primaries: ['Snapdragon potion (unf)'],
+    secondaries: ['Red spiders\' eggs'],
+    product: 'Super restore (3)',
+  }),
+  potion({
+    name: 'Super strength',
+    level: 55,
+    xp: 125,
+    primaries: ['Kwuarm potion (unf)'],
+    secondaries: ['Limpwurt root'],
+    product: 'Super strength (3)',
+  }),
+  potion({
+    name: 'Super energy',
+    level: 52,
+    xp: 117.5,
+    primaries: ['Avantoe potion (unf)'],
+    secondaries: ['Mort myre fungus'],
+    product: 'Super energy (3)',
+  }),
+  potion({
+    name: 'Super antipoison',
+    level: 48,
+    xp: 106.3,
+    primaries: ['Irit potion (unf)'],
+    secondaries: ['Unicorn horn dust'],
+    product: 'Super antipoison (3)',
+  }),
+  potion({
+    name: 'Super attack',
+    level: 45,
+    xp: 100,
+    primaries: ['Irit potion (unf)'],
+    secondaries: ['Eye of newt'],
+    product: 'Super attack (3)',
+  }),
+  potion({
+    name: 'Summoning potion',
+    level: 40,
+    xp: 92,
+    primaries: ['Spirit weed potion (unf)'],
+    secondaries: ['Cockatrice egg'],
+    product: 'Summoning potion (3)',
+  }),
+  potion({
+    name: 'Prayer potion',
+    level: 38,
+    xp: 87.5,
+    primaries: ['Ranarr potion (unf)'],
+    secondaries: ['Snape grass'],
+    product: 'Prayer potion (3)',
+  }),
+  potion({
+    name: 'Guthix rest',
+    level: 18,
+    xp: 59.5,
+    primaries: ['Harralander potion (unf)'],
+    secondaries: ['Clean marrentill'],
+    product: 'Guthix rest (3)',
+  }),
   {
     name: 'Overloads from supers',
     skill: 'Herblore',
@@ -1242,7 +1502,7 @@ window.methods = [
     baseCostPerXp() {
       const extremes = (0.9 * (getPrice('Clean avantoe') + getPrice('Clean dwarf weed') + getPrice('Clean lantadyme') + getPrice('Mud rune') + 5 * getPrice('Grenwall spikes'))
         + (getPrice('Super attack (3)') + getPrice('Super strength (3)') + getPrice('Super defence (3)') + getPrice('Super magic potion (3)') + getPrice('Super ranging potion (3)'))) / 1.1;
-      const totalCost = 0.983 * (extremes + getPrice('Clean torstol'));
+      const totalCost = 59 / 60 * (extremes + getPrice('Clean torstol'));
       return totalCost / this.actionXP;
     },
     modifiers: [
@@ -1275,7 +1535,7 @@ window.methods = [
     baseCostPerXp() {
       const extremes = (0.9 * (getPrice('Clean avantoe') + getPrice('Clean dwarf weed') + getPrice('Clean lantadyme') + getPrice('Mud rune') + 5 * getPrice('Grenwall spikes'))
         + (getPrice('Super attack (3)') + getPrice('Super strength (3)') + getPrice('Super defence (3)') + getPrice('Super magic potion (3)') + getPrice('Super ranging potion (3)'))) / 1.1;
-      const totalCost = 0.983 * (extremes + getPrice('Clean torstol'));
+      const totalCost = 59 / 60 * (extremes + getPrice('Clean torstol'));
       return totalCost / this.actionXP;
     },
     modifiers: [
