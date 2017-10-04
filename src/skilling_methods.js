@@ -770,6 +770,12 @@ window.methods = [
     modifiers: [
       raf,
       ava3,
+      {
+        name: 'Nimble outfit',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
     ],
     requirements: [
       {name: '99 Agility'},
@@ -1499,7 +1505,7 @@ window.methods = [
     name: 'Overloads from supers',
     skill: 'Herblore',
     actionXP: 2201,
-    actionsPerHour: 460,
+    actionsPerHour: 453,
     baseCostPerXp() {
       const extremes = (0.9 * (getPrice('Clean avantoe') + getPrice('Clean dwarf weed') + getPrice('Clean lantadyme') + getPrice('Mud rune') + 5 * getPrice('Grenwall spikes'))
         + (getPrice('Super attack (3)') + getPrice('Super strength (3)') + getPrice('Super defence (3)') + getPrice('Super magic potion (3)') + getPrice('Super ranging potion (3)'))) / 1.1;

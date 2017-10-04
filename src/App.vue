@@ -9,16 +9,11 @@
           <li><a href="#/methods">Efficient Skilling Methods</a></li>
           <li><a href="#/ehp">EHP</a></li>
           <li><a href="#/all">All Skilling Methods</a></li>
+          <li><a href="#/about">About</a></li>
         </ul>
       </div>
     </nav>
     <router-view></router-view>
-    <footer class="footer">
-      <div class="container">
-        Join the <a href="https://discord.gg/CbdCqc8">Discord</a>
-        or PM JusticeDeeps in game if you want to help or provide feedback.
-      </div>
-    </footer>
   </div>
 </template>
 
