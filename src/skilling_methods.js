@@ -71,7 +71,7 @@ function arrowMethod(name, levelRequired, actionXP, arrowheadName, sell) {
     name,
     skill: 'Fletching',
     actionXP,
-    actionsPerHour: 43000,
+    actionsPerHour: 44000,
     baseCostPerXp() {
       return (0.9 * (getPrice(arrowheadName) + getPrice('Feather')) - sell) / this.actionXP;
     },
@@ -131,7 +131,7 @@ function dhideMethod(name, levelRequired, actionXP, costPerAction) {
     name,
     skill: 'Crafting',
     actionXP,
-    actionsPerHour: 1820,
+    actionsPerHour: 1811,
     baseCostPerXp() {
       return costPerAction() / this.actionXP;
     },
@@ -165,7 +165,7 @@ function cutGemMethod(name, levelRequired, actionXP, uncutName, cutName) {
     name,
     skill: 'Crafting',
     actionXP,
-    actionsPerHour: 5300,
+    actionsPerHour: 5370,
     baseCostPerXp() {
       return (0.95 * getPrice(uncutName) - 1.02 * getPrice(cutName)) / this.actionXP;
     },
@@ -267,7 +267,7 @@ function scatterBuryMethod(boneName, boneXP, ashName, ashXP) {
     name: `Scatter/Bury: ${boneName} + ${ashName}`,
     skill: 'Prayer',
     actionXP: boneXP + ashXP,
-    actionsPerHour: 5750,
+    actionsPerHour: 5761,
     baseCostPerXp() {
       return (0.98 * getPrice(boneName) + getPrice(ashName)) / this.actionXP;
     },
@@ -301,7 +301,7 @@ function autosanctifierMethod(itemName, itemXP) {
     name: `Autosanctifier: ${itemName}`,
     skill: 'Prayer',
     actionXP: itemXP * 3.5,
-    actionsPerHour: 5700,
+    actionsPerHour: 5854,
     baseCostPerXp() {
       const costPerDisassemble = 3.8 / 3000 * getPrice('Divine charge');
       const spiritualCost = (getPrice('Unicorn stallion pouch') + costPerDisassemble) / 1.19 * 80 / 50;
@@ -342,7 +342,7 @@ function autosanctifierScatterBuryMethod(boneName, boneXP, ashName, ashXP) {
     name: `Autosanctifier: ${boneName} + ${ashName}`,
     skill: 'Prayer',
     actionXP: (boneXP + ashXP) * 3.5,
-    actionsPerHour: 5725,
+    actionsPerHour: 5716,
     baseCostPerXp() {
       const costPerDisassemble = 3.8 / 3000 * getPrice('Divine charge');
       const spiritualCost = (getPrice('Unicorn stallion pouch') + costPerDisassemble) / 1.19 * 80 / 50;
@@ -900,7 +900,7 @@ window.methods = [
     name: '3-tick rocktails',
     skill: 'Cooking',
     actionXP: 225,
-    actionsPerHour: 1850,
+    actionsPerHour: 1886,
     baseCostPerXp() {
       return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice('Raw rocktail') - 1.1 * getPrice('Rocktail')) / this.actionXP;
     },
@@ -939,7 +939,7 @@ window.methods = [
     name: '4-tick rocktails',
     skill: 'Cooking',
     actionXP: 225,
-    actionsPerHour: 1400,
+    actionsPerHour: 1435,
     baseCostPerXp() {
       return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice('Raw rocktail') - 1.1 * getPrice('Rocktail')) / this.actionXP;
     },
@@ -980,7 +980,7 @@ window.methods = [
     name: 'Wines',
     skill: 'Cooking',
     actionXP: 201,
-    actionsPerHour: 5100,
+    actionsPerHour: 5019,
     baseCostPerXp() {
       return (getPrice('Jug of water') + getPrice('Grapes') - getPrice('Jug of wine')) / this.actionXP;
     },
@@ -1271,7 +1271,7 @@ window.methods = [
     name: 'Dragon darts',
     skill: 'Fletching',
     actionXP: 25,
-    actionsPerHour: 55000,
+    actionsPerHour: 57391,
     baseCostPerXp() {
       return (0.9 * (getPrice('Feather') + getPrice('Dragon dart tip')) - 150) / this.actionXP;
     },
@@ -1942,7 +1942,7 @@ window.methods = [
     name: 'Rune 2h',
     skill: 'Smithing',
     actionXP: 225,
-    actionsPerHour: 1580,
+    actionsPerHour: 1500, // TODO: test varrock armour proc rate to get the right number
     baseCostPerXp() {
       return (2.6 * getPrice('Rune bar') - getPrice('Rune 2h sword')) / this.actionXP;
     },
