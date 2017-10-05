@@ -433,6 +433,42 @@ function bookOfChar(logType, logXp) {
   };
 }
 
+function bonfire(logType, logXp) {
+  return {
+    name: `Bonfire (${logType})`,
+    skill: 'Firemaking',
+    actionXP: logXp,
+    actionsPerHour: (1 + 13.5 * 0.005 + 0.05) * 6000 / 5.9, // Pyromaniac 5 wihout keeping inventory topped up
+    baseCostPerXp() {
+      return getPrice(logType) * 0.9 / this.actionXP;
+    },
+    modifiers: [
+      raf,
+      ava6,
+      pulse,
+    ],
+    requirements: [
+      {
+        name: 'Augmented crystal tinderbox/Pyro-matic with Pyromaniac 5/Rapid 2 + Tinker 3',
+        effect() {
+          return {base: 0.0375};
+        },
+      },
+      {
+        name: 'Ring of fire + Flame gloves',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+      {name: 'Portable brazier'},
+      {name: 'Reborn phoenix familiar'},
+    ],
+    afk: true,
+    alt: 1,
+    desc: 'Using a BoB and keeping your inventory full to maximize the effect of Pyromaniac is better than the phoenix effect, but requires more input',
+  };
+}
+
 function treeRun(tree, fruit) {
   return {
     name: `Tree Run (${tree.protection ? 'Protected' : 'Unprotected'} ${tree.name} + 
@@ -1145,6 +1181,10 @@ window.methods = [
   bookOfChar('Magic logs', 607.6),
   bookOfChar('Corrupted magic logs', 638),
   bookOfChar('Elder logs', 900),
+  bonfire('Yew logs', 297.4),
+  bonfire('Magic logs', 354.6),
+  bonfire('Corrupted magic logs', 372.3),
+  bonfire('Elder logs', 514.8),
   baMethod('Firemaking', 812921),
   ba79Method('Firemaking', 492035.5),
   {
