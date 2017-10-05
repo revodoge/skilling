@@ -489,7 +489,7 @@ function treeRun(tree, fruit) {
 function potion({name, level, xp, primaries, secondaries, product, comboPot}) {
   const itemsPerPot = primaries.length + secondaries.length;
   const potsPerInv = Math.min(Math.floor(60 / itemsPerPot), 24);
-  const actionsPerHour = Math.floor(potsPerInv * 6000 / (3.3 + 1.875 * potsPerInv)); // TODO: calibrate to a 1 hour tryhard video
+  const actionsPerHour = Math.floor(potsPerInv * 6000 / (1.63 + 1.875 * potsPerInv));
   const requirements = [
     {name: `${level} Herblore`},
     {
@@ -1505,7 +1505,7 @@ window.methods = [
     name: 'Overloads from supers',
     skill: 'Herblore',
     actionXP: 2201,
-    actionsPerHour: 453,
+    actionsPerHour: 471,
     baseCostPerXp() {
       const extremes = (0.9 * (getPrice('Clean avantoe') + getPrice('Clean dwarf weed') + getPrice('Clean lantadyme') + getPrice('Mud rune') + 5 * getPrice('Grenwall spikes'))
         + (getPrice('Super attack (3)') + getPrice('Super strength (3)') + getPrice('Super defence (3)') + getPrice('Super magic potion (3)') + getPrice('Super ranging potion (3)'))) / 1.1;
