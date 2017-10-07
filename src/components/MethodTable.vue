@@ -256,7 +256,11 @@
         this.$http.get(hiScoreUrl, {params: {player: this.rsn}}).then((response) => {
           const skillXpList = response.body.split('\n').slice(1, 28).map(stats => parseInt(stats.split(',')[2], 10));
           const statsMap = {};
-          window.skillList.forEach((skill, index) => statsMap[skill] = skillXpList[index]);
+          const skills = ['Attack', 'Defence', 'Strength', 'Constitution', 'Ranged', 'Prayer', 'Magic',
+            'Cooking', 'Woodcutting', 'Fletching', 'Fishing', 'Firemaking', 'Crafting', 'Smithing',
+            'Mining', 'Herblore', 'Agility', 'Thieving', 'Slayer', 'Farming', 'Runecrafting',
+            'Hunter', 'Construction', 'Summoning', 'Dungeoneering', 'Divination', 'Invention'];
+          skills.forEach((skill, index) => statsMap[skill] = skillXpList[index]);
           this.stats = statsMap;
         }, (response) => {
           console.log(response.statusText);
