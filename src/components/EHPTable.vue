@@ -113,7 +113,7 @@
         });
         const skillMap = {};
         window.skillList.forEach((skill, index) =>
-          skillMap[skill] = {remaining: 200000000, eCost: 0, rCost: 0, bonusEarned: false});
+          skillMap[skill] = {remaining: 200000000, eCost: 0, rCost: 0, bonusEarned: false, mutuallyExclusive: false});
         for (let i = 0; i < sorted.length; i++) {
           const current = sorted[i];
           const previous = sorted[i - 1];
@@ -130,7 +130,12 @@
           if (skillMap[current.skill].bonusEarned && current.bonusEarning) {
             continue;
           }
+          if (skillMap[current.skill].mutuallyExclusive && current.mutuallyExclusive) {
+            continue;
+          }
           if (current.daily) {
+            skillMap[current.skill].mutuallyExclusive =
+              current.mutuallyExclusive || skillMap[current.skill].mutuallyExclusive;
             const applicableDays = Math.min(skillMap[current.skill].remaining / current.dailyAmt, 800);
             const methodXP = applicableDays * current.dailyAmt;
             const methodECost = methodXP * current.effectiveCost;

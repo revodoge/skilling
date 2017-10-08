@@ -222,8 +222,9 @@
           current.display = !(this.stats[current.skill] === 200000000 || (!isNaN(current.effectiveCost)
             && (skillsMap[current.skill].normal || methodTypeAlreadyMarked('bonusEarning')
               || methodTypeAlreadyMarked('mutuallyExclusive'))));
-          markMethodType('mutuallyExclusive');
-          if (!current.daily) {
+          if (current.daily) {
+            markMethodType('mutuallyExclusive');
+          } else {
             markMethodType('bonusEarning');
             markMethodType('normal');
           }
