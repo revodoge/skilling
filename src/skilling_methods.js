@@ -792,6 +792,62 @@ const autosanctifierMethods = [...bones, ...ashes].map(item => autosanctifierMet
 const scatterBuryMethods = bones.map(bone => ashes.map(ash => scatterBuryMethod(bone.name, bone.xp, ash.name, ash.xp)));
 const autosanctifierScatterBuryMethods = bones.map(bone => ashes.map(ash => autosanctifierScatterBuryMethod(bone.name, bone.xp, ash.name, ash.xp)));
 
+const rocktail = {
+  skill: 'Cooking',
+  actionXP: 228,
+  baseCostPerXp() {
+    return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice('Raw rocktail') - 1.1 * getPrice('Rocktail')) / this.actionXP;
+  },
+  modifiers: [
+    raf,
+    pulse,
+    ava6,
+    {
+      name: 'Urn enhancer',
+      effect() {
+        return {bonus: 0.05 / 1.21 * 225 / 228};
+      },
+    },
+  ],
+  requirements: [
+    {name: '94 Cooking'},
+    {name: 'Cooking gauntlets/skillcape'},
+    {
+      name: 'Portable range',
+      effect() {
+        return {base: 0.21};
+      },
+    },
+    {
+      name: 'Decorated urns',
+      effect() {
+        return {bonus: 0.2 / 1.21 * 225 / 228};
+      },
+    },
+    {
+      name: 'Modified sous chef\'s outfit',
+      effect() {
+        return {bonus: 0.06};
+      },
+    },
+    {name: 'Dwarven army axe'},
+  ],
+};
+
+const rocktail3t = Object.assign({
+  name: '3-tick rocktails',
+  actionsPerHour: 1886,
+  desc: youtubeEmbed('OMlT6PzmEjE'),
+}, rocktail);
+
+const rocktail4t = Object.assign({
+  name: '4-tick rocktails',
+  actionsPerHour: 1435,
+  afk: true,
+  alt: 1,
+  desc: '<iframe src="https://clips.twitch.tv/embed?clip=FlirtyZealousNoodleGivePLZ&autoplay=false&tt_medium=clips_embed" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>',
+}, rocktail);
+
 window.methods = [
   baMethod('Agility', 308439),
   ba79Method('Agility', 186688),
@@ -932,86 +988,8 @@ window.methods = [
     requirements: [],
     desc: 'You\'d have to put in extra effort to not get this for free with 200m all combat skills',
   },
-  {
-    name: '3-tick rocktails',
-    skill: 'Cooking',
-    actionXP: 225,
-    actionsPerHour: 1886,
-    baseCostPerXp() {
-      return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice('Raw rocktail') - 1.1 * getPrice('Rocktail')) / this.actionXP;
-    },
-    modifiers: [
-      raf,
-      pulse,
-      ava6,
-      urnEnhancer,
-    ],
-    requirements: [
-      {name: '94 Cooking'},
-      {name: 'Cooking gauntlets/skillcape'},
-      {
-        name: 'Portable range',
-        effect() {
-          return {base: 0.215};
-        },
-      },
-      urns,
-      {
-        name: 'Modified sous chef\'s outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      {
-        name: 'Dwarven army axe',
-        effect() {
-          return {bonus: 3 / 225 / 1.215};
-        },
-      },
-    ],
-    desc: youtubeEmbed('OMlT6PzmEjE'),
-  },
-  {
-    name: '4-tick rocktails',
-    skill: 'Cooking',
-    actionXP: 225,
-    actionsPerHour: 1435,
-    baseCostPerXp() {
-      return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice('Raw rocktail') - 1.1 * getPrice('Rocktail')) / this.actionXP;
-    },
-    modifiers: [
-      raf,
-      pulse,
-      ava6,
-      urnEnhancer,
-    ],
-    requirements: [
-      {name: '94 Cooking'},
-      {name: 'Cooking gauntlets/skillcape'},
-      {
-        name: 'Portable range',
-        effect() {
-          return {base: 0.215};
-        },
-      },
-      urns,
-      {
-        name: 'Modified sous chef\'s outfit',
-        effect() {
-          return {bonus: 0.06};
-        },
-      },
-      {
-        name: 'Dwarven army axe',
-        effect() {
-          return {bonus: 3 / 225 / 1.215};
-        },
-      },
-    ],
-    afk: true,
-    alt: 1,
-    desc: '<iframe src="https://clips.twitch.tv/embed?clip=FlirtyZealousNoodleGivePLZ&autoplay=false&tt_medium=clips_embed" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>',
-  },
+  rocktail3t,
+  rocktail4t,
   {
     name: 'Wines',
     skill: 'Cooking',

@@ -20,7 +20,7 @@
       <br>
       Credit for video footage and guides referenced on the page goes to their original authors.
       <br>
-      Special thanks to Barge and Marina for their help in verifying some of the methods listed here.
+      Special thanks to Barge, Inter, and Marina for their help in verifying some of the methods listed here.
       <br>
       Join the <a href="https://discord.gg/CbdCqc8" target="_blank">Discord</a>
       or PM JusticeDeeps in game if you have questions or feedback, or want to help with the website.
