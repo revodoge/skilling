@@ -8,7 +8,8 @@
         <ul class="nav navbar-nav">
           <li><a href="#/methods">Efficient Skilling Methods</a></li>
           <li><a href="#/ehp">EHP</a></li>
-          <li><a href="#/all">All Skilling Methods</a></li>
+          <li><a href="#/tvc">Method TVC</a></li>
+          <li><a href="#/all">Compare skilling methods</a></li>
           <li><a href="#/about">About</a></li>
         </ul>
       </div>

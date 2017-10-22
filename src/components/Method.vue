@@ -155,7 +155,15 @@
       effectiveCost: {
         handler(eCost, oldECost) { // propagate the cost accounting for time to the top to reorder the method display
           if (!isNaN(eCost) && eCost !== oldECost) {
-            this.$emit('valueCalculated', this.methodData, eCost, this.cost);
+            this.$emit('costCalculated', this.methodData, eCost, this.cost);
+          }
+        },
+        immediate: true,
+      },
+      xpRate: {
+        handler(xpRate, oldXpRate) { // propagate the cost accounting for time to the top to reorder the method display
+          if (!isNaN(xpRate) && xpRate !== oldXpRate) {
+            this.$emit('xpRateCalculated', this.methodData, xpRate);
           }
         },
         immediate: true,

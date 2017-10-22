@@ -132,7 +132,7 @@
             <template v-for="methodData in sortedMethods">
               <method :key="methodData.id" :tvc="tvc" :boosts="boosts" :methodData="methodData"
                       :display="methodData.display" :bxpActive="bxpActive"
-                      :alt="alt" v-on:valueCalculated="updateMethodCost" :illuminationActive="illuminationActive"
+                      :alt="alt" v-on:costCalculated="updateMethodCost" :illuminationActive="illuminationActive"
                       :dxpActive="dxpActive"
                       v-on:descriptionToggled="toggleDescription"></method>
               <method-desc :desc="methodData.desc"

@@ -18,7 +18,7 @@
     <template v-for="methodData in filteredMethods">
       <method :key="methodData.id" :tvc="20" :boosts="boosts" :methodData="methodData" :display="false"
               :illuminationActive="false" :dxpActive="false" :bxpActive="false"
-              :alt="10" v-on:dailyCalculated="updateMethodDaily" v-on:valueCalculated="updateMethodCost"></method>
+              :alt="10" v-on:dailyCalculated="updateMethodDaily" v-on:costCalculated="updateMethodCost"></method>
     </template>
     <div class="row">
       <div class="col-xs-0 col-md-1"></div>
