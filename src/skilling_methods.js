@@ -1106,7 +1106,7 @@ window.methods = [
     actionXP: 1.5,
     actionsPerHour: 1480 * 100,
     baseCostPerXp() {
-      return (0.9275 * 350 - 1.5 * getPrice('Incandescent energy')) / this.actionXP;
+      return (0.9275 * 400 - 1.5 * getPrice('Incandescent energy')) / this.actionXP;
     },
     modifiers: [
       raf,
@@ -1122,7 +1122,7 @@ window.methods = [
         },
       },
     ],
-    desc: 'Buy from forums. Cost here is assumed at buying for 350 each <a href="https://www.youtube.com/watch?v=IPQPW8vgL4o" target="_blank">RIP 2-ticking</a>',
+    desc: 'Buy from <a href="http://services.runescape.com/m=forum/searchthreads.ws?search=submit&srcstr=cursed%20energy" target="_blank">forums.</a> Cost here is assumed at buying for 400 each',
   },
   // TODO: real dg, challenge
   {
