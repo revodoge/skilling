@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import Vue from 'vue';
 import VueResource from 'vue-resource';
+import _ from 'lodash';
 
 Vue.use(VueResource);
 
@@ -469,18 +470,21 @@ function bonfire(logType, logXp) {
   };
 }
 
-function treeRun(tree, fruit) {
+function treeRun(tree, fruit, calquatProtection, elderProtection) {
   return {
     name: `Tree Run (${tree.protection ? 'Protected' : 'Unprotected'} ${tree.name} + 
-                     ${fruit.protection ? 'Protected' : 'Unprotected'} ${fruit.name})`,
+                     ${fruit.protection ? 'Protected' : 'Unprotected'} ${fruit.name} + 
+                     ${calquatProtection ? 'Protected' : 'Unprotected'} Calquat + 
+                     ${elderProtection ? 'Protected' : 'Unprotected'} Elder)`,
     skill: 'Farming',
     actionXP: (() => {
-      const canDie = 12225.5 + 23473 / 3;
+      const elder = (elderProtection ? 1 : 0.86) * 23473 / 3;
+      const calquat = (calquatProtection ? 1 : 0.86) * 12225.5;
       const cantDie = 15000 + 9350;
       const treePatch = 12 * (tree.protection ? 1 : 0.86) * tree.xp;
       const fruitTreePatch = 7 * (fruit.protection ? 1 : 0.86) * fruit.xp;
       // TODO: more research on disease rates
-      return (0.86 * canDie + cantDie + treePatch + fruitTreePatch);
+      return elder + calquat + cantDie + treePatch + fruitTreePatch;
     })(),
     actionsPerHour: 60 / 8.5,
     baseCostPerXp() {
@@ -488,7 +492,9 @@ function treeRun(tree, fruit) {
         12 * (0.95 * getPrice(`${tree.name} seed`)
         + (tree.protection ? (tree.protection.qty * getPrice(tree.protection.item)) : 0))
         + 0.95 * getPrice('Calquat tree seed')
-        + 0.95 * getPrice('Elder seed') / 3
+        + (calquatProtection ? (8 * getPrice('Poison ivy berries')) : 0)
+        + 1 / 3 * (0.95 * getPrice('Elder seed')
+        + (elderProtection ? (25 * getPrice('Morchella mushroom')) : 0))
         + 7 * (0.95 * getPrice(`${fruit.name} seed`)
         + (fruit.protection ? (fruit.protection.qty * getPrice(fruit.protection.item)) : 0)
         - 6 * (fruit.protection ? 1 : 0.86) * getPrice(fruit.product))
@@ -772,7 +778,10 @@ const fruitTrees = [
   unprotectedPalm, unprotectedPapaya, unprotectedPineapple,
   protectedPalm, protectedPapaya, protectedPineapple,
 ];
-const treeRuns = normalTrees.map(normalTree => fruitTrees.map(fruitTree => treeRun(normalTree, fruitTree)));
+const treeRuns = normalTrees.map(normalTree => _.flatMap(fruitTrees, fruitTree => [
+  treeRun(normalTree, fruitTree, true, true), treeRun(normalTree, fruitTree, false, true),
+  treeRun(normalTree, fruitTree, true, false), treeRun(normalTree, fruitTree, false, false),
+]));
 
 const bones = [
   {name: 'Dragon bones', xp: 72},
