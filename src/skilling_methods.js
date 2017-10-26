@@ -470,35 +470,23 @@ function bonfire(logType, logXp) {
   };
 }
 
-function treeRun(tree, fruit, calquatProtection, elderProtection) {
+function treeRun(trees) {
   return {
-    name: `Tree Run (${tree.protection ? 'Protected' : 'Unprotected'} ${tree.name} + 
-                     ${fruit.protection ? 'Protected' : 'Unprotected'} ${fruit.name} + 
-                     ${calquatProtection ? 'Protected' : 'Unprotected'} Calquat + 
-                     ${elderProtection ? 'Protected' : 'Unprotected'} Elder)`,
+    name: `Tree Run (
+        ${trees.map(tree => `${tree.protection ? 'Protected' : 'Unprotected'} ${tree.name}`).join(' + ')
+      })`,
     skill: 'Farming',
     actionXP: (() => {
-      const elder = (elderProtection ? 1 : 0.86) * 23473 / 3;
-      const calquat = (calquatProtection ? 1 : 0.86) * 12225.5;
       const cantDie = 15000 + 9350;
-      const treePatch = 12 * (tree.protection ? 1 : 0.86) * tree.xp;
-      const fruitTreePatch = 7 * (fruit.protection ? 1 : 0.86) * fruit.xp;
       // TODO: more research on disease rates
-      return elder + calquat + cantDie + treePatch + fruitTreePatch;
+      return cantDie + _.sum(trees.map(tree => (tree.protection ? 1 : 0.86) * tree.xp * tree.qty));
     })(),
     actionsPerHour: 60 / 8.5,
     baseCostPerXp() {
-      const cost =
-        12 * (0.95 * getPrice(`${tree.name} seed`)
-        + (tree.protection ? (tree.protection.qty * getPrice(tree.protection.item)) : 0))
-        + 0.95 * getPrice('Calquat tree seed')
-        + (calquatProtection ? (8 * getPrice('Poison ivy berries')) : 0)
-        + 1 / 3 * (0.95 * getPrice('Elder seed')
-        + (elderProtection ? (25 * getPrice('Morchella mushroom')) : 0))
-        + 7 * (0.95 * getPrice(`${fruit.name} seed`)
-        + (fruit.protection ? (fruit.protection.qty * getPrice(fruit.protection.item)) : 0)
-        - 6 * (fruit.protection ? 1 : 0.86) * getPrice(fruit.product))
-        + 64 / 3 * (1500 + getPrice('Supercompost'));
+      const treeCost = _.sum(trees.map(tree => tree.qty * (0.95 * getPrice(`${tree.name} seed`)
+        + (tree.protection ? (tree.protection.qty * getPrice(tree.protection.item)) : 0))));
+      const compostCost = _.sum(trees.map(tree => tree.qty)) * (1500 + getPrice('Supercompost'));
+      const cost = treeCost + compostCost;
       return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
     },
     modifiers: [
@@ -523,8 +511,8 @@ function treeRun(tree, fruit, calquatProtection, elderProtection) {
       return 1 / this.actionsPerHour;
     },
     // TODO: add updated videos with bladed dive
-    desc: `<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (6 ${tree.name}, 7 ${fruit.name}, Calquat, Crystal Tree, Elder, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">normal tree only run</a>.
-           Pay leprechaun for automatic supercompost. Assuming unprotected Elder and Calquat. Do spirit trees if you have them, but they are not part of the calculation`,
+    desc: `<a href="https://www.youtube.com/watch?v=wu2h39fayAE" target="_blank">Full run</a> (${trees.map(tree => tree.name).join(', ')}, Crystal Tree, Arc Berries) + <a href="https://www.youtube.com/watch?v=DC50RaHmZ_8" target="_blank">normal tree only run</a>.
+           Pay leprechaun for automatic supercompost. Do spirit trees if you have them, but they are not worth going out of your wait to get unless you're limited by farming`,
   };
 }
 
@@ -763,11 +751,15 @@ const ranged = rangedMethods.map(m => Object.assign({skill: 'Ranged'}, m));
 const defRanged = rangedMethods.map(m => Object.assign({skill: 'Defence'}, m));
 
 
-const unprotectedMagic = {name: 'Magic', xp: 13913.8};
-const unprotectedYew = {name: 'Yew', xp: 7150.9};
-const unprotectedPalm = {name: 'Palm tree', xp: 10509.6, product: 'Coconut'};
-const unprotectedPapaya = {name: 'Papaya tree', xp: 6453.9, product: 'Papaya fruit'};
-const unprotectedPineapple = {name: 'Pineapple', xp: 4791.7, product: 'Pineapple'};
+const unprotectedElder = {name: 'Elder', xp: 23473, qty: 1 / 3};
+const unprotectedCalquat = {name: 'Calquat tree', xp: 12225.5, qty: 1};
+const unprotectedMagic = {name: 'Magic', xp: 13913.8, qty: 12};
+const unprotectedYew = {name: 'Yew', xp: 7150.9, qty: 12};
+const unprotectedPalm = {name: 'Palm tree', xp: 10509.6, product: 'Coconut', qty: 7};
+const unprotectedPapaya = {name: 'Papaya tree', xp: 6453.9, product: 'Papaya fruit', qty: 7};
+const unprotectedPineapple = {name: 'Pineapple', xp: 4791.7, product: 'Pineapple', qty: 7};
+const protectedElder = Object.assign({protection: {qty: 25, item: 'Morchella mushroom'}}, unprotectedElder);
+const protectedCalquat = Object.assign({protection: {qty: 8, item: 'Poison ivy berries'}}, unprotectedCalquat);
 const protectedMagic = Object.assign({protection: {qty: 25, item: 'Coconut'}}, unprotectedMagic);
 const protectedYew = Object.assign({protection: {qty: 25, item: 'Cactus spine'}}, unprotectedYew);
 const protectedPalm = Object.assign({protection: {qty: 15, item: 'Papaya fruit'}}, unprotectedPalm);
@@ -778,10 +770,14 @@ const fruitTrees = [
   unprotectedPalm, unprotectedPapaya, unprotectedPineapple,
   protectedPalm, protectedPapaya, protectedPineapple,
 ];
-const treeRuns = normalTrees.map(normalTree => _.flatMap(fruitTrees, fruitTree => [
-  treeRun(normalTree, fruitTree, true, true), treeRun(normalTree, fruitTree, false, true),
-  treeRun(normalTree, fruitTree, true, false), treeRun(normalTree, fruitTree, false, false),
-]));
+const treeRuns = normalTrees.map(normalTree =>
+  _.flatMapDeep(fruitTrees, fruitTree =>
+    [unprotectedElder, protectedElder].map(elder =>
+      [unprotectedCalquat, protectedCalquat].map(calquat =>
+        treeRun([normalTree, fruitTree, elder, calquat]),
+      ),
+    ),
+  ));
 
 const bones = [
   {name: 'Dragon bones', xp: 72},
