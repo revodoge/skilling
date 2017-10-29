@@ -13,7 +13,7 @@
       </div>
       <div class="col-xs-0 col-md-1"></div>
     </form>
-    <form class="row" v-on:submit.prevent="fetchHiscore">
+    <form class="row">
       <div class="col-xs-0 col-md-1"></div>
       <div class="form-group col-xs-12 col-md-10">
         <label for="skill">Skill</label>
