@@ -74,7 +74,7 @@ function arrowMethod(name, levelRequired, actionXP, arrowheadName, sell) {
     actionXP,
     actionsPerHour: 44000,
     baseCostPerXp() {
-      return (0.9 * (getPrice(arrowheadName) + getPrice('Feather')) - sell) / this.actionXP;
+      return (0.9 * (getPrice(arrowheadName) + getPrice('Headless arrow')) - sell) / this.actionXP;
     },
     modifiers: [
       {
