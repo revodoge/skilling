@@ -6,7 +6,7 @@ import _ from 'lodash';
 Vue.use(VueResource);
 
 const itemPrices = {};
-const getPrice = name => itemPrices[name.replace('\'', '\\\'')] || NaN;
+const getPrice = name => (name ? (itemPrices[name.replace('\'', '\\\'')] || NaN) : 0);
 
 window.loaded = new Promise((resolve, reject) => {
   const priceUrl = 'https://243.ip-149-56-134.net:8080/https://runescape.wikia.com/api.php?action=parse&page=Module%3AGEPrices/data&format=json';
@@ -483,8 +483,11 @@ function treeRun(trees) {
     })(),
     actionsPerHour: 60 / 8.5,
     baseCostPerXp() {
-      const treeCost = _.sum(trees.map(tree => tree.qty * (0.95 * getPrice(`${tree.name} seed`)
-        + (tree.protection ? (tree.protection.qty * getPrice(tree.protection.item)) : 0))));
+      const treeCost = _.sum(trees.map(tree => tree.qty * (
+        0.95 * getPrice(`${tree.name} seed`)
+        + (tree.protection ? (tree.protection.qty * getPrice(tree.protection.item)) : 0)
+        - ((tree.protection ? 1 : 0.86) * 6 * getPrice(tree.product))
+      )));
       const compostCost = _.sum(trees.map(tree => tree.qty)) * (1500 + getPrice('Supercompost'));
       const cost = treeCost + compostCost;
       return cost / this.dailyXP + (getPrice('Nature rune') + getPrice('Decorated farming urn (nr)')) / 7000;
