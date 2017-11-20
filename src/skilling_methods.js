@@ -797,7 +797,8 @@ const ashes = [
 const altarMethods = [...bones, ...ashes].map(item => altarMethod(item.name, item.xp));
 const wildyAltarMethods = [...bones, ...ashes].map(item => wildyAltarMethod(item.name, item.xp));
 const autosanctifierMethods = [...bones, ...ashes].map(item => autosanctifierMethod(item.name, item.xp));
-const scatterBuryMethods = bones.map(bone => ashes.map(ash => scatterBuryMethod(bone.name, bone.xp, ash.name, ash.xp)));
+const scatterBuryMethods = bones.filter(bone => bone.name.toLowerCase().includes('dragon'))
+  .map(bone => ashes.map(ash => scatterBuryMethod(bone.name, bone.xp, ash.name, ash.xp)));
 const autosanctifierScatterBuryMethods = bones.map(bone => ashes.map(ash => autosanctifierScatterBuryMethod(bone.name, bone.xp, ash.name, ash.xp)));
 
 const rocktail = {
