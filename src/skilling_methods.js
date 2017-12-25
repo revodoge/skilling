@@ -896,7 +896,7 @@ window.methods = [
     name: 'Boutique Pawnbrokers',
     skill: 'Construction',
     actionXP: 1130,
-    actionsPerHour: 1000,
+    actionsPerHour: 1200,
     baseCostPerXp() {
       return (getPrice('Mahogany plank') * 7.8 + getPrice('Porthole')) / this.actionXP;
     },
@@ -921,13 +921,13 @@ window.methods = [
         },
       },
     ],
-    desc: `${youtubeEmbed('h6hRV9RuViw')}<br>Don't use AHK or you'll face the same fate as Damp Cat v1`,
+    desc: `${youtubeEmbed('wGJKlATxML0')}`,
   },
   {
     name: 'Flotsam Pawnbrokers',
     skill: 'Construction',
     actionXP: 1120,
-    actionsPerHour: 1000,
+    actionsPerHour: 1200,
     baseCostPerXp() {
       return getPrice('Mahogany plank') * 7.8 / this.actionXP;
     },
@@ -952,7 +952,7 @@ window.methods = [
         },
       },
     ],
-    desc: `${youtubeEmbed('h6hRV9RuViw')}<br>Don't use AHK or you'll face the same fate as Damp Cat v1`,
+    desc: `${youtubeEmbed('wGJKlATxML0')}`,
   },
   {
     name: 'Mahogany Table Flatpack',
@@ -1861,7 +1861,7 @@ window.methods = [
     name: 'Soul Runes',
     skill: 'Runecrafting',
     actionXP: 220,
-    actionsPerHour: 440,
+    actionsPerHour: 460,
     baseCostPerXp() {
       return (getPrice('Pure essence') - 1.05 * 0.8 * getPrice('Soul rune')) / this.actionXP + (getPrice('Pure essence') + getPrice('Decorated runecrafting urn (nr)')) / 7000;
     },
@@ -1902,7 +1902,7 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: youtubeEmbed('HaO7etpX5zk'),
+    desc: `${youtubeEmbed('HaO7etpX5zk')}<br>video showing proper use of portable fairy ring coming soon`,
   },
   {
     name: 'Movran Tasks',
