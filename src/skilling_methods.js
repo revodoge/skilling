@@ -1053,7 +1053,7 @@ window.methods = [
     actionXP: 53.5,
     actionsPerHour: 2400, // 2.5 ticks per action
     baseCostPerXp() {
-      return (getPrice('Mind rune') + getPrice('Decorated divination urn (nr)')) / 9500;
+      return (getPrice('Mind rune') + getPrice('Decorated divination urn (nr)')) / 9500 + getPrice('Energy-gathering scrimshaw') / (3 * this.baseXpRate);
     },
     modifiers: [
       raf,
@@ -1065,9 +1065,12 @@ window.methods = [
       {
         name: 'Arc contract',
         effect() {
-          return {bonus: 0.25 * 360 / 53.5};
+          // ~30% chance of harvesting energy * contract XP * scrimshaw and elder outfit boosts
+          return {bonus: 0.3 * 360 / 53.5 * 1.15 * 1.15};
         },
       },
+      {name: 'Energy-gathering scrimshaw'},
+      {name: 'Elder divination outfit'},
       urns,
       {
         name: 'Diviner\'s outfit',
@@ -1076,11 +1079,10 @@ window.methods = [
         },
       },
     ],
-    daily: () => 0.5,
+    daily: () => 1 / 3,
     afk: true,
     alt: 1,
-    // TODO: add video
-    desc: 'Do a flagged ancestral energy plot with contracts, Energy-gathering scrimshaw and Elder Divination Outfit will speed this up a bit',
+    desc: `${youtubeEmbed('zrA3ifhmIlI')}</br>Do a flagged ancestral energy plot with contracts, XP rate drops a bit without Energy-gathering scrimshaw and Elder Divination Outfit`,
   },
   {
     name: 'Ancestral Energy',
@@ -1115,7 +1117,7 @@ window.methods = [
     actionXP: 1.5,
     actionsPerHour: 1480 * 100,
     baseCostPerXp() {
-      return (0.9275 * 400 - 1.5 * getPrice('Incandescent energy')) / this.actionXP;
+      return (0.9275 * 500 - 1.5 * getPrice('Incandescent energy')) / this.actionXP;
     },
     modifiers: [
       raf,
@@ -1131,7 +1133,7 @@ window.methods = [
         },
       },
     ],
-    desc: 'Buy from <a href="http://services.runescape.com/m=forum/searchthreads.ws?search=submit&srcstr=cursed%20energy" target="_blank">forums.</a> Cost here is assumed at buying for 400 each',
+    desc: 'Buy from <a href="http://services.runescape.com/m=forum/searchthreads.ws?search=submit&srcstr=cursed%20energy" target="_blank">forums.</a> Cost here is assumed at buying for 500 each',
   },
   // TODO: real dg, challenge
   {
