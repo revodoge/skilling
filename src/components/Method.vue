@@ -86,10 +86,10 @@
       },
       baseBoost() { // calculate the boosts available to base XP
         return this.modifiers.filter(modifier => !modifier.disabled)
-            .map(modifier => modifier.effect().base)
+            .map(modifier => modifier.effect.apply(this).base)
             .filter(base => base !== undefined).reduce((acc, cur) => acc * (1 + cur), 1) *
           this.requirements.filter(req => req.effect)
-            .map(req => req.effect().base)
+            .map(req => req.effect.apply(this).base)
             .filter(base => base !== undefined).reduce((acc, cur) => acc * (1 + cur), 1);
       },
       bonusBoost() { // calculate the reward/bonus XP boosts available

@@ -38,7 +38,7 @@ const urnEnhancer = {
 const raf = {
   name: 'RaF',
   effect() {
-    return {bonus: this.bonusActive ? 0.2 : 0.1};
+    return {bonus: this.dxpActive ? 0.2 : 0.1};
   },
 };
 
