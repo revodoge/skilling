@@ -297,6 +297,61 @@ function scatterBuryMethod(boneName, boneXP, ashName, ashXP) {
   };
 }
 
+function cookingMethod(name, levelRequired, actionXP, rawName, cookedName) {
+  const method = {
+    skill: 'Cooking',
+    actionXP,
+    baseCostPerXp() {
+      return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice(rawName) - 1.1 * getPrice(cookedName)) / this.actionXP;
+    },
+    modifiers: [
+      raf,
+      pulse,
+      ava6,
+      {
+        name: 'Urn enhancer',
+        effect() {
+          return {bonus: 0.05 / 1.21 * 225 / 228};
+        },
+      },
+    ],
+    requirements: [
+      {name: `${levelRequired} Cooking`},
+      {name: 'Cooking gauntlets/skillcape'},
+      {
+        name: 'Portable range',
+        effect() {
+          return {base: 0.21};
+        },
+      },
+      {
+        name: 'Decorated urns',
+        effect() {
+          return {bonus: 0.2 / 1.21 * actionXP / (actionXP + 3)};
+        },
+      },
+      {
+        name: 'Modified sous chef\'s outfit',
+        effect() {
+          return {bonus: 0.06};
+        },
+      },
+      {name: 'Dwarven army axe'},
+    ],
+  };
+  return [Object.assign({
+    name: `3-tick ${name}`,
+    actionsPerHour: 1886,
+    desc: youtubeEmbed('OMlT6PzmEjE'),
+  }, method), Object.assign({
+    name: `4-tick ${name}`,
+    actionsPerHour: 1435,
+    afk: true,
+    alt: 1,
+    desc: '<iframe src="https://clips.twitch.tv/embed?clip=FlirtyZealousNoodleGivePLZ&autoplay=false&tt_medium=clips_embed" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>',
+  }, method)];
+}
+
 function autosanctifierMethod(itemName, itemXP) {
   return {
     name: `Autosanctifier: ${itemName}`,
@@ -753,7 +808,6 @@ const ranged = rangedMethods.map(m => Object.assign({skill: 'Ranged'}, m));
 
 const defRanged = rangedMethods.map(m => Object.assign({skill: 'Defence'}, m));
 
-
 const unprotectedElder = {name: 'Elder', xp: 23473, qty: 1 / 3};
 const unprotectedCalquat = {name: 'Calquat tree', xp: 12225.5, qty: 1};
 const unprotectedMagic = {name: 'Magic', xp: 13913.8, qty: 12};
@@ -801,61 +855,14 @@ const scatterBuryMethods = bones.filter(bone => bone.name.toLowerCase().includes
   .map(bone => ashes.map(ash => scatterBuryMethod(bone.name, bone.xp, ash.name, ash.xp)));
 const autosanctifierScatterBuryMethods = bones.map(bone => ashes.map(ash => autosanctifierScatterBuryMethod(bone.name, bone.xp, ash.name, ash.xp)));
 
-const rocktail = {
-  skill: 'Cooking',
-  actionXP: 228,
-  baseCostPerXp() {
-    return (getPrice('Fire rune') + getPrice('Decorated cooking urn (nr)')) / 7737.5 + (getPrice('Raw rocktail') - 1.1 * getPrice('Rocktail')) / this.actionXP;
-  },
-  modifiers: [
-    raf,
-    pulse,
-    ava6,
-    {
-      name: 'Urn enhancer',
-      effect() {
-        return {bonus: 0.05 / 1.21 * 225 / 228};
-      },
-    },
-  ],
-  requirements: [
-    {name: '94 Cooking'},
-    {name: 'Cooking gauntlets/skillcape'},
-    {
-      name: 'Portable range',
-      effect() {
-        return {base: 0.21};
-      },
-    },
-    {
-      name: 'Decorated urns',
-      effect() {
-        return {bonus: 0.2 / 1.21 * 225 / 228};
-      },
-    },
-    {
-      name: 'Modified sous chef\'s outfit',
-      effect() {
-        return {bonus: 0.06};
-      },
-    },
-    {name: 'Dwarven army axe'},
-  ],
-};
-
-const rocktail3t = Object.assign({
-  name: '3-tick rocktails',
-  actionsPerHour: 1886,
-  desc: youtubeEmbed('OMlT6PzmEjE'),
-}, rocktail);
-
-const rocktail4t = Object.assign({
-  name: '4-tick rocktails',
-  actionsPerHour: 1435,
-  afk: true,
-  alt: 1,
-  desc: '<iframe src="https://clips.twitch.tv/embed?clip=FlirtyZealousNoodleGivePLZ&autoplay=false&tt_medium=clips_embed" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>',
-}, rocktail);
+const cookingMethods = [
+  ...cookingMethod('shark', 80, 210, 'Raw shark', 'Shark'),
+  ...cookingMethod('cavefish', 88, 214, 'Raw cavefish', 'Cavefish'),
+  ...cookingMethod('manta ray', 91, 216.3, 'Raw manta ray', 'Manta ray'),
+  ...cookingMethod('rocktail', 94, 225, 'Raw rocktail', 'Rocktail'),
+  ...cookingMethod('blue blubber jellyfish', 95, 235, 'Raw blue blubber jellyfish', 'Blue blubber jellyfish'),
+  ...cookingMethod('sailfish', 99, 270, 'Raw sailfish', 'Sailfish'),
+];
 
 window.methods = [
   baMethod('Agility', 308439),
@@ -997,8 +1004,6 @@ window.methods = [
     requirements: [],
     desc: 'You\'d have to put in extra effort to not get this for free with 200m all combat skills',
   },
-  rocktail3t,
-  rocktail4t,
   {
     name: 'Wines',
     skill: 'Cooking',
@@ -1231,7 +1236,7 @@ window.methods = [
     afk: true,
     alt: 1,
     desc: `${youtubeEmbed('9ixyY9Wfzns')}<br>
-           Whopper-baiting scrimshaw also makes spots last longer, but makes xp/hr worse for doing contracts (Price is based on azure skillchompa but any type works fine)`,
+           Whopper-baiting scrimshaw also makes spots last longer, but makes xp/hr worse for doing contracts (price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Wobbegongs with Skillchompas',
@@ -1263,7 +1268,7 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: `${youtubeEmbed('Ot5nrMIYKfw')}<br>(Price is based on azure skillchompa but any type works fine)`,
+    desc: `${youtubeEmbed('Ot5nrMIYKfw')}<br>(price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Wobbegongs',
@@ -1295,6 +1300,56 @@ window.methods = [
     afk: true,
     alt: 1,
     desc: 'TFW can\'t afford skillchompas after update :(',
+  },
+  {
+    name: 'Fishing Frenzy with Skillchompas',
+    skill: 'Fishing',
+    actionXP: 120 * 1.2 * 1.1,
+    actionsPerHour: 2280,
+    baseCostPerXp() {
+      return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
+    },
+    modifiers: [
+      raf,
+      urnEnhancer,
+      ava6,
+    ],
+    requirements: [
+      {name: '94 Fishing'},
+      urns,
+      {
+        name: 'Fishing outfit',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+    ],
+    desc: `${youtubeEmbed('r0A29y2ZdDo')}<br>rate assumes that you maintain maximum streak. (price is based on azure skillchompa but any type works fine, it'll likely be more cost effective to spin for bonus XP than to use chins)`,
+  },
+  {
+    name: 'Fishing Frenzy',
+    skill: 'Fishing',
+    actionXP: 120 * 1.2,
+    actionsPerHour: 2280,
+    baseCostPerXp() {
+      return (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
+    },
+    modifiers: [
+      raf,
+      urnEnhancer,
+      ava6,
+    ],
+    requirements: [
+      {name: '94 Fishing'},
+      urns,
+      {
+        name: 'Fishing outfit',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+    ],
+    desc: `${youtubeEmbed('r0A29y2ZdDo')}<br>rate assumes that you maintain maximum streak`,
   },
   {
     name: 'Dragon darts',
@@ -1757,7 +1812,7 @@ window.methods = [
     ],
     afk: true,
     alt: 1,
-    desc: `${youtubeEmbed('Rq4-8O3TiaA')}<br>(Price is based on azure skillchompa but any type works fine)`,
+    desc: `${youtubeEmbed('Rq4-8O3TiaA')}<br>(price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Alaea Crabs',
@@ -2187,7 +2242,7 @@ window.methods = [
         },
       },
     ],
-    desc: `${youtubeEmbed('PCf8KBDuS04')}<br>(Price is based on azure skillchompa but any type works fine)`,
+    desc: `${youtubeEmbed('PCf8KBDuS04')}<br>(price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Crystallize Acadia',
@@ -2240,4 +2295,4 @@ window.methods = [
     desc: youtubeEmbed('PCf8KBDuS04'),
   },
 ].concat(prismania, smouldering, attack, strength, defMelee, magic, defMagic, ranged, defRanged,
-  altarMethods, wildyAltarMethods, ...scatterBuryMethods, ...autosanctifierMethods, ...autosanctifierScatterBuryMethods, ...treeRuns);
+  altarMethods, wildyAltarMethods, ...scatterBuryMethods, ...autosanctifierMethods, ...autosanctifierScatterBuryMethods, ...treeRuns, ...cookingMethods);
