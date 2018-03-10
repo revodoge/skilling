@@ -2026,7 +2026,7 @@ window.methods = [
     name: 'Rune 2h',
     skill: 'Smithing',
     actionXP: 225,
-    actionsPerHour: 1500, // TODO: test varrock armour proc rate to get the right number
+    actionsPerHour: 6000 / ((2 + 20 * (0.1 + 0.9 * 3.85)) / 20), // TODO: verify varrock armour + tinker proc rates with new varrock tasks
     baseCostPerXp() {
       return (2.6 * getPrice('Rune bar') - getPrice('Rune 2h sword')) / this.actionXP;
     },
