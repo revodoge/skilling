@@ -1304,7 +1304,7 @@ window.methods = [
   {
     name: 'Fishing Frenzy with Skillchompas',
     skill: 'Fishing',
-    actionXP: 120 * 1.2 * 1.1,
+    actionXP: 120 * 1.1,
     actionsPerHour: 2280,
     baseCostPerXp() {
       return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
@@ -1313,6 +1313,12 @@ window.methods = [
       raf,
       urnEnhancer,
       ava6,
+      {
+        name: '200+ streak',
+        effect() {
+          return {bonus: 0.2};
+        },
+      },
     ],
     requirements: [
       {name: '94 Fishing'},
@@ -1329,7 +1335,7 @@ window.methods = [
   {
     name: 'Fishing Frenzy',
     skill: 'Fishing',
-    actionXP: 120 * 1.2,
+    actionXP: 120,
     actionsPerHour: 2280,
     baseCostPerXp() {
       return (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
@@ -1338,6 +1344,12 @@ window.methods = [
       raf,
       urnEnhancer,
       ava6,
+      {
+        name: '200+ streak',
+        effect() {
+          return {bonus: 0.2};
+        },
+      },
     ],
     requirements: [
       {name: '94 Fishing'},
