@@ -1208,8 +1208,8 @@ window.methods = [
   {
     name: 'Wobbegongs with Skillchompas and Scrimshaw',
     skill: 'Fishing',
-    actionXP: (0.205 * (0.85 * 1.1 + 0.15 * (922.5 / 682.5)) + 0.795 * 0.05) * 682.5, // 20.5% success, 15% scrimshaw, 10% furnace proc on remaining
-    actionsPerHour: 1500,
+    actionXP: 682.5, // 20.5% success, 15% scrimshaw (does not stack with other bonuses), 15% extra fish from outfit + skillcape, 10% furnace proc. 5% skillchompa XP on failure
+    actionsPerHour: (0.205 * (0.85 * 1.25 + 0.15 * (922.5 / 682.5)) + 0.795 * 0.05) * 1500,
     baseCostPerXp() {
       return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500 + getPrice('Whopper-baiting scrimshaw') / 3 / this.baseXpRate;
     },
@@ -1219,12 +1219,12 @@ window.methods = [
       ava6,
     ],
     requirements: [
-      {name: '96 Fishing'},
+      {name: 'Fishing skillcape'},
       {name: 'T5 Call of the seas aura'},
       {name: 'Perfect juju fishing potion'},
       {name: 'Crystal rod w/ Honed 5 + Furnace 2'},
       urns,
-      {name: 'Fury shark outfit'},
+      {name: 'Fury shark outfit set on consume'},
       {name: 'Skillchompas'},
       {
         name: 'Fishing outfit',
@@ -1236,13 +1236,13 @@ window.methods = [
     afk: true,
     alt: 1,
     desc: `${youtubeEmbed('9ixyY9Wfzns')}<br>
-           Whopper-baiting scrimshaw also makes spots last longer, but makes xp/hr worse for doing contracts (price is based on azure skillchompa but any type works fine)`,
+           Whopper-baiting scrimshaw also makes spots last longer (price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Wobbegongs with Skillchompas',
     skill: 'Fishing',
-    actionXP: (0.205 * 1.1 + 0.795 * 0.05) * 682.5, // 20.5% success, 10% furnace proc on success
-    actionsPerHour: 1500,
+    actionXP: 682.5, // 20.5% success, 15% extra fish from outfit + skillcape, 10% furnace proc on success. 5% skillchompa XP on failure
+    actionsPerHour: (0.205 * 1.25 + 0.795 * 0.05) * 1500,
     baseCostPerXp() {
       return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
     },
@@ -1252,12 +1252,12 @@ window.methods = [
       ava6,
     ],
     requirements: [
-      {name: '96 Fishing'},
+      {name: 'Fishing skillcape'},
       {name: 'T5 Call of the seas aura'},
       {name: 'Perfect juju fishing potion'},
       {name: 'Crystal rod w/ Honed 5 + Furnace 2'},
       urns,
-      {name: 'Fury shark outfit'},
+      {name: 'Fury shark outfit set on consume'},
       {name: 'Skillchompas'},
       {
         name: 'Fishing outfit',
@@ -1273,8 +1273,8 @@ window.methods = [
   {
     name: 'Wobbegongs',
     skill: 'Fishing',
-    actionXP: 1.1 * 682.5,
-    actionsPerHour: 0.205 * 1500, // 20.5% success, 4 ticks per attempt
+    actionXP: 682.5, // 20.5% success, 15% extra fish from outfit + skillcape, 4 ticks per attempt
+    actionsPerHour: 1.15 * 0.205 * 1500,
     baseCostPerXp() {
       return (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
     },
@@ -1284,12 +1284,12 @@ window.methods = [
       ava6,
     ],
     requirements: [
-      {name: '96 Fishing'},
+      {name: 'Fishing skillcape'},
       {name: 'T5 Call of the seas aura'},
       {name: 'Perfect juju fishing potion'},
       {name: 'Crystal rod w/ Honed 5 + Furnace 2'},
       urns,
-      {name: 'Fury shark outfit'},
+      {name: 'Fury shark outfit set on consume'},
       {
         name: 'Fishing outfit',
         effect() {
@@ -1300,6 +1300,47 @@ window.methods = [
     afk: true,
     alt: 1,
     desc: 'TFW can\'t afford skillchompas after update :(',
+  },
+  {
+    name: 'Wobbegong contracts with Skillchompas',
+    skill: 'Fishing',
+    actionXP: 682.5, // 20.5% success. 5% skillchompa XP on failure
+    actionsPerHour: (0.205 + 0.795 * 0.05) * 1500,
+    baseCostPerXp() {
+      return getPrice('Azure skillchompa') / this.actionXP + (getPrice('Water rune') + getPrice('Decorated fishing urn (nr)')) / 9500;
+    },
+    daily() {
+      return 200 * (0.205 + 0.795 * 0.05) / (0.205 * 1.1) / this.actionsPerHour;
+    },
+    modifiers: [
+      raf,
+      urnEnhancer,
+      ava6,
+    ],
+    requirements: [
+      {name: 'Fishing skillcape'},
+      {name: 'T5 Call of the seas aura'},
+      {name: 'Perfect juju fishing potion'},
+      {name: 'Crystal rod w/ Honed 5 + Furnace 2'},
+      urns,
+      {name: 'Fury shark outfit set on catch'},
+      {name: 'Skillchompas'},
+      {
+        name: 'Fishing outfit',
+        effect() {
+          return {bonus: 0.05};
+        },
+      },
+      {
+        name: 'Fishing outfit',
+        effect() {
+          return {bonus: 360 / 682.5 * (0.205 * 0.9 * 1.15) / (0.205 + 0.795 * 0.05)}; // no contract progress from furnace, extra fish: 10% from outfit, 5% skillcape
+        },
+      },
+    ],
+    afk: true,
+    alt: 1,
+    desc: `${youtubeEmbed('9ixyY9Wfzns')}<br>daily XP is based on doing 2 wobb spawns, not maxing out contracts (price is based on azure skillchompa but any type works fine)`,
   },
   {
     name: 'Fishing Frenzy with Skillchompas',
