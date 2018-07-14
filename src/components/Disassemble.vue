@@ -18,6 +18,15 @@
     <br/>
     <div class="row">
       <div class="col-xs-0 col-md-1"></div>
+      <div class="form-group col-xs-12 col-md-10">
+        <label for="name">Item name</label>
+        <input type="text" v-model="filters.name" class="form-control" id="name">
+      </div>
+      <div class="col-xs-0 col-md-1"></div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-xs-0 col-md-1"></div>
       <div class="col-xs-3 col-md-2">
         <label for="cost">Max cost per comp (raw)</label>
         <input type="number" v-model="filters.cost" class="form-control" id="cost">
@@ -90,7 +99,7 @@
           totCost: 'Cost per component (machine)',
           compsLimit: 'Components per hour, after GE limit',
         },
-        filters: {cost: 1e69, comps: 0, totCost: 1e69, compsLimit: 0},
+        filters: {cost: 1e69, comps: 0, totCost: 1e69, compsLimit: 0, name: ''},
         sortKey: 'name',
         sortOrder: 1,
       };
@@ -115,6 +124,7 @@
       },
       filteredItems() {
         return this.calculatedData
+          .filter(a => this.filters.name.length === 0 || a.name.toLowerCase().includes(this.filters.name.toLowerCase()))
           .filter(a => a.cost <= this.filters.cost
             && a.totCost <= this.filters.totCost
             && a.comps >= this.filters.comps
