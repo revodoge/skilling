@@ -253,7 +253,7 @@
     },
     methods: {
       fetchHiscore() {
-        const hiScoreUrl = 'https://243.ip-149-56-134.net:8080/http://services.runescape.com/m=hiscore/index_lite.ws';
+        const hiScoreUrl = 'https://115.ip-167-114-3.net:8080/http://services.runescape.com/m=hiscore/index_lite.ws';
         this.$http.get(hiScoreUrl, {params: {player: this.rsn}}).then((response) => {
           const skillXpList = response.body.split('\n').slice(1, 28).map(stats => parseInt(stats.split(',')[2], 10));
           const statsMap = {};

@@ -151,7 +151,7 @@
           this.$router.push({name: 'Disassembling', query: {material}});
           const wikiCalcUrl = `http://runescape.wikia.com/wiki/Calculator:Disassembly_by_material/${material}`;
 
-          this.$http.get(`https://243.ip-149-56-134.net:8080/${wikiCalcUrl}`, {params: {player: this.rsn}})
+          this.$http.get(`https://115.ip-167-114-3.net:8080/${wikiCalcUrl}`, {params: {player: this.rsn}})
             .then((response) => {
               const parser = new DOMParser();
               const doc = parser.parseFromString(response.body, 'text/html');
