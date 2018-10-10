@@ -9,7 +9,7 @@ const itemPrices = {};
 const getPrice = name => (name ? (itemPrices[name.replace('\'', '\\\'')] || NaN) : 0);
 
 window.loaded = new Promise((resolve, reject) => {
-  const priceUrl = 'https://115.ip-167-114-3.net:8080/https://runescape.wikia.com/api.php?action=parse&page=Module%3AGEPrices/data&format=json';
+  const priceUrl = 'https://115.ip-167-114-3.net:8080/https://runescape.wiki/api.php?action=parse&page=Module%3AGEPrices/data&format=json';
   Vue.http.get(priceUrl, {responseType: 'json'}).then((response) => {
     if (!response.body) {
       return reject();

@@ -149,7 +149,7 @@
       material: {
         handler(material) {
           this.$router.push({name: 'Disassembling', query: {material}});
-          const wikiCalcUrl = `http://runescape.wikia.com/wiki/Calculator:Disassembly_by_material/${material}`;
+          const wikiCalcUrl = `https://runescape.wiki/w/Calculator:Disassembly_by_material/${material}`;
 
           this.$http.get(`https://115.ip-167-114-3.net:8080/${wikiCalcUrl}`, {params: {player: this.rsn}})
             .then((response) => {
