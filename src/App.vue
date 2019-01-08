@@ -15,6 +15,13 @@
       </div>
     </nav>
     <router-view></router-view>
+    <footer class="navbar navbar-default footer navbar-fixed-bottom">
+      <div class="container-fluid">
+        <div class="navbar-footer">
+          <span class="navbar-brand">Methods are no longer updated and may be out of date. PM doge#2526 on Discord if you are interested in updating</span>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -27,6 +34,14 @@
 </script>
 
 <style>
+  footer.navbar .navbar-brand {
+    color: #000;
+  }
+
+  footer.navbar {
+    background-color: #fb9a9a;
+  }
+
   nav {
     font-family: 'Comic Sans MS', sans-serif;
   }
