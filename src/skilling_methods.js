@@ -6,7 +6,7 @@ import _ from 'lodash';
 Vue.use(VueResource);
 
 const itemPrices = {};
-const getPrice = name => (name ? (itemPrices[name.replace('\'', '\\\'')] || NaN) : 0);
+const getPrice = name => (name ? (itemPrices[name] || NaN) : 0);
 
 window.loaded = new Promise((resolve, reject) => {
   const priceUrl = 'https://115.ip-167-114-3.net:8080/https://runescape.wiki/api.php?action=parse&page=Module%3AGEPrices/data&format=json';
@@ -16,7 +16,7 @@ window.loaded = new Promise((resolve, reject) => {
     }
     const items = response.body.parse.text['*'].match(/\[.*?(?=,)/g);
     items.forEach((item) => {
-      const itemMatch = item.match(/\['(.*?)'] = (\d+)/);
+      const itemMatch = new DOMParser().parseFromString(item, 'text/html').documentElement.textContent.match(/\["(.*?)"] = (\d+)/);
       itemPrices[itemMatch[1]] = parseInt(itemMatch[2], 10);
     });
     return resolve(itemPrices);
